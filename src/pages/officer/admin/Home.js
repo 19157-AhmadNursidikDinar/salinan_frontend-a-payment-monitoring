@@ -33,6 +33,15 @@ export default function Home() {
           Update User
         </Button>
       </Link>
+
+      <Link to="/detail-user">
+        <Button
+          variant="contained"
+          color="primary"
+        >
+          Admin Detail
+        </Button>
+      </Link>
     </ContentContainer>
   );
 }
