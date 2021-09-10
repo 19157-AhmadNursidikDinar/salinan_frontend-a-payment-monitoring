@@ -28,17 +28,25 @@ const useStyles = makeStyles({
 
 export default function RedChip({ label = "", color = 'grey' }) {
     const classes = useStyles();
+
+    const getChipStyle = (mColor) => {
+        if (mColor === "red") {
+            return classes.redChip;
+        }
+        if (mColor === "green") {
+            return classes.greenChip;
+        }
+        if (mColor === "blue") {
+            return classes.blueChip;
+        }
+        return classes.greyChip;
+    }
+
     return (
         <div>
             <Chip
                 label={label}
-                className={color === "red"
-                    ? classes.redChip : color === "green"
-                        ? classes.greenChip
-                        : color === "blue"
-                            ? classes.blueChip
-                            : classes.greyChip
-                }
+                className={getChipStyle(color)}
             />
         </div>
     )
