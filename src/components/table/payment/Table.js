@@ -12,6 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePagination";
 import Chip from "../../ActionChip";
+import { Link } from "react-router-dom";
 
 const rows = [
   {
@@ -112,7 +113,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function GeneralSupport() {
+export default function GeneralSupport({ role }) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const rowsPerPage = 8;
@@ -159,9 +160,11 @@ export default function GeneralSupport() {
                 />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <Button size="small" variant="contained" color="primary">
-                  Lihat Detail
-                </Button>
+                <Link to={`${role}/payment-detail`}>
+                  <Button size="small" variant="contained" color="primary">
+                    Lihat Detail
+                  </Button>
+                </Link>
               </StyledTableCell>
             </StyledTableRow>
           ))}
