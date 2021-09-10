@@ -113,6 +113,20 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
+const convertActionToChipColor = (action) => {
+  let result = "grey";
+  if (["Rejected by Accounting", "Rejected by GS"].includes(
+    action)) {
+    result = "red"
+  } else if (action === "Disetujui") {
+    result = "green"
+
+  } else if (action === "Menunggu Konfirmasi") {
+    result = "blue"
+  }
+  return result;
+}
+
 export default function GeneralSupport({ role }) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
@@ -147,15 +161,7 @@ export default function GeneralSupport({ role }) {
                 <Chip
                   label={row.action}
                   color={
-                    ["Rejected by Accounting", "Rejected by GS"].includes(
-                      row.action
-                    )
-                      ? 'red'
-                      : row.action === "Disetujui"
-                        ? 'green'
-                        : row.action === "Menunggu Konfirmasi"
-                          ? 'blue'
-                          : 'grey'
+                    convertActionToChipColor(row.action)
                   }
                 />
               </StyledTableCell>
