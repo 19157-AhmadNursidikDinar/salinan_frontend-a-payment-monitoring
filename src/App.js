@@ -10,6 +10,8 @@ import AdminHome from "./pages/officer/admin/Home";
 import AdminAddUser from "./pages/officer/admin/AddUser";
 import AdminUpdateUser from "./pages/officer/admin/UpdateUser";
 import GeneralSupportHome from "./pages/officer/generalSupport/Home";
+import PaymentRequestDetailGeneralSupport from "./pages/officer/generalSupport/PaymentRequestDetail";
+import PaymentRequestDetailAcounting from "./pages/officer/accounting/PaymentRequestDetail";
 import ServiceLevelAgreement from "./pages/officer/admin/ServiceLevelAgreement";
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
         <Route exact path="/add-payment-request" component={IsiFormPayment} />
         <Route exact path="/payment-request-result" component={HasilFormPayment} />
         <Route exact path="/service-level-agreement" component={ServiceLevelAgreement} />
+        <Route exact path="/generalSupport/payment-detail" component={PaymentRequestDetailGeneralSupport} />
+        <Route exact path="/accounting/payment-detail" component={PaymentRequestDetailAcounting} />
       </Router>
     </>
   );
