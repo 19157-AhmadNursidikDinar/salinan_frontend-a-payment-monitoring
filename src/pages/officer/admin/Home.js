@@ -4,7 +4,6 @@ import Typography from "@material-ui/core/Typography";
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Position from "@material-ui/system";
 import ContentContainer from "../../../components/ContentContainer";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
