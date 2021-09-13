@@ -7,14 +7,14 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
-        margin: theme.spacing(1),
-        minWidth: 240,
+        margin: theme.spacing(1,0),
+        minWidth: 230,
     },
 }));
 
 export default function PaymentStatusSelector() {
     const classes = useStyles();
-    const [status, setStatus] = useState('accept');
+    const [status, setStatus] = useState('null');
 
     return (
         <>
@@ -28,6 +28,7 @@ export default function PaymentStatusSelector() {
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
                         >
+                            <MenuItem value="null">-Ubah Status-</MenuItem>
                             <MenuItem value="accept">Accept</MenuItem>
                             <MenuItem value="reject">Reject</MenuItem>
                         </Select>
@@ -40,16 +41,17 @@ export default function PaymentStatusSelector() {
                     className={classes.centerCell}>:</td>
                 <td>
                     <TextField
-                        label="Multiline"
+                        // label="Multiline"
                         multiline
                         maxRows={6}
                         minRows={4}
                         variant="outlined"
                         className={classes.formControl}
-                    />
+                    /> 
                 </td>
             </tr>)}
-
+            
         </>
+       
     )
 }
