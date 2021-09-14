@@ -11,6 +11,7 @@ import AdminAddUser from "./pages/officer/admin/AddUser";
 import AdminUpdateUser from "./pages/officer/admin/UpdateUser";
 import GeneralSupportHome from "./pages/officer/generalSupport/Home";
 import ServiceLevelAgreement from "./pages/officer/admin/ServiceLevelAgreement";
+import Backdoor from "./pages/backdoor/Backdoor";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route exact path="/add-payment-request" component={IsiFormPayment} />
         <Route exact path="/payment-request-result" component={HasilFormPayment} />
         <Route exact path="/service-level-agreement" component={ServiceLevelAgreement} />
+        <Route exact path="/backdoor" component={Backdoor} />
       </Router>
     </>
   );
