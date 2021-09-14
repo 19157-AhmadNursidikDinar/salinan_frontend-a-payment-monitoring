@@ -39,6 +39,9 @@ const menuItems = {
       label: "Service Lvl Agreement",
       icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />, link: "/service-level-agreement"
     },
+    { label: "Daftar Kantor Cabang",
+      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }}/>, link: "/branch-office-list"
+    },
     { label: "Sign Out", icon: <LogOutIcon />, link: "/login-officer" }
   ],
   accounting: [
