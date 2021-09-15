@@ -91,7 +91,7 @@ export default function LoginOfficer(props) {
 
   return (
     <div className="container">
-      <div class="left">
+      <div className="left">
         <div className="box-container">
           <div className="flex-center">
             <div className="header-logo">
