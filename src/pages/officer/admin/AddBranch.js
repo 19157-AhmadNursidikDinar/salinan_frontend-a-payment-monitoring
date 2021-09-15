@@ -86,7 +86,7 @@ function FormAddBranch() {
 
 export default function AddBranch() {
     return (
-        <ContentContainer role="admin" selectedMenu="Beranda">
+        <ContentContainer role="admin" selectedMenu="Daftar Kantor Cabang">
             <div
                 style={{
                     display: "flex",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 //Re-using component
 import ContentContainer from "../../../components/ContentContainer";
 import TablePaginationActions from "../../../components/table/generalSupport/TablePagination";
@@ -7,7 +7,7 @@ import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import AddIcon from '@material-ui/icons/Add';
 //import from @material-ui/core
-import { 
+import {
     Button,
     InputAdornment,
     Paper,
@@ -20,68 +20,14 @@ import {
     TableFooter,
     TablePagination,
     TextField,
-    Typography } from "@material-ui/core";
+    Typography
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-//making Get List Branch Office using array Object
-const offices = [
-    {
-        no: "1",
-        kantor: "KC JATINEGARA",
-    },
-    {
-        no: "2",
-        kantor: "KC SENAYAN",
-    },
-    {
-        no: "3",
-        kantor: "KC KEBON JERUK",
-    },
-    {
-        no: "4",
-        kantor: "KC PLUIT",
-    },
-    {
-        no: "5",
-        kantor: "KC PONDOK INDAH",
-    },
-    {
-        no: "6",
-        kantor: "KC JATIASIH BEKASI",
-    },
-    {
-        no: "7",
-        kantor: "KC SAWANGAN DEPOK",
-    },
-    {
-        no: "8",
-        kantor: "KC TANGERANG",
-    },
-    {
-        no: "9",
-        kantor: "KC TANGERANG SELATAN",
-    },
-    {
-        no: "10",
-        kantor: "KC BOGOR",
-    },
-    {
-        no: "11",
-        kantor: "KC DAGO BANDUNG",
-    },
-    {
-        no: "12",
-        kantor: "KC SEMARANG",
-    },
-    {
-        no: "13",
-        kantor: "KC YOGYAKARTA",
-    },
-    {
-        no: "14",
-        kantor: "KC SURABAYA",
-    },
-]
+
+//import api service
+import BranchService from "../../../services/branch.service"
+
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -98,52 +44,76 @@ const useStyles = makeStyles((theme) => ({
     buttonMargin: {
         margin: theme.spacing(1),
     },
+    messageError: {
+        display: "flex",
+        justifyContent: "center"
+    }
 }));
 
 const StylingTableCell = withStyles(() => ({
     head: {
-        backgroundColor: "#9ocaf9",
+        backgroundColor: "#90caf9",
         fontWeight: "bold",
     },
     body: {
         fontSize: 14,
-    }
+    },
 }))(TableCell);
+
 //Styling odd row
-const StylingTableRow = withStyles((theme) =>({
+const StylingTableRow = withStyles((theme) => ({
     root: {
         "&:nth-of-type(odd)": {
             backgroundColor: theme.palette.action.hover,
         },
-      },
+    },
 }))(TableRow);
 
 export default function BranchOfficeList() {
-    const sections = useStyles();
-    const [pages, setPages] = React.useState(0);
-    const rowsPage = 7;
-//event handling change page
+    const classes = useStyles();
+    const [pages, setPages] = useState(0);
+    const [branchs, setBranchs] = useState([]);
+    const [errorMsg, setErrorMsg] = useState("");
+    const rowsPage = 10;
+
+    //event handling change page
     const handleChangePage = (event, newPages) => {
         setPages(newPages);
     }
 
+    // get api data all branch office
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await BranchService.getAllBranch()
+            if (!Boolean(result.error)) {
+                setBranchs(result.data)
+                setErrorMsg("")
+            } else {
+                setBranchs([])
+                setErrorMsg(result.error.response.data.msg)
+            }
+        }
+
+        fetchData()
+    }, [])
+
     return (
-        <ContentContainer role="admin" selectedMenu="Beranda">
-            <div 
+        <ContentContainer role="admin" selectedMenu="Daftar Kantor Cabang">
+            <div
                 style={{
                     display: "flex",
                     justifyContent: "center",
                     width: "100%",
                     paddingBottom: "2em",
                 }}>
-            <Typography variant="h4">
-                Daftar Kantor Cabang
+                <Typography variant="h4">
+                    Daftar Kantor Cabang
             </Typography>
             </div>
-            <Paper className={sections.PaperSize} elevation={4}>
-                <div className={sections.headerTable}>
+            <Paper className={classes.PaperSize} elevation={4}>
+                <div className={classes.headerTable}>
                     <Link to="/add-branch">
-                        <Button variant="contained" color="primary" startIcon={<AddIcon/>}>
+                        <Button variant="contained" color="primary" startIcon={<AddIcon />}>
                             Add Kantor Cabang
                         </Button>
                     </Link>
@@ -161,61 +131,64 @@ export default function BranchOfficeList() {
                                 </InputAdornment>
                             )
                         }}
-                        />
+                    />
                 </div>
-            <TableContainer component={Paper}>
-                <Table className={sections.table} aria-label="custom table pagination">
-                  <TableHead>
-                      <TableRow>
-                          <StylingTableCell>no</StylingTableCell>
-                          <StylingTableCell>Nama Kantor Cabang</StylingTableCell>
-                          <StylingTableCell align="center">Action</StylingTableCell>
-                      </TableRow>
-                  </TableHead>
-                  <TableBody>
-                      {(rowsPage > 0
-                        ? offices.slice(
-                            pages * rowsPage,
-                            pages * rowsPage + rowsPage
-                        )
-                        : offices
-                        ).map((office) => (
-                            <StylingTableRow key={office.no}>
-                                <StylingTableCell>{office.no}</StylingTableCell>
-                                <StylingTableCell>{office.kantor}</StylingTableCell>
-                                <StylingTableCell width="25%">
-                                    <Link to="/detail-branch" className={sections.buttonMargin}>
-                                        <Button 
-                                            variant="contained"
-                                            color="info"
-                                            size="small"
-                                            startIcon={<VisibilityIcon />}>
+                <div className={classes.messageError}>
+                    <h2 style={{ display: errorMsg ? 'block' : 'none' }}>{errorMsg}</h2>
+                </div>
+                <TableContainer component={Paper} style={{ display: errorMsg ? 'none' : 'block' }}>
+                    <Table className={classes.table} aria-label="custom table pagination">
+                        <TableHead>
+                            <TableRow>
+                                <StylingTableCell>no</StylingTableCell>
+                                <StylingTableCell>Nama Kantor Cabang</StylingTableCell>
+                                <StylingTableCell align="center">Action</StylingTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {(rowsPage > 0
+                                ? branchs.slice(
+                                    pages * rowsPage,
+                                    pages * rowsPage + rowsPage
+                                )
+                                : branchs
+                            ).map((branch, index) => (
+                                <StylingTableRow key={index + 1}>
+                                    <StylingTableCell width="10%">{index + 1}</StylingTableCell>
+                                    <StylingTableCell>{branch.branch_name}</StylingTableCell>
+                                    <StylingTableCell width="25%" align="center">
+                                        <Link to="/detail-branch" className={classes.buttonMargin}>
+                                            <Button
+                                                variant="contained"
+                                                color="info"
+                                                size="small"
+                                                startIcon={<VisibilityIcon />}>
                                                 Detail
                                         </Button>
-                                    </Link>
-                                </StylingTableCell>
-                            </StylingTableRow>
-                        ))}
-                  </TableBody> 
-                  <TableFooter>
-                      <TableRow>
-                          <TablePagination
-                            rowsPageOptions={[]}
-                            colSpan={5}
-                            count={offices.length}
-                            rowsPerPage={rowsPage}
-                            page={pages}
-                            SelectProps={{
-                                inputProps: { "aria-label": "rows per page" },
-                                native: true,
-                            }}
-                            onPageChange={handleChangePage}
-                            ActionsComponent={TablePaginationActions}
-                            />
-                      </TableRow>
-                  </TableFooter> 
-                </Table>
-            </TableContainer>
+                                        </Link>
+                                    </StylingTableCell>
+                                </StylingTableRow>
+                            ))}
+                        </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TablePagination
+                                    rowsPerPageOptions={[]}
+                                    colSpan={5}
+                                    count={branchs.length}
+                                    rowsPerPage={rowsPage}
+                                    page={pages}
+                                    SelectProps={{
+                                        inputProps: { "aria-label": "rows per page" },
+                                        native: true,
+                                    }}
+                                    onPageChange={handleChangePage}
+                                    ActionsComponent={TablePaginationActions}
+                                />
+                            </TableRow>
+                        </TableFooter>
+                    </Table>
+                </TableContainer>
             </Paper>
         </ContentContainer>
     );
