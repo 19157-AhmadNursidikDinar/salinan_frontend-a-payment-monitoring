@@ -8,7 +8,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
 import MuiTableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-
 import {
     Button,
     Container,
@@ -22,25 +21,14 @@ import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import ContentContainer from "../../../components/ContentContainer";
 import { Link } from "react-router-dom";
 
-//PAGE STYLE
+
 const useMyStyles = makeStyles((theme) => ({
-    PaperSize: {
-        padding: 40,
-    },
-    BtnSave: {
-        backgroundColor: "#1890FF",
-        '&:hover': {
-            backgroundColor: "# 2979ff",
-        },
-        marginTop: 30,
-        float: 'right',
-    },
     BtnBack: {
         backgroundColor: "#1890FF",
         '&:hover': {
             backgroundColor: "# 2979ff",
         },
-        marginTop: 30,
+        margin: '20px',
         float: 'left',
     },
 }));
@@ -48,7 +36,7 @@ const useMyStyles = makeStyles((theme) => ({
 const TableCell = withStyles({
     root: {
         borderBottom: "none",
-        fontSize: "18px",
+        fontSize: "20px",
         fontWeight: 600,
     },
 })(MuiTableCell);
@@ -71,37 +59,23 @@ function FormDetailUser() {
     return (
         <div className={classes.root}>
             <Card className={classes.cardRequest}>
-                <Container fixed>
+                <Grid container justify="center">
                     <CardContent>
                         <TableContainer className={classes.table}>
                             <Table className={classes.table} aria-label="simple table">
                                 <TableBody>
                                     {rows.map((row) => (
-                                        <TableRow key={row.name}>
-                                            <TableCell>{row.description}</TableCell>
-                                            <TableCell align="center">:</TableCell>
-                                            {row.description === "Status Request" ? (
-                                                <TableCell>
-                                                    <span
-                                                        style={{
-                                                            backgroundColor: "#5DEFC3",
-                                                            borderRadius: 8,
-                                                            padding: 10,
-                                                        }}
-                                                    >
-                                                        {row.value}
-                                                    </span>
-                                                </TableCell>
-                                            ) : (
-                                                <TableCell>{row.value}</TableCell>
-                                            )}
+                                        <TableRow>
+                                            <TableCell width="100px">{row.description}</TableCell>
+                                            <TableCell align="right" width="100px" >:</TableCell>
+                                            <TableCell >{row.value}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
                             </Table>
                         </TableContainer>
                     </CardContent>
-                </Container>
+                </Grid>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Link to="/admin">
@@ -117,7 +91,7 @@ function FormDetailUser() {
                     </Grid>
                 </Grid>
             </Card>
-        </div>
+        </div >
 
     );
 }
