@@ -15,9 +15,16 @@ import ArrowBackIosRounded from "@material-ui/icons/ArrowBackIosRounded";
 //links
 import { Link } from "react-router-dom";
 import ContentContainer from "../../../components/ContentContainer";
+//use formik
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+//import api service
+import BranchService from "../../../services/branch.service"
+
 //Styling Page
 const useTheStyle = makeStyles((theme) => ({
-PaperSize: {
+    PaperSize: {
         padding: 40,
     },
     BtnSave: {
@@ -38,53 +45,88 @@ PaperSize: {
     },
 }));
 
-function FormAddBranch() {
+function FormAddBranch(props) {
     const classes = useTheStyle();
 
+    const validationSchema = Yup.object().shape({
+        branchName: Yup.string().required("Masukkan nama kantor cabang!"),
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            branchName: ""
+        },
+        validationSchema: validationSchema,
+        validateOnBlur: false,
+        validateOnChange: false,
+        onSubmit: async ({ branchName }) => {
+            const result = await BranchService.insertBranch({branchName});
+            if (!Boolean(result.error)){
+                props.history.push("/branch-office-list", { success: true, message: "Data kantor cabang telah ditambahkan" });
+            }
+        }
+    });
+
     //page add branch
-    return(
-        <Paper>
-            <Container>
+    return (
+        <Paper className={classes.PaperSize} elevation={4}>
+            <form onSubmit={formik.handleSubmit}>
+                <Container>
+                    <Grid
+                        container
+                        spacing={3}
+                        direction="row"
+                        alignItems="center"
+                        justify="center">
+
+                        <Grid item xs={8}>
+                            <TextField
+                                id="branchName"
+                                name="branchName"
+                                label="Nama Kantor Cabang"
+                                variant="outlined"
+                                value={formik.values.branchName}
+                                onChange={formik.handleChange}
+                                fullWidth
+                                disabled={formik.isSubmitting}
+                                error={
+                                    Boolean(formik.errors.branchName) && formik.touched.branchName
+                                }
+                                helperText={formik.errors.branchName}
+                            />
+                        </Grid>
+                    </Grid>
+                </Container>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <TextField 
-                            id="BranchName"
-                            name="BranchName"
-                            label="Nama Kantor Cabang"
-                            variant="outlined"
-                            fullWidth />
-                    </Grid>
-                </Grid>
-            </Container>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Link to="/branch-office-list">
-                        <Button 
-                            variant="contained"
-                            color="primary"
-                            className={classes.BtnBack}
-                            startIcon={<ArrowBackIosRounded />}
-                            >  
-                            Kembali
+                        <Link to="/branch-office-list">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                className={classes.BtnBack}
+                                startIcon={<ArrowBackIosRounded />}
+                            >
+                                Kembali
                         </Button>
-                    </Link>
-                    <Link to="/branch-office-list">
-                        <Button 
+                        </Link>
+                        <Button
                             variant="contained"
                             color="primary"
                             className={classes.BtnSave}
-                            SaveRounded={<SaveRoundedIcon />}
-                            >
-                            Simpan
+                            endIcon={<SaveRoundedIcon />}
+                            type="submit"
+                        >
+                            {formik.isSubmitting ? "Menyimpan..." : "Simpan"}
                         </Button>
-                    </Link>
+
+                    </Grid>
                 </Grid>
-            </Grid>
+            </form>
         </Paper>
     );
 }
 
-export default function AddBranch() {
+export default function AddBranch(props) {
     return (
         <ContentContainer role="admin" selectedMenu="Daftar Kantor Cabang">
             <div
@@ -97,7 +139,7 @@ export default function AddBranch() {
             >
                 <Typography variant="h4">Tambah Kantor Cabang</Typography>
             </div>
-            <FormAddBranch />
+            <FormAddBranch history={props.history} />
         </ContentContainer>
     );
 }

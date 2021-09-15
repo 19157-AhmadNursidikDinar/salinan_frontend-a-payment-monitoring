@@ -5,6 +5,7 @@ import TablePaginationActions from "../../../components/table/generalSupport/Tab
 //import from @material-ui/icons
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 //import from @material-ui/core
 import {
@@ -20,8 +21,11 @@ import {
     TableFooter,
     TablePagination,
     TextField,
-    Typography
+    Typography,
+    Collapse,
+    IconButton
 } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
@@ -47,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
     messageError: {
         display: "flex",
         justifyContent: "center"
+    },
+    alert: {
+        marginBottom: theme.spacing(2)
     }
 }));
 
@@ -69,9 +76,10 @@ const StylingTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-export default function BranchOfficeList() {
+export default function BranchOfficeList(props) {
     const classes = useStyles();
     const [pages, setPages] = useState(0);
+    const [flashMessage, setFlashMessage] = useState({success: false, message:''});
     const [branchs, setBranchs] = useState([]);
     const [errorMsg, setErrorMsg] = useState("");
     const rowsPage = 10;
@@ -81,8 +89,14 @@ export default function BranchOfficeList() {
         setPages(newPages);
     }
 
-    // get api data all branch office
+
     useEffect(() => {
+        // show toast if after input data
+        if(props.location.state){
+            setFlashMessage(props.location.state)
+        }
+
+        // get api data all branch office
         const fetchData = async () => {
             const result = await BranchService.getAllBranch()
             if (!Boolean(result.error)) {
@@ -108,9 +122,11 @@ export default function BranchOfficeList() {
                 }}>
                 <Typography variant="h4">
                     Daftar Kantor Cabang
-            </Typography>
+                </Typography>
             </div>
+
             <Paper className={classes.PaperSize} elevation={4}>
+
                 <div className={classes.headerTable}>
                     <Link to="/add-branch">
                         <Button variant="contained" color="primary" startIcon={<AddIcon />}>
@@ -133,6 +149,26 @@ export default function BranchOfficeList() {
                         }}
                     />
                 </div>
+                <Collapse in={flashMessage.success} >
+                    <Alert
+                        className={classes.alert}
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    setFlashMessage({success: false, message:''});
+                                }}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                    >
+                        {flashMessage.message}
+                    </Alert>
+                </Collapse>
+
                 <div className={classes.messageError}>
                     <h2 style={{ display: errorMsg ? 'block' : 'none' }}>{errorMsg}</h2>
                 </div>
