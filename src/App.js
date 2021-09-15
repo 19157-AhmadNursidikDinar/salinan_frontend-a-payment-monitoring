@@ -13,6 +13,7 @@ import AdminUpdateUser from "./pages/officer/admin/UpdateUser";
 import GeneralSupportHome from "./pages/officer/generalSupport/Home";
 import ServiceLevelAgreement from "./pages/officer/admin/ServiceLevelAgreement";
 import BranchOfficeList from "./pages/officer/admin/BranchOfficeList";
+import AdminDetailUser from "./pages/officer/admin/DetailUser";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route exact path="/update-user" component={AdminUpdateUser} />
         <Route exact path="/branch-office-list" component={BranchOfficeList} />
         <Route exact path="/add-branch" component={AdminAddBranch} />
+        <Route exact path="/detail-user" component={AdminDetailUser} />
         <Route exact path="/accounting" component={AccountingHome} />
         <Route exact path="/general-support" component={GeneralSupportHome} />
         <Route exact path="/add-payment-request" component={IsiFormPayment} />
