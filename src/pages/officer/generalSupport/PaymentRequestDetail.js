@@ -27,13 +27,17 @@ const useStyles = makeStyles({
         padding: "1em",
     },
     tableContainer: {
-        display: "flex", justifyContent: "center"
+        display: "flex", 
+        justifyContent: "center",
     },
     centerCell: {
-        padding: "0.5em 1em"
+        padding: "0.8em 3em"
     },
     BtnUpdate:{
         float:"right"
+    },
+    fontsizeTable:{
+        fontSize:"16px"
     }  
 });
 
@@ -53,7 +57,7 @@ function PaymentRequestDetail() {
                 <div
                     className={classes.tableContainer}>
                     <table>
-                        <tbody>
+                        <tbody className={classes.fontsizeTable}>
                             <tr>
                                 <td>Unit Kerja</td>
                                 <td

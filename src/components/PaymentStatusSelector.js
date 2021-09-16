@@ -10,6 +10,10 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1,0),
         minWidth: 230,
     },
+    centerCell: {
+        padding: "0.8em 3em"
+    },
+
 }));
 
 export default function PaymentStatusSelector() {
