@@ -1,143 +1,149 @@
 
-import React from "react";
+import React, {useState} from "react";
 
 // Material ui core
 import {
     Typography,
-    Paper,
-    Button
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Container,
+    FormControl,
+    MenuItem,
+    Table,
+    TableBody,
+    TableContainer,
+    Select,
+    TextField,
+    TableRow
 } from "@material-ui/core";
+import MuiTableCell from "@material-ui/core/TableCell";
 
 // Material ui icons
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
-import { Link } from "react-router-dom";
 
-
+// 
 import ContentContainer from "../../../components/ContentContainer";
-import PaymentStatusSelector from "../../../components/PaymentStatusSelector";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles} from "@material-ui/core/styles";
+import useStyles from "../../../styles/HasilFormPayement";
 
-const useStyles = makeStyles({
+const TableCell = withStyles({
     root: {
-        width: "100%",
-        paddingBottom: "1em",
+        borderBottom: "none",
+        fontSize: "18px",
+        fontWeight: 600,
     },
-    paper: {
-        padding: "1em",
-    },
-    tableContainer: {
-        display: "flex", 
-        justifyContent: "center",
-    },
-    centerCell: {
-        padding: "0.8em 3em"
-    },
-    BtnUpdate:{
-        float:"right"
-    },
-    fontsizeTable:{
-        fontSize:"16px"
-    }  
-});
+})(MuiTableCell);
 
+const createData = (description, value) => {
+    return { description, value };
+  };
 
-function PaymentRequestDetail() {
+const rows = [
+    createData("Diminta Oleh", "Asep Sunandar"),
+    createData("Keperluan Payment", "SPP Juli 2020"),
+    createData("Tanggal Pembayaran", "Sabtu, 10 Juli 2020"),
+    createData("Jumlah Payment", "Rp. 1.000.000"),
+    createData("Terbilang", "Satu juta rupiah"),
+    createData("Nama Rek. / Penerima", "MD. Mubarokul Huda"),
+    createData("No. Rekening Penerima", "15000757050"),
+    createData("Request Terkirim", "Jum’at, 9 Juli 2021 (09.00 PM)"),
+    createData("Status Request", "null"),
+  ];
+
+function PaymentRequestDetail(props) {
     const classes = useStyles();
+    const [status, setStatus] = useState('null');
+    const handleClickGoBack = () => {
+        props.history.goBack();
+      }
 
     return (
         <ContentContainer role="generalSupport">
             <div
-                className={classes.root}
+                style={{
+                    width: "100%",
+                    paddingBottom: "1em",
+                }}
             >
                 <Typography variant="h5">Payment Request</Typography>
             </div>
-            <Paper
-                className={classes.paper}>
-                <div
-                    className={classes.tableContainer}>
-                    <table>
-                        <tbody className={classes.fontsizeTable}>
-                            <tr>
-                                <td>Unit Kerja</td>
-                                <td
-                                    className={classes.centerCell}>:</td>
-                                <td>KC BANK PM</td>
-                            </tr>
-                            <tr>
-                                <td>Diminta oleh</td>
-                                <td
-                                    className={classes.centerCell}>:</td>
-                                <td>Asep Sunandar</td>
-                            </tr>
-                            <tr>
-                                <td>Keperluan Payment</td>
-                                <td
-                                    className={classes.centerCell}>:</td>
-                                <td>SPP Juli 2020</td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal Pembayaran</td>
-                                <td
-                                    className={classes.centerCell}>:</td>
-                                <td>Sabtu,10 Juli 2021</td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah Payment</td>
-                                <td
-                                    className={classes.centerCell}>:</td>
-                                <td>Rp.1.000.000</td>
-                            </tr>
-                            <tr>
-                                <td>Terbilang</td>
-                                <td
-                                    className={classes.centerCell}>:</td>
-                                <td>Satu Juta Rupiah</td>
-                            </tr>
-                            <tr>
-                                <td>Nama Rek. Penerima</td>
-                                <td
-                                    className={classes.centerCell}>:</td>
-                                <td>MD Mubarokul Huda</td>
-                            </tr>
-                            <tr>
-                                <td>No. Rekening Penerima</td>
-                                <td
-                                    className={classes.centerCell}>:</td>
-                                <td>15000757050</td>
-                            </tr>
-                            <tr>
-                                <td>Request Terkirim</td>
-                                <td
-                                    className={classes.centerCell}>:</td>
-                                <td>Jum'at, 9 Juli 2021 (09.00 PM)</td>
-                            </tr>
-                            <PaymentStatusSelector />
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <Link to="/accounting">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            // className={classes.BtnBack}
-                            startIcon={<ArrowBackIosRoundedIcon />}
-                        >
-                            Kembali
-                        </Button>
-                    </Link>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.BtnUpdate}
-                        endIcon={<SaveRoundedIcon />}
-                    >
-                        Update
-                    </Button>
-                 
-                </div>
-            </Paper>
+            <div className={classes.root}>
+                <Card className={classes.cardRequest}>
+                    <Container fixed>
+                        <CardContent>
+                            <TableContainer className={classes.table}>
+                                <Table className={classes.table} aria-label="simple table">
+                                    <TableBody>
+                                        {rows.map((row)=>(
+                                            <TableRow key={row.name}>
+                                                <TableCell>{row.description}</TableCell>
+                                                <TableCell>:</TableCell>
+                                                {row.value === "null"  ? (
+                                                    <TableCell>
+                                                        <FormControl variant="outlined" className={classes.formControl}>
+                                                        <Select
+                                                            value={status}
+                                                            onChange={(e) => setStatus(e.target.value)}
+                                                        >
+                                                            <MenuItem value="null">-Ubah Status-</MenuItem>
+                                                            <MenuItem value="accept">Accept</MenuItem>
+                                                            <MenuItem value="reject">Reject</MenuItem>
+                                                        </Select>
+                                                        </FormControl>
+                                                    </TableCell>
+                                                ) : (
+                                                    <TableCell>{row.value}</TableCell>
+                                                )}                                        
+                                            </TableRow>
+                                        ))}
+                                        {status === "reject" ? (
+                                            <TableRow>
+                                                <TableCell>Alasan</TableCell>
+                                                <TableCell>:</TableCell>
+                                                <TableCell>
+                                                     <TextField
+                                                        multiline
+                                                        maxRows={6}
+                                                        minRows={4}
+                                                        variant="outlined"
+                                                        className={classes.formControl}
+                                                    />
+                                                </TableCell>
+                                            </TableRow>
+                                            ) : (
+                                                <TableCell> </TableCell>
+                                            )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </CardContent>
+                        <CardActions className={classes.cardActions}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                className={classes.buttonAction}
+                                onClick={handleClickGoBack}
+                                startIcon={<ArrowBackIosRoundedIcon />}
+                                >
+                                Kembali
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                className={classes.buttonAction}
+                                endIcon={<SaveRoundedIcon />}
+                                // onClick={handleClickNewPayment}
+                                >
+                                Save
+                            </Button>
+                        </CardActions>
+                    </Container>
+                    
+                </Card>
+            </div>
         </ContentContainer>
     );
 }
