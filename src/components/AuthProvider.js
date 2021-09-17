@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
@@ -13,17 +13,13 @@ const routes = {
 const AuthProvider = ({ children }) => {
   const history = useHistory();
   const location = useLocation();
-  const [authed, setAuthed] = React.useState(false);
-  const [role, setRole] = React.useState("");
-
-  useEffect(() => {
-    if (authed) {
-      setRole(AuthService.getUserRole());
-    }
-  }, [authed]);
 
   React.useEffect(() => {
     const token = localStorage.getItem("token");
+    let role = "";
+    if (token) {
+      role = AuthService.getUserRole();
+    }
     if (!token && !routes.login.includes(location.pathname)) {
       return history.push("/");
     }
@@ -64,13 +60,7 @@ const AuthProvider = ({ children }) => {
     ) {
       return history.push("/general-support");
     }
-
-    setAuthed(true);
-  }, [history, location.pathname, role]);
-
-  if (!authed) {
-    return <div>Loading...</div>;
-  }
+  }, [history, location.pathname]);
 
   return children;
 };
