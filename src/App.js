@@ -8,12 +8,14 @@ import CustomerHome from "./pages/customer/Home";
 import AccountingHome from "./pages/officer/accounting/Home";
 import AdminHome from "./pages/officer/admin/Home";
 import AdminAddUser from "./pages/officer/admin/AddUser";
+import AdminDetailUser from "./pages/officer/admin/DetailUser";
 import AdminAddBranch from "./pages/officer/admin/AddBranch";
 import AdminUpdateUser from "./pages/officer/admin/UpdateUser";
 import GeneralSupportHome from "./pages/officer/generalSupport/Home";
 import ServiceLevelAgreement from "./pages/officer/admin/ServiceLevelAgreement";
+import PaymentRequestDetailGeneralSupport from "./pages/officer/generalSupport/PaymentRequestDetail";
+import PaymentRequestDetailAcounting from "./pages/officer/accounting/PaymentRequestDetail";
 import BranchOfficeList from "./pages/officer/admin/BranchOfficeList";
-import AdminDetailUser from "./pages/officer/admin/DetailUser";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
         <Route exact path="/add-payment-request" component={IsiFormPayment} />
         <Route exact path="/payment-request-result" component={HasilFormPayment} />
         <Route exact path="/service-level-agreement" component={ServiceLevelAgreement} />
+        <Route exact path="/generalSupport/payment-detail" component={PaymentRequestDetailGeneralSupport} />
+        <Route exact path="/accounting/payment-detail" component={PaymentRequestDetailAcounting} />
       </Router>
     </>
   );

@@ -1,9 +1,9 @@
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import ContentContainer from "../../../components/ContentContainer";
-import Table from "../../../components/table/generalSupport/Table";
+import Table from "../../../components/table/payment/Table";
 
-export default function GeneralSupport() {
+export default function Accounting() {
   return (
     <ContentContainer role="accounting" selectedMenu="Beranda">
       <div
@@ -16,7 +16,7 @@ export default function GeneralSupport() {
       >
         <Typography variant="h4">Daftar Payment Request</Typography>
       </div>
-      <Table />
+      <Table role="accounting" />
     </ContentContainer>
   );
 }
