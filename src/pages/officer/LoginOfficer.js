@@ -19,6 +19,9 @@ import "../../styles/LoginOfficer.css";
 import Logo from "../../assets/logoPM.png";
 import BankerLogo from "../../assets/Banker.png";
 import Circle from "../../assets/elipse.png";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import AuthService from "../../services/auth.service";
 
 const BlueCheckbox = withStyles({
   root: {
@@ -74,20 +77,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const validationSchema = Yup.object().shape({
+  username: Yup.string().required("Insert username!"),
+  password: Yup.string()
+    .min(6, "Use combination of 6 character or more")
+    .required("Insert Password"),
+  rememberMe: Yup.boolean(),
+});
+
 export default function LoginOfficer(props) {
   const classes = useStyles();
-  const [rememberMe, setRememberMe] = useState(false);
-  const [signInAs, setSignInAs] = useState("generalSupport");
-
-  const handleChange = (Event) => {
-    setRememberMe({ ...rememberMe, [Event.target.name]: Event.target.checked });
-  };
-
-  const signInClick = () => {
-    signInAs === "admin" && props.history.push("/admin");
-    signInAs === "generalSupport" && props.history.push("/general-support");
-    signInAs === "accounting" && props.history.push("/accounting");
-  };
+  const [errorMsg, setErrorMsg] = useState("");
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+      rememberMe: false,
+    },
+    validationSchema: validationSchema,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: async ({ username, password, rememberMe }) => {
+      const result = await AuthService.login({
+        username,
+        password,
+        rememberMe,
+      });
+      // console.log({ result });
+      if (!Boolean(result.error)) {
+        const role = AuthService.getUserRole();
+        if (role === "ADMIN") {
+          props.history.push("/admin");
+        } else if (role === "GENERAL-SUPPORT") {
+          props.history.push("/general-support");
+        } else if (role === "ACCOUNTING") {
+          props.history.push("/accounting");
+        } else if (role === "USER") {
+          props.history.push("/customer");
+        } else {
+          setErrorMsg("undefined role");
+        }
+      } else {
+        setErrorMsg(result.error.response.data.msg);
+      }
+    },
+  });
 
   return (
     <div className="container">
@@ -103,93 +137,119 @@ export default function LoginOfficer(props) {
           </div>
           <h3 className="common-text">Sign in to continue our application </h3>
           <div className="inner-box">
-            <div className="user-and-pass">
-              <div className={classes.textField}>
-                <TextField
-                  className="txtfield"
-                  id="txtUser"
-                  type="text"
-                  placeholder="Username"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PersonIcon style={{ color: "#2EB7E2" }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
-              <div className={classes.textField}>
-                <TextField
-                  className="txtfield"
-                  id="txtPass"
-                  type="password"
-                  placeholder="Password"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockIcon style={{ color: "#2EB7E2" }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel htmlFor="outlined-age-native-simple">
-                  Login As
-                </InputLabel>
-                <Select
-                  native
-                  onChange={(e) => {
-                    setSignInAs(e.target.value);
-                  }}
-                  label="Login As"
-                  inputProps={{
-                    shrink: true,
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockIcon style={{ color: "#2EB7E2" }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                  value={signInAs || ''}
-                >
-                  <option value="generalSupport">General Support</option>
-                  <option value="accounting">Accounting</option>
-                  <option value="admin">Admin</option>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="rememberMe-wrap">
-              <FormControlLabel
-                control={
-                  <BlueCheckbox
-                    checked={rememberMe.checkedRemember}
-                    onChange={handleChange}
-                    name="checkedRemember"
+            <form onSubmit={formik.handleSubmit}>
+              <div className="user-and-pass">
+                <div className={classes.textField}>
+                  <TextField
+                    className="txtfield"
+                    type="text"
+                    placeholder="Username"
+                    name="username"
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PersonIcon style={{ color: "#2EB7E2" }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                    disabled={formik.isSubmitting}
+                    error={
+                      Boolean(formik.errors.username) && formik.touched.username
+                    }
+                    helperText={formik.errors.username}
                   />
-                }
-                label="Remember Me"
-              />
-            </div>
-            <div className="wrapped-signin">
-              <Button className="btn-signIn" onClick={signInClick} fullWidth>
-                <b>Sign In</b>
-              </Button>
-            </div>
-            <div
-              style={{
-                marginTop: 20,
-                justifyContent: "center",
-                display: "flex",
-              }}
-            >
-              <Link className="switch-signin" to="/">Sign In as Customer</Link>
-            </div>
+                </div>
+                <div className={classes.textField}>
+                  <TextField
+                    name="password"
+                    className="txtfield"
+                    type="password"
+                    placeholder="Password"
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LockIcon style={{ color: "#2EB7E2" }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    disabled={formik.isSubmitting}
+                    error={
+                      Boolean(formik.errors.password) && formik.touched.password
+                    }
+                    helperText={formik.errors.password}
+                  />
+                </div>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel htmlFor="outlined-age-native-simple">
+                    Login As
+                  </InputLabel>
+                  <Select
+                    native
+                    // onChange={(e) => {
+                    //   setSignInAs(e.target.value);
+                    // }}
+                    label="Login As"
+                    inputProps={{
+                      shrink: true,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LockIcon style={{ color: "#2EB7E2" }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                    // value={signInAs || ""}
+                  >
+                    <option value="generalSupport">General Support</option>
+                    <option value="accounting">Accounting</option>
+                    <option value="admin">Admin</option>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="rememberMe-wrap">
+                <FormControlLabel
+                  control={
+                    <BlueCheckbox
+                      name="rememberMe"
+                      checked={formik.values.rememberMe}
+                      onChange={formik.handleChange}
+                      disabled={formik.isSubmitting}
+                    />
+                  }
+                  label="Remember Me"
+                />
+              </div>
+              <div className="wrapped-signin">
+                <Button
+                  className={
+                    formik.isSubmitting ? "btn-signIn-loading" : "btn-signIn"
+                  }
+                  fullWidth
+                  type="submit"
+                  disabled={formik.isSubmitting}
+                >
+                  <b>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
+                </Button>
+              </div>
+              <div
+                style={{
+                  marginTop: 20,
+                  justifyContent: "center",
+                  display: "flex",
+                }}
+              >
+                <Link className="switch-signin" to="/">
+                  Sign In as Customer
+                </Link>
+              </div>
+            </form>
           </div>
         </div>
       </div>
