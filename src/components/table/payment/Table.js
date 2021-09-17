@@ -12,6 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePagination";
 import Chip from "../../ActionChip";
+import { Link } from "react-router-dom";
 
 const rows = [
   {
@@ -112,7 +113,21 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function GeneralSupport() {
+const convertActionToChipColor = (action) => {
+  let result = "grey";
+  if (["Rejected by Accounting", "Rejected by GS"].includes(
+    action)) {
+    result = "red"
+  } else if (action === "Disetujui") {
+    result = "green"
+
+  } else if (action === "Menunggu Konfirmasi") {
+    result = "blue"
+  }
+  return result;
+}
+
+export default function GeneralSupport({ role }) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const rowsPerPage = 8;
@@ -146,22 +161,16 @@ export default function GeneralSupport() {
                 <Chip
                   label={row.action}
                   color={
-                    ["Rejected by Accounting", "Rejected by GS"].includes(
-                      row.action
-                    )
-                      ? 'red'
-                      : row.action === "Disetujui"
-                        ? 'green'
-                        : row.action === "Menunggu Konfirmasi"
-                          ? 'blue'
-                          : 'grey'
+                    convertActionToChipColor(row.action)
                   }
                 />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <Button size="small" variant="contained" color="primary">
-                  Lihat Detail
-                </Button>
+                <Link to={`${role}/payment-detail`}>
+                  <Button size="small" variant="contained" color="primary">
+                    Lihat Detail
+                  </Button>
+                </Link>
               </StyledTableCell>
             </StyledTableRow>
           ))}
