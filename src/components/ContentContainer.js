@@ -30,19 +30,19 @@ const menuItems = {
     { label: "Beranda", icon: <HomeIcon />, link: "/customer" },
     {
       label: "Payment Request",
-      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />, link: "/add-payment-request"
+      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
+      link: "/add-payment-request",
     },
   ],
   admin: [
     { label: "Beranda", icon: <HomeIcon />, link: "/admin" },
     {
       label: "Service Lvl Agreement",
-      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />, link: "/service-level-agreement"
+      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
+      link: "/service-level-agreement",
     },
   ],
-  accounting: [
-    { label: "Beranda", icon: <HomeIcon />, link: "/accounting" },
-  ],
+  accounting: [{ label: "Beranda", icon: <HomeIcon />, link: "/accounting" }],
   generalSupport: [
     { label: "Beranda", icon: <HomeIcon />, link: "/general-support" },
   ],
@@ -61,8 +61,8 @@ export default function MiniDrawer({
   };
   const handleLogoutClick = () => {
     AuthService.logout();
-    history.push('/')
-  }
+    history.push("/");
+  };
 
   return (
     <div className={classes.root}>
@@ -122,9 +122,10 @@ export default function MiniDrawer({
                   button
                   key={label}
                   style={{
-                    borderRight: selectedMenu === label && "solid #2196f3 0.3em",
+                    borderRight:
+                      selectedMenu === label && "solid #2196f3 0.3em",
                     backgroundColor: selectedMenu === label && "#e3f2fd",
-                    color: '#686f74'
+                    color: "#686f74",
                   }}
                 >
                   <ListItemIcon>{icon}</ListItemIcon>
@@ -135,11 +136,13 @@ export default function MiniDrawer({
             <ListItem
               button
               style={{
-                color: '#686f74'
+                color: "#686f74",
               }}
               onClick={handleLogoutClick}
             >
-              <ListItemIcon><LogOutIcon /></ListItemIcon>
+              <ListItemIcon>
+                <LogOutIcon />
+              </ListItemIcon>
               <ListItemText primary="Sign Out" />
             </ListItem>
           </List>

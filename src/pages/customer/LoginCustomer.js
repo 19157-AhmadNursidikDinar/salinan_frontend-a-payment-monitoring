@@ -50,15 +50,25 @@ export default function LoginCustomer(props) {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async ({ username, password, rememberMe }) => {
-      // console.log(values);
       const result = await AuthService.login({
         username,
         password,
         rememberMe,
       });
-      console.log({ result });
+      // console.log({ result });
       if (!Boolean(result.error)) {
-        props.history.push("/customer");
+        const role = AuthService.getUserRole();
+        if (role === "ADMIN") {
+          props.history.push("/admin");
+        } else if (role === "GENERAL-SUPPORT") {
+          props.history.push("/general-support");
+        } else if (role === "ACCOUNTING") {
+          props.history.push("/accounting");
+        } else if (role === "USER") {
+          props.history.push("/customer");
+        } else {
+          setErrorMsg("undefined role");
+        }
       } else {
         setErrorMsg(result.error.response.data.msg);
       }
@@ -148,7 +158,14 @@ export default function LoginCustomer(props) {
                   />
                 </div>
                 <div className="wrapped-signin">
-                  <Button className="btn-signIn" fullWidth type="submit">
+                  <Button
+                    className={
+                      formik.isSubmitting ? "btn-signIn-loading" : "btn-signIn"
+                    }
+                    fullWidth
+                    type="submit"
+                    disabled={formik.isSubmitting}
+                  >
                     <b>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
                   </Button>
                 </div>
