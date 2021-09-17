@@ -11,6 +11,7 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import PersonIcon from "@material-ui/icons/Person";
+import BusinessIcon from '@material-ui/icons/Business';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -35,6 +36,9 @@ const menuItems = {
   ],
   admin: [
     { label: "Beranda", icon: <HomeIcon />, link: "/admin" },
+    { label: "Daftar Kantor Cabang",
+      icon: <BusinessIcon/>, link: "/branch-office-list"
+    },
     {
       label: "Service Lvl Agreement",
       icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />, link: "/service-level-agreement"
