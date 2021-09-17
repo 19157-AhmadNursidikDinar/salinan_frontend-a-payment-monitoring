@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
+import ColorsTheme from "../assets/colors";
 
 const drawerWidth = 240;
 
@@ -7,13 +8,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     minHeight: "100vh",
-    backgroundColor: "#F0F2F5",
+    backgroundColor: ColorsTheme.cultured,
   },
   wrapper: {
     display: "flex",
   },
   appBar: {
-    backgroundColor: "#fff",
+    backgroundColor: ColorsTheme.white,
     zIndex: theme.zIndex.drawer - 1,
     marginLeft: "30em",
     transition: theme.transitions.create(["width", "margin"], {
@@ -78,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "auto",
     padding: "0.75em 1em",
     width: "100%",
-    backgroundColor: "#fff", //make relative instead of absolute
+    backgroundColor: ColorsTheme.white, //make relative instead of absolute
   },
 }));
 

@@ -1,55 +1,30 @@
 import React from 'react';
 //Material-Ui Cores
-import {
-    Button,
-    Container,
-    TextField,
-    Grid,
-    Typography,
-    Paper,
-    InputLabel,
-    MenuItem,
-    Select,
-    FormControl,
-    IconButton,
-    InputAdornment
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 //Material-Ui Icons
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-//Links
+//Custom Components
 import ContentContainer from "../../../components/ContentContainer";
+import useStyles from '../../../styles/officer/admin/FormUser';
+//Links
 import { Link } from "react-router-dom";
 
-//PAGE STYLE
-const useMyStyles = makeStyles((theme) => ({
-    PaperSize: {
-        padding: 40,
-    },
-    BtnSave: {
-        backgroundColor: "#1890FF",
-        '&:hover': {
-            backgroundColor: "# 2979ff",
-        },
-        marginTop: 30,
-        float: 'right',
-    },
-    BtnBack: {
-        backgroundColor: "#1890FF",
-        '&:hover': {
-            backgroundColor: "# 2979ff",
-        },
-        marginTop: 30,
-        float: 'left',
-    }
-}));
-
-
 function FormUpdateUser() {
-    const classes = useMyStyles();
+    const classes = useStyles();
 
     //STATE "Role"
     const [role, setRole] = React.useState('');

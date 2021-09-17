@@ -15,7 +15,8 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 import ContentContainer from "../../components/ContentContainer";
-import useStyles from "../../styles/HasilFormPayement";
+import useStyles from "../../styles/customer/HasilFormPayment";
+import ColorsTheme from "../../assets/colors";
 
 const TableCell = withStyles({
   root: {
@@ -81,7 +82,7 @@ function HasilFormPayment(props) {
                           <TableCell>
                             <span
                               style={{
-                                backgroundColor: "#5DEFC3",
+                                backgroundColor: ColorsTheme.aquaMarine,
                                 borderRadius: 8,
                                 padding: 6,
                               }}
@@ -116,7 +117,7 @@ function HasilFormPayment(props) {
               endIcon={<ArrowForwardIosIcon />}
               onClick={handleClickNewPayment}
             >
-              Buat Payment Request Baru 
+              Buat Payment Request Baru
             </Button>
           </CardActions>
         </Card>
