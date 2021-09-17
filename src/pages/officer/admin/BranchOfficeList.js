@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 //Re-using component
 import ContentContainer from "../../../components/ContentContainer";
-import TablePaginationActions from "../../../components/table/generalSupport/TablePagination";
+import TablePaginationActions from "../../../components/table/payment/TablePagination";
 //import from @material-ui/icons
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import VisibilityIcon from "@material-ui/icons/Visibility";

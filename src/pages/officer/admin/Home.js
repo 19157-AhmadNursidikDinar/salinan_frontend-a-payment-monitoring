@@ -17,7 +17,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
-import TablePaginationActions from "../../../components/table/generalSupport/TablePagination";
+import TablePaginationActions from "../../../components/table/payment/TablePagination";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
