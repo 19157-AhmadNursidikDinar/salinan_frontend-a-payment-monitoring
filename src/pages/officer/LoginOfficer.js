@@ -8,6 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
 import { Link } from "react-router-dom";
 
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -137,6 +138,11 @@ export default function LoginOfficer(props) {
           </div>
           <h3 className="common-text">Sign in to continue our application </h3>
           <div className="inner-box">
+            {errorMsg && (
+              <Alert severity="error" style={{ margin: "0.5em 0" }}>
+                {errorMsg}
+              </Alert>
+            )}
             <form onSubmit={formik.handleSubmit}>
               <div className="user-and-pass">
                 <div className={classes.textField}>
