@@ -1,4 +1,4 @@
-export default {
+const FontsTheme = {
     roboto_bold: {
         fontFamily: '"Roboto", sans-serif',
         fontStyle: "normal",
@@ -18,3 +18,4 @@ export default {
         fontWeight: 500,
     }
 }
+export default FontsTheme;
