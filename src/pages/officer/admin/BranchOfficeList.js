@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 //Re-using component
 import ContentContainer from "../../../components/ContentContainer";
-import TablePaginationActions from "../../../components/table/generalSupport/TablePagination";
+import TablePaginationActions from "../../../components/table/payment/TablePagination";
 //import from @material-ui/icons
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -97,25 +97,27 @@ export default function BranchOfficeList(props) {
         setPages(newPages);
     }
 
+    // get api data all branch office
+    const fetchData = async () => {
+        const result = await BranchService.getAllBranch()
+        if (!Boolean(result.error)) {
+            setBranchs(result.data)
+            setErrorMsg("")
+        } else {
+            setBranchs([])
+            setErrorMsg(result.error.response.data.msg)
+        }
+    }
 
     useEffect(() => {
         // show toast if after input data
         if (props.location.state) {
             setFlashMessage(props.location.state)
         }
+    }, [props.location.state])
 
-        // get api data all branch office
-        const fetchData = async () => {
-            const result = await BranchService.getAllBranch()
-            if (!Boolean(result.error)) {
-                setBranchs(result.data)
-                setErrorMsg("")
-            } else {
-                setBranchs([])
-                setErrorMsg(result.error.response.data.msg)
-            }
-        }
 
+    useEffect(() => {
         fetchData()
     }, [])
 
@@ -198,8 +200,8 @@ export default function BranchOfficeList(props) {
                                 : branchs
                             ).map((branch, index) => (
                                 <StylingTableRow key={index + 1}>
-                                    <StylingTableCell width="10%">{index + 1}</StylingTableCell>
-                                    <StylingTableCell>{branch.branch_name}</StylingTableCell>
+                                    <StylingTableCell width="10%">{pages * rowsPage + index + 1}</StylingTableCell>
+                                    <StylingTableCell>{branch.id === 1? "pusat" : branch.branch_name }</StylingTableCell>
                                     <StylingTableCell width="25%" align="center">
                                         <Link to="/detail-branch" className={classes.buttonMargin}>
                                             <Button

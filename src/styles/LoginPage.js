@@ -134,6 +134,15 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "15px",
         ...FontsTheme.poppins_regular,
     },
+    btnSignInLoading: {
+        display: "flex",
+        paddingTop: "5px",
+        paddingBottom: "5px",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: "10px !important",
+        background: "linear-gradient(45deg, #777777 30%, #949494 90%)",
+    },
     switchSignIn: {
         color: ColorsTheme.ceruleanCrayola,
     },

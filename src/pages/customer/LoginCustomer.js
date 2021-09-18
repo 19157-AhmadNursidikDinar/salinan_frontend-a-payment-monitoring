@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import Alert from "@material-ui/lab/Alert";
 import InputAdornment from "@material-ui/core/InputAdornment";
 //import @material-ui/icons for icon username, password dan checkbox rememberMe
 import PersonIcon from "@material-ui/icons/Person";
@@ -16,6 +17,10 @@ import BankerLogo from "../../assets/images/Banker.png";
 import Circle from "../../assets/images/elipse.png";
 import useStyles from "../../styles/LoginPage";
 
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import AuthService from "../../services/auth.service";
+
 const BlueCheckbox = withStyles({
   root: {
     color: ColorsTheme.blueJeans,
@@ -26,18 +31,51 @@ const BlueCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
+const validationSchema = Yup.object().shape({
+  username: Yup.string().required("Insert username!"),
+  password: Yup.string()
+    .min(6, "Use combination of 6 character or more")
+    .required("Insert Password"),
+  rememberMe: Yup.boolean(),
+});
+
 export default function LoginCustomer(props) {
   const classes = useStyles();
-  const signInClick = () => {
-    console.log("test");
-    props.history.push("/customer");
-  };
-
-  const [RememberMe, SetRememberMe] = useState({ checkedRemember: false });
-
-  const handleChange = (Event) => {
-    SetRememberMe({ ...RememberMe, [Event.target.name]: Event.target.checked });
-  };
+  const [errorMsg, setErrorMsg] = useState("");
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+      rememberMe: false,
+    },
+    validationSchema: validationSchema,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: async ({ username, password, rememberMe }) => {
+      const result = await AuthService.login({
+        username,
+        password,
+        rememberMe,
+      });
+      // console.log({ result });
+      if (!Boolean(result.error)) {
+        const role = AuthService.getUserRole();
+        if (role === "ADMIN") {
+          props.history.push("/admin");
+        } else if (role === "GENERAL-SUPPORT") {
+          props.history.push("/general-support");
+        } else if (role === "ACCOUNTING") {
+          props.history.push("/accounting");
+        } else if (role === "USER") {
+          props.history.push("/customer");
+        } else {
+          setErrorMsg("undefined role");
+        }
+      } else {
+        setErrorMsg(result.error.response.data.msg);
+      }
+    },
+  });
 
   return (
     <div className={classes.container}>
@@ -53,64 +91,99 @@ export default function LoginCustomer(props) {
           </div>
           <h3 className={classes.txtSignIn}>Sign in to continue our application</h3>
           <div className={classes.innerBox}>
+            {errorMsg && (
+              <Alert severity="error" style={{ margin: "0.5em 0" }}>
+                {errorMsg}
+              </Alert>
+            )}
+            <form onSubmit={formik.handleSubmit}>
             <div className={classes.userPass}>
               <div className={classes.wrappedTxtFieldCustomer}>
-                <TextField
-                  className="txtField"
-                  id="txtUser"
-                  type="text"
-                  placeholder="Username"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PersonIcon style={{ color: ColorsTheme.cyanProcess }} />
-                      </InputAdornment>
-                    ),
+                  <TextField
+                    className="txtfield"
+                    type="text"
+                    placeholder="Username"
+                    name="username"
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PersonIcon style={{ color: ColorsTheme.cyanProcess }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                    disabled={formik.isSubmitting}
+                    error={
+                      Boolean(formik.errors.username) && formik.touched.username
+                    }
+                    helperText={formik.errors.username}
+                  />
+                </div>
+                <div className={classes.wrappedTxtFieldCustomer}>
+                  <TextField
+                    name="password"
+                    className="txtfield"
+                    type="password"
+                    placeholder="Password"
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LockIcon style={{ color: ColorsTheme.cyanProcess }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    disabled={formik.isSubmitting}
+                    error={
+                      Boolean(formik.errors.password) && formik.touched.password
+                    }
+                    helperText={formik.errors.password}
+                  />
+                </div>
+                <div className={classes.wrappedRememberMe}>
+                  <FormControlLabel
+                    control={
+                      <BlueCheckbox
+                        name="rememberMe"
+                        checked={formik.values.rememberMe}
+                        onChange={formik.handleChange}
+                        disabled={formik.isSubmitting}
+                      />
+                    }
+                    label="Remember Me"
+                  />
+                </div>
+                <div className={classes.wrappedSignIn}>
+                  <Button
+                    className={
+                      formik.isSubmitting ? classes.btnSignInLoading : classes.btnSignIn
+                    }
+                    fullWidth
+                    type="submit"
+                    disabled={formik.isSubmitting}
+                  >
+                    <b className={classes.btnSignInBold}>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
+                  </Button>
+                </div>
+                <div
+                  style={{
+                    marginTop: 20,
+                    justifyContent: "center",
+                    display: "flex",
                   }}
-                />
+                >
+                  <Link className={classes.switchSignIn} to="/login-officer">
+                    Sign In as Officer
+                  </Link>
+                </div>
               </div>
-              <div className={classes.wrappedTxtFieldCustomer}>
-                <TextField
-                  className="txtField"
-                  id="txtPass"
-                  type="password"
-                  placeholder="Password"
-                  variant="outlined"
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockIcon style={{ color: ColorsTheme.cyanProcess }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
-              <div className={classes.wrappedRememberMe}>
-                <FormControlLabel
-                  control={
-                    <BlueCheckbox
-                      checked={RememberMe.checkedRemember}
-                      onChange={handleChange}
-                      name="checkedRemember"
-                    />
-                  }
-                  label="Remember Me"
-                />
-              </div>
-              <div className={classes.wrappedSignIn}>
-
-                <Button className={classes.btnSignIn} onClick={signInClick}
-                  fullWidth>
-                  <b className={classes.btnSignInBold}>Sign In</b></Button>
-              </div>
-
-              <div style={{ marginTop: 20, justifyContent: 'center', display: 'flex' }}>
-                <Link className={classes.switchSignIn} to="/login-officer">Sign In as Officer</Link>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
