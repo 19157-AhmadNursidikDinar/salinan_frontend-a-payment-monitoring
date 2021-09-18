@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
-import { blue } from "@material-ui/core/colors";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
@@ -15,68 +14,25 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import PersonIcon from "@material-ui/icons/Person";
 import LockIcon from "@material-ui/icons/Lock";
 
-import "../../styles/LoginOfficer.css";
+import ColorsTheme from "../../assets/colors";
+import Logo from "../../assets/images/logoPM.png";
+import BankerLogo from "../../assets/images/Banker.png";
+import Circle from "../../assets/images/elipse.png";
+import useStyles from "../../styles/LoginPage";
 
-import Logo from "../../assets/logoPM.png";
-import BankerLogo from "../../assets/Banker.png";
-import Circle from "../../assets/elipse.png";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
 
 const BlueCheckbox = withStyles({
   root: {
-    color: blue[300],
+    color: ColorsTheme.blueJeans,
     "&$checked": {
-      color: blue[600],
+      color: ColorsTheme.bleuDeFrance,
     },
   },
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: "100%",
-    "&:before": {
-      borderColor: "white",
-    },
-    "&:after": {
-      borderColor: "white",
-    },
-    "&:not(.Mui-disabled):hover::before": {
-      borderColor: "white",
-    },
-  },
-
-  textField: {
-    margin: theme.spacing(1),
-    minWidth: "100%",
-    "&:before": {
-      borderColor: "white",
-    },
-    "&:after": {
-      borderColor: "white",
-    },
-    "&:not(.Mui-disabled):hover::before": {
-      borderColor: "white",
-    },
-  },
-
-  selectEmpty: {
-    marginTop: theme.spacing(0),
-  },
-  button: {
-    background: "linear-gradient(45deg, #15AAD9 30%, #7EE0FF 90%)",
-    border: 0,
-    borderRadius: 5,
-    boxShadow: "0 3px 5px 2px white",
-    color: "white",
-    height: 40,
-    width: 300,
-    padding: "0 30px",
-  },
-}));
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Insert username!"),
@@ -125,27 +81,27 @@ export default function LoginOfficer(props) {
   });
 
   return (
-    <div className="container">
-      <div className="left">
-        <div className="box-container">
-          <div className="flex-center">
-            <div className="header-logo">
-              <img src={Logo} alt="app-logo" className="head-logo" />
-              <h1 className="title-section">
-                Pay<span>ment</span> <br /> Monitoring
+    <div className={classes.container}>
+      <div className={classes.leftSide}>
+        <div className={classes.boxContainer}>
+          <div className={classes.flexCenter}>
+            <div className={classes.headerLogo}>
+              <img src={Logo} alt="app-logo" className={classes.headLogo} />
+              <h1 className={classes.titleSection}>
+                Pay<span className={classes.titleSectionSpan}>ment</span> <br /> Monitoring
               </h1>
             </div>
           </div>
-          <h3 className="common-text">Sign in to continue our application </h3>
-          <div className="inner-box">
+          <h3 className={classes.txtSignIn}>Sign in to continue our application </h3>
+          <div className={classes.innerBox}>
             {errorMsg && (
               <Alert severity="error" style={{ margin: "0.5em 0" }}>
                 {errorMsg}
               </Alert>
             )}
             <form onSubmit={formik.handleSubmit}>
-              <div className="user-and-pass">
-                <div className={classes.textField}>
+              <div className={classes.userAndPass}>
+                <div className={classes.wrappedTxtFieldOfficer}>
                   <TextField
                     className="txtfield"
                     type="text"
@@ -158,7 +114,7 @@ export default function LoginOfficer(props) {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <PersonIcon style={{ color: "#2EB7E2" }} />
+                          <PersonIcon style={{ color: ColorsTheme.cyanProcess }} />
                         </InputAdornment>
                       ),
                     }}
@@ -169,7 +125,7 @@ export default function LoginOfficer(props) {
                     helperText={formik.errors.username}
                   />
                 </div>
-                <div className={classes.textField}>
+                <div className={classes.wrappedTxtFieldOfficer}>
                   <TextField
                     name="password"
                     className="txtfield"
@@ -180,7 +136,7 @@ export default function LoginOfficer(props) {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <LockIcon style={{ color: "#2EB7E2" }} />
+                          <LockIcon style={{ color: ColorsTheme.cyanProcess }} />
                         </InputAdornment>
                       ),
                     }}
@@ -207,7 +163,7 @@ export default function LoginOfficer(props) {
                       shrink: true,
                       startAdornment: (
                         <InputAdornment position="start">
-                          <LockIcon style={{ color: "#2EB7E2" }} />
+                          <LockIcon style={{ color: ColorsTheme.cyanProcess }} />
                         </InputAdornment>
                       ),
                     }}
@@ -219,7 +175,7 @@ export default function LoginOfficer(props) {
                   </Select>
                 </FormControl>
               </div>
-              <div className="rememberMe-wrap">
+              <div className={classes.wrappedRememberMe}>
                 <FormControlLabel
                   control={
                     <BlueCheckbox
@@ -232,16 +188,16 @@ export default function LoginOfficer(props) {
                   label="Remember Me"
                 />
               </div>
-              <div className="wrapped-signin">
+              <div className={classes.wrappedSignIn} fullWidth>
                 <Button
                   className={
-                    formik.isSubmitting ? "btn-signIn-loading" : "btn-signIn"
+                    formik.isSubmitting ? classes.btnSignInLoading : classes.btnSignIn
                   }
                   fullWidth
                   type="submit"
                   disabled={formik.isSubmitting}
                 >
-                  <b>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
+                  <b className={classes.btnSignInBold}>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
                 </Button>
               </div>
               <div
@@ -251,25 +207,25 @@ export default function LoginOfficer(props) {
                   display: "flex",
                 }}
               >
-                <Link className="switch-signin" to="/">
+                <Link className={classes.switchSignIn} to="/">
                   Sign In as Customer
                 </Link>
               </div>
             </form>
-          </div>
-        </div>
-      </div>
+          </div >
+        </div >
+      </div >
 
-      <div className="right-side">
-        <div className="welcome-title">
-          <h1 className="welcome">WELCOME BACK,</h1>
-          <h2 className="text-notice">Make your payment efficiently</h2>
-        </div>
-        <div className="img">
-          <img className="circled-image" src={Circle} alt="Round.png" />
-          <img className="banker-image" src={BankerLogo} alt="BankerLogo" />
-        </div>
+    <div className={classes.rightSide}>
+      <div className={classes.welcomeTitle}>
+        <h1 className={classes.welcome}>WELCOME BACK,</h1>
+        <h2 className={classes.textNotice}>Make your payment efficiently</h2>
+      </div>
+      <div className={classes.img}>
+        <img className={classes.circledImage} src={Circle} alt="Round.png" />
+        <img className={classes.bankerImage} src={BankerLogo} alt="BankerLogo" />
       </div>
     </div>
+    </div >
   );
 }

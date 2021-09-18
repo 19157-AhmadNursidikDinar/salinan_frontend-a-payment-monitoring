@@ -28,6 +28,7 @@ import {
 import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import ColorsTheme from "../../../assets/colors";
 
 //import api service
 import BranchService from "../../../services/branch.service"
@@ -54,7 +55,14 @@ const useStyles = makeStyles((theme) => ({
     },
     alert: {
         marginBottom: theme.spacing(2)
-    }
+    },
+    button: {
+        backgroundColor: ColorsTheme.dodgerBlue,
+        "&:hover": {
+            backgroundColor: ColorsTheme.blueCrayola,
+        },
+        margin: theme.spacing(1)
+    },
 }));
 
 const StylingTableCell = withStyles(() => ({
@@ -131,7 +139,7 @@ export default function BranchOfficeList(props) {
 
                 <div className={classes.headerTable}>
                     <Link to="/add-branch">
-                        <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+                        <Button className={classes.button} variant="contained" color="primary" startIcon={<AddIcon />}>
                             Add Kantor Cabang
                         </Button>
                     </Link>
@@ -202,7 +210,7 @@ export default function BranchOfficeList(props) {
                                                 size="small"
                                                 startIcon={<VisibilityIcon />}>
                                                 Detail
-                                        </Button>
+                                            </Button>
                                         </Link>
                                     </StylingTableCell>
                                 </StylingTableRow>

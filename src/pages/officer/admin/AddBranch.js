@@ -15,6 +15,7 @@ import ArrowBackIosRounded from "@material-ui/icons/ArrowBackIosRounded";
 //links
 import { Link } from "react-router-dom";
 import ContentContainer from "../../../components/ContentContainer";
+import ColorsTheme from "../../../assets/colors";
 //use formik
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -28,17 +29,17 @@ const useTheStyle = makeStyles((theme) => ({
         padding: 40,
     },
     BtnSave: {
-        backgroundColor: "#1890FF",
+        backgroundColor: ColorsTheme.dodgerBlue,
         '&:hover': {
-            backgroundColor: "# 2979ff",
+            backgroundColor: ColorsTheme.blueCrayola,
         },
         marginTop: 30,
         float: 'right',
     },
     BtnBack: {
-        backgroundColor: "#1890FF",
+        backgroundColor: ColorsTheme.dodgerBlue,
         '&:hover': {
-            backgroundColor: "# 2979ff",
+            backgroundColor: ColorsTheme.blueCrayola,
         },
         marginTop: 30,
         float: 'left',
@@ -60,8 +61,8 @@ function FormAddBranch(props) {
         validateOnBlur: false,
         validateOnChange: false,
         onSubmit: async ({ branchName }) => {
-            const result = await BranchService.insertBranch({branchName});
-            if (!Boolean(result.error)){
+            const result = await BranchService.insertBranch({ branchName });
+            if (!Boolean(result.error)) {
                 props.history.push("/branch-office-list", { success: true, message: "Data kantor cabang telah ditambahkan" });
             }
         }
@@ -107,7 +108,7 @@ function FormAddBranch(props) {
                                 startIcon={<ArrowBackIosRounded />}
                             >
                                 Kembali
-                        </Button>
+                            </Button>
                         </Link>
                         <Button
                             variant="contained"

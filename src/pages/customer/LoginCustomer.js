@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
-import { blue } from "@material-ui/core/colors";
 import TextField from "@material-ui/core/TextField";
 import Alert from "@material-ui/lab/Alert";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -12,19 +11,21 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 //import css and assets
-import Logo from "../../assets/logoPM.png";
-import BankerLogo from "../../assets/Banker.png";
-import Circle from "../../assets/elipse.png";
+import ColorsTheme from "../../assets/colors";
+import Logo from "../../assets/images/logoPM.png";
+import BankerLogo from "../../assets/images/Banker.png";
+import Circle from "../../assets/images/elipse.png";
+import useStyles from "../../styles/LoginPage";
+
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
-import "../../styles/LoginCustomer.css";
 
 const BlueCheckbox = withStyles({
   root: {
-    color: blue[300],
+    color: ColorsTheme.blueJeans,
     "&$checked": {
-      color: blue[600],
+      color: ColorsTheme.bleuDeFrance,
     },
   },
   checked: {},
@@ -39,6 +40,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function LoginCustomer(props) {
+  const classes = useStyles();
   const [errorMsg, setErrorMsg] = useState("");
   const formik = useFormik({
     initialValues: {
@@ -76,27 +78,27 @@ export default function LoginCustomer(props) {
   });
 
   return (
-    <div className="container">
-      <div className="left-side">
-        <div className="box-cont">
-          <div className="flex-center">
-            <div className="header-logo">
-              <img src={Logo} alt="app-logo" className="head-logo" />
-              <h1 className="title-section">
-                Pay<span>ment</span> <br /> Monitoring
+    <div className={classes.container}>
+      <div className={classes.leftSide}>
+        <div className={classes.boxContainer}>
+          <div className={classes.flexCenter}>
+            <div className={classes.headerLogo}>
+              <img src={Logo} alt="app-logo" className={classes.headLogo} />
+              <h1 className={classes.titleSection}>
+                Pay<span className={classes.titleSectionSpan}>ment</span> <br /> Monitoring
               </h1>
             </div>
           </div>
-          <h3 className="txt-signIn">Sign in to continue our application</h3>
-          <div className="inside-box">
+          <h3 className={classes.txtSignIn}>Sign in to continue our application</h3>
+          <div className={classes.innerBox}>
             {errorMsg && (
               <Alert severity="error" style={{ margin: "0.5em 0" }}>
                 {errorMsg}
               </Alert>
             )}
             <form onSubmit={formik.handleSubmit}>
-              <div className="user-pass">
-                <div className="wrapped-txtfield">
+            <div className={classes.userPass}>
+              <div className={classes.wrappedTxtFieldCustomer}>
                   <TextField
                     className="txtfield"
                     type="text"
@@ -109,7 +111,7 @@ export default function LoginCustomer(props) {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <PersonIcon style={{ color: "#2EB7E2" }} />
+                          <PersonIcon style={{ color: ColorsTheme.cyanProcess }} />
                         </InputAdornment>
                       ),
                     }}
@@ -120,7 +122,7 @@ export default function LoginCustomer(props) {
                     helperText={formik.errors.username}
                   />
                 </div>
-                <div className="wrapped-txtfield">
+                <div className={classes.wrappedTxtFieldCustomer}>
                   <TextField
                     name="password"
                     className="txtfield"
@@ -131,7 +133,7 @@ export default function LoginCustomer(props) {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <LockIcon style={{ color: "#2EB7E2" }} />
+                          <LockIcon style={{ color: ColorsTheme.cyanProcess }} />
                         </InputAdornment>
                       ),
                     }}
@@ -144,7 +146,7 @@ export default function LoginCustomer(props) {
                     helperText={formik.errors.password}
                   />
                 </div>
-                <div className="wrapped-rememberMe">
+                <div className={classes.wrappedRememberMe}>
                   <FormControlLabel
                     control={
                       <BlueCheckbox
@@ -157,16 +159,16 @@ export default function LoginCustomer(props) {
                     label="Remember Me"
                   />
                 </div>
-                <div className="wrapped-signin">
+                <div className={classes.wrappedSignIn}>
                   <Button
                     className={
-                      formik.isSubmitting ? "btn-signIn-loading" : "btn-signIn"
+                      formik.isSubmitting ? classes.btnSignInLoading : classes.btnSignIn
                     }
                     fullWidth
                     type="submit"
                     disabled={formik.isSubmitting}
                   >
-                    <b>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
+                    <b className={classes.btnSignInBold}>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
                   </Button>
                 </div>
                 <div
@@ -176,7 +178,7 @@ export default function LoginCustomer(props) {
                     display: "flex",
                   }}
                 >
-                  <Link className="switch-signin" to="/login-officer">
+                  <Link className={classes.switchSignIn} to="/login-officer">
                     Sign In as Officer
                   </Link>
                 </div>
@@ -185,14 +187,14 @@ export default function LoginCustomer(props) {
           </div>
         </div>
       </div>
-      <div className="right-side">
-        <div className="welcome-title">
-          <h1 className="welcome">WELCOME BACK,</h1>
-          <h2 className="text-notice">Make your payment efficiently</h2>
+      <div className={classes.rightSide}>
+        <div className={classes.welcomeTitle}>
+          <h1 className={classes.welcome}>WELCOME BACK,</h1>
+          <h2 className={classes.textNotice}>Make your payment efficiently</h2>
         </div>
-        <div className="img">
-          <img className="circled-image" src={Circle} alt="Round.png" />
-          <img className="banker-image" src={BankerLogo} alt="BankerLogo" />
+        <div className={classes.img}>
+          <img className={classes.circledImage} src={Circle} alt="Round.png" />
+          <img className={classes.bankerImage} src={BankerLogo} alt="BankerLogo" />
         </div>
       </div>
     </div>

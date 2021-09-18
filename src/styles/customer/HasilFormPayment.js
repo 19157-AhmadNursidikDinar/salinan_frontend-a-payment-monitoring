@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
+import ColorsTheme from "../../assets/colors";
 
 const useStyles = makeStyles({
   root: {
@@ -30,8 +31,11 @@ const useStyles = makeStyles({
   },
 
   buttonAction: {
-    backgroundColor: "#1890FF",
-    color: "#fff",
+    backgroundColor: ColorsTheme.dodgerBlue,
+    "&:hover": {
+      backgroundColor: ColorsTheme.blueCrayola,
+    },
+    color: ColorsTheme.white,
     fontWeight: 600,
     fontSize: 14,
   },

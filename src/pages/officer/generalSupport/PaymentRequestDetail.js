@@ -15,7 +15,7 @@ import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import ContentContainer from "../../../components/ContentContainer";
 import PaymentStatusSelector from "../../../components/PaymentStatusSelector";
-import useStyles from "../../../styles/HasilFormPayement";
+import useStyles from "../../../styles/customer/HasilFormPayment";
 
 function PaymentRequestDetail(props) {
     const classes = useStyles();

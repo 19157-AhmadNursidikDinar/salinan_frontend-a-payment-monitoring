@@ -18,14 +18,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 
 import ContentContainer from "../../../components/ContentContainer";
+import ColorsTheme from "../../../assets/colors";
 import { Link } from "react-router-dom";
 
 
 const useMyStyles = makeStyles((theme) => ({
     BtnBack: {
-        backgroundColor: "#1890FF",
+        backgroundColor: ColorsTheme.dodgerBlue,
         '&:hover': {
-            backgroundColor: "# 2979ff",
+            backgroundColor: ColorsTheme.blueCrayola,
         },
         margin: '20px',
         float: 'left',

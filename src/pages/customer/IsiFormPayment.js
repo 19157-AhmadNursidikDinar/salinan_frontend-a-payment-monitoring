@@ -1,39 +1,21 @@
-import "date-fns";
+//import react
 import React from "react";
 import NumberFormat from "react-number-format";
-import { makeStyles } from "@material-ui/core/styles";
+//import material-ui components
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import { SendRounded } from "@material-ui/icons";
+//import datepicker components
+import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
+//import custom components
 import ContentContainer from "../../components/ContentContainer";
-import {
-  Button,
-  TextField,
-  Grid,
-  Typography,
-  Paper,
-  Container,
-} from "@material-ui/core";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-
-//import './styleFormPayment.css';
-
-//CUSTOM STYLE
-const useMyStyles = makeStyles((theme) => ({
-  button: {
-    backgroundColor: "#1890FF",
-    "&:hover": {
-      backgroundColor: "# 2979ff",
-    },
-    margin: theme.spacing(1),
-    float: "right",
-  },
-  PaperSize: {
-    padding: 40,
-  },
-}));
+import useStyles from "../../styles/customer/IsiFormPayment";
 
 //SET Prefix in Nominal TextBox
 function NumberFormatIDR(props) {
@@ -58,7 +40,7 @@ function NumberFormatIDR(props) {
 }
 
 function FormRequest(props) {
-  const classes = useMyStyles();
+  const classes = useStyles();
 
   //Value Default Nominal
   // const [values, setValues] = React.useState({
@@ -79,8 +61,8 @@ function FormRequest(props) {
   };
 
   // button pindah link menggunakan props history ke hasil form request dan menginialisasi menu sebelumnya
-  const handleSubmit = () =>{
-    props.history.push("/payment-request-result", {from : "Payment Request"});
+  const handleSubmit = () => {
+    props.history.push("/payment-request-result", { from: "Payment Request" });
   }
 
   return (

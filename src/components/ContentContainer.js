@@ -21,7 +21,8 @@ import HomeIcon from "@material-ui/icons/Home";
 import LogOutIcon from "@material-ui/icons/ExitToApp";
 import { FaEdit } from "react-icons/fa";
 
-import logo from "../assets/logo.svg";
+import logo from "../assets/images/logo.svg";
+import ColorsTheme from "../assets/colors"
 import useStyles from "../styles/ContentContainer";
 import AuthService from "../services/auth.service";
 import { useHistory } from "react-router-dom";
@@ -37,8 +38,9 @@ const menuItems = {
   ],
   admin: [
     { label: "Beranda", icon: <HomeIcon />, link: "/admin" },
-    { label: "Daftar Kantor Cabang",
-      icon: <BusinessIcon/>, link: "/branch-office-list"
+    {
+      label: "Daftar Kantor Cabang",
+      icon: <BusinessIcon />, link: "/branch-office-list"
     },
     {
       label: "Service Lvl Agreement",
@@ -126,10 +128,9 @@ export default function MiniDrawer({
                   button
                   key={label}
                   style={{
-                    borderRight:
-                      selectedMenu === label && "solid #2196f3 0.3em",
-                    backgroundColor: selectedMenu === label && "#e3f2fd",
-                    color: "#686f74",
+                    borderRight: selectedMenu === label && "solid #2196f3 0.3em",
+                    backgroundColor: selectedMenu === label && ColorsTheme.aliceBlue,
+                    color: ColorsTheme.dimGray
                   }}
                 >
                   <ListItemIcon>{icon}</ListItemIcon>

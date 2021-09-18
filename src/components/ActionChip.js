@@ -1,27 +1,26 @@
 import React from 'react'
 import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
-import { blue, red, green, grey } from "@material-ui/core/colors";
+import ColorsTheme from '../assets/colors';
 
 const useStyles = makeStyles({
     greenChip: {
-        backgroundColor: green[500],
-        color: "#fff",
+        backgroundColor: ColorsTheme.greenPantone,
+        color: ColorsTheme.white,
         fontWeight: "bold",
     },
     redChip: {
-        backgroundColor: red[500],
-        color: "#fff",
+        backgroundColor: ColorsTheme.tartOrange,
+        color: ColorsTheme.white,
         fontWeight: "bold",
     },
     blueChip: {
-        backgroundColor: blue[500],
-        color: "#fff",
+        backgroundColor: ColorsTheme.tuftsBlue,
+        color: ColorsTheme.white,
         fontWeight: "bold",
     },
     greyChip: {
-        backgroundColor: grey[500],
-        color: "#fff",
+        backgroundColor: ColorsTheme.grayWeb,
         fontWeight: "bold",
     },
 });

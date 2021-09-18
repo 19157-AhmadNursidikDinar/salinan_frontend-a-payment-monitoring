@@ -12,6 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePagination";
 import Chip from "../../ActionChip";
+import ColorsTheme from "../../../assets/colors";
 import { Link } from "react-router-dom";
 
 const rows = [
@@ -97,7 +98,7 @@ const useStyles = makeStyles({
 
 const StyledTableCell = withStyles(() => ({
   head: {
-    backgroundColor: "#90caf9",
+    backgroundColor: ColorsTheme.lightSkyBlue,
     fontWeight: "bold",
   },
   body: {

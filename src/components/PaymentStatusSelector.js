@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import MuiTableCell from "@material-ui/core/TableCell";
 import { withStyles} from "@material-ui/core/styles";
-import useStyles from "../styles/HasilFormPayement";
+import useStyles from "../styles/customer/HasilFormPayment";
 
 const TableCell = withStyles({
     root: {
