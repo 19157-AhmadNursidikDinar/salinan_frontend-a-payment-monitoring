@@ -23,16 +23,17 @@ import { FaEdit } from "react-icons/fa";
 
 import logo from "../assets/logo.svg";
 import useStyles from "../styles/ContentContainer";
-import { version } from "../../package.json";
+import AuthService from "../services/auth.service";
+import { useHistory } from "react-router-dom";
 
 const menuItems = {
   customer: [
     { label: "Beranda", icon: <HomeIcon />, link: "/customer" },
     {
       label: "Payment Request",
-      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />, link: "/add-payment-request"
+      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
+      link: "/add-payment-request",
     },
-    { label: "Sign Out", icon: <LogOutIcon />, link: "/" },
   ],
   admin: [
     { label: "Beranda", icon: <HomeIcon />, link: "/admin" },
@@ -41,17 +42,13 @@ const menuItems = {
     },
     {
       label: "Service Lvl Agreement",
-      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />, link: "/service-level-agreement"
+      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
+      link: "/service-level-agreement",
     },
-    { label: "Sign Out", icon: <LogOutIcon />, link: "/login-officer" }
   ],
-  accounting: [
-    { label: "Beranda", icon: <HomeIcon />, link: "/accounting" },
-    { label: "Sign Out", icon: <LogOutIcon />, link: "/login-officer" },
-  ],
+  accounting: [{ label: "Beranda", icon: <HomeIcon />, link: "/accounting" }],
   generalSupport: [
     { label: "Beranda", icon: <HomeIcon />, link: "/general-support" },
-    { label: "Sign Out", icon: <LogOutIcon />, link: "/login-officer" },
   ],
 };
 
@@ -61,9 +58,14 @@ export default function MiniDrawer({
   selectedMenu = "Beranda",
 }) {
   const classes = useStyles();
+  const history = useHistory();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(!open);
+  };
+  const handleLogoutClick = () => {
+    AuthService.logout();
+    history.push("/");
   };
 
   return (
@@ -119,14 +121,15 @@ export default function MiniDrawer({
           <Divider />
           <List>
             {menuItems[role].map(({ label, icon, link }) => (
-              <Link to={link}>
+              <Link to={link} key={label}>
                 <ListItem
                   button
                   key={label}
                   style={{
-                    borderRight: selectedMenu === label && "solid #2196f3 0.3em",
+                    borderRight:
+                      selectedMenu === label && "solid #2196f3 0.3em",
                     backgroundColor: selectedMenu === label && "#e3f2fd",
-                    color: '#686f74'
+                    color: "#686f74",
                   }}
                 >
                   <ListItemIcon>{icon}</ListItemIcon>
@@ -134,6 +137,18 @@ export default function MiniDrawer({
                 </ListItem>
               </Link>
             ))}
+            <ListItem
+              button
+              style={{
+                color: "#686f74",
+              }}
+              onClick={handleLogoutClick}
+            >
+              <ListItemIcon>
+                <LogOutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sign Out" />
+            </ListItem>
           </List>
         </Drawer>
         <main className={classes.content}>
@@ -151,7 +166,7 @@ export default function MiniDrawer({
           <span style={{ marginLeft: open ? "240px" : "80px" }}>
             Copyright © 2021 Payment Monitoring
           </span>
-          <span> Version {version}</span>
+          <span> Version {process.env.REACT_APP_VERSION}</span>
         </Grid>
       </div>
     </div>

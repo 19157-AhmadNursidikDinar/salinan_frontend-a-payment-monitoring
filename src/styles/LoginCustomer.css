@@ -130,6 +130,21 @@
   font-family: poppins;
   font-weight: 500;
 }
+.btn-signIn-loading {
+  display: flex;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px !important;
+  background: linear-gradient(45deg, #777777 30%, #949494 90%);
+}
+.btn-signIn-loading b {
+  color: #ffff;
+  font-size: 15px;
+  font-family: poppins;
+  font-weight: 500;
+}
 .welcome-title {
   flex: 1;
   padding-left: 61px;
@@ -143,6 +158,7 @@
   font-style: normal;
   font-size: 40px;
   line-height: 30px;
+  margin-bottom: 0.4em;
   color: #444444;
 }
 .text-notice {
@@ -171,6 +187,6 @@
   left: 55%;
 }
 
-.switch-signin{
+.switch-signin {
   color: #15aad9;
 }
