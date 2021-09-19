@@ -3,6 +3,11 @@ import ColorsTheme from "../assets/colors";
 import FontsTheme from "../assets/fonts";
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        minHeight: "100vh",
+        backgroundColor: ColorsTheme.grayWeb,
+    },
     container: {
         display: "flex",
         flexDirection: "row",
@@ -13,14 +18,19 @@ const useStyles = makeStyles((theme) => ({
     leftSide: {
         flex: 1,
         display: "flex",
-        width: "50%",
+        minHeight: "100vh",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: ColorsTheme.white,
     },
     boxContainer: {
         display: "block",
-        width: "70%",
+        [theme.breakpoints.down('sm')]: {
+            minWidth: "50%",
+        },
+        [theme.breakpoints.up('md')]: {
+            minWidth: "60%",
+        },
         paddingBottom: "50px",
         backgroundColor: ColorsTheme.white,
         borderRadius: "10px",
@@ -53,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
         color: ColorsTheme.pacificBlue,
     },
     txtSignIn: {
-        lineHeight: "20px",
         ...FontsTheme.poppins_bold,
         fontSize: "15px",
         color: ColorsTheme.black,
@@ -61,11 +70,17 @@ const useStyles = makeStyles((theme) => ({
     },
     innerBox: {
         width: "100%",
-        paddingLeft: "20%",
-        paddingRight: "20%",
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
+        [theme.breakpoints.down('sm')]: {
+            paddingLeft: "5%",
+            paddingRight: "5%",
+        },
+        [theme.breakpoints.up('md')]: {
+            paddingLeft: "20%",
+            paddingRight: "20%",
+        },
     },
     userPass: {
         width: "100%",
@@ -147,8 +162,15 @@ const useStyles = makeStyles((theme) => ({
         color: ColorsTheme.ceruleanCrayola,
     },
     rightSide: {
+        [theme.breakpoints.down('sm')]: {
+            display: "none",
+        },
+        [theme.breakpoints.up('md')]: {
+            display: "block",
+        },
         flex: 1,
-        width: "50%",
+        width: "100%",
+        minHeight: "100vh",
         backgroundColor: ColorsTheme.aliceBlue,
         paddingBottom: "10%",
         paddingLeft: "5%",
