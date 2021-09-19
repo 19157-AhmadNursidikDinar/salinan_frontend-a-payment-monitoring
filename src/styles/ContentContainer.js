@@ -67,6 +67,9 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
+  imgToolbar:{
+    width: "100%",
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -81,6 +84,26 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: ColorsTheme.white, //make relative instead of absolute
   },
+  footerLeft: {
+    display: "flex",
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: "center",
+      textAlign: "center"
+    },
+    [theme.breakpoints.up('md')]: {
+      justifyContent: "start"
+    },
+  },
+  footerRight: {
+    display: "flex",
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: "center",
+      textAlign: "center"
+    },
+    [theme.breakpoints.up('md')]: {
+      justifyContent: "end"
+    },
+  }
 }));
 
 export default useStyles;

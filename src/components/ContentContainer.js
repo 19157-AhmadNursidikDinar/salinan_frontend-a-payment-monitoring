@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -26,6 +26,9 @@ import ColorsTheme from "../assets/colors"
 import useStyles from "../styles/ContentContainer";
 import AuthService from "../services/auth.service";
 import { useHistory } from "react-router-dom";
+
+import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const menuItems = {
   customer: [
@@ -59,6 +62,10 @@ export default function MiniDrawer({
   role = "customer",
   selectedMenu = "Beranda",
 }) {
+  const getTheme = useTheme();
+  const matches = useMediaQuery(getTheme.breakpoints.down('sm'));
+  const theme = createTheme();
+
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = React.useState(true);
@@ -70,106 +77,120 @@ export default function MiniDrawer({
     history.push("/");
   };
 
+  useEffect(() => {
+    if(matches){
+      setOpen(false);
+    }
+  }, [matches])
+
   return (
-    <div className={classes.root}>
-      <div className={classes.wrapper}>
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-          elevation={0}
-        >
-          <Toolbar>
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <IconButton
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                style={{ marginLeft: !open && "2.8em" }}
+    <ThemeProvider theme={theme}>
+
+      <div className={classes.root}>
+        <div className={classes.wrapper}>
+          <CssBaseline />
+          <AppBar
+            position="fixed"
+            className={clsx(classes.appBar, {
+              [classes.appBarShift]: open,
+            })}
+            elevation={0}
+          >
+            <Toolbar>
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                <MenuIcon />
-              </IconButton>
-              <Avatar>
-                <PersonIcon />
-              </Avatar>
-            </Grid>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          variant="permanent"
-          className={clsx(classes.drawer, {
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          })}
-          classes={{
-            paper: clsx({
+                <IconButton
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  edge="start"
+                  style={{ marginLeft: !open && "2em" }}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Avatar>
+                  <PersonIcon />
+                </Avatar>
+              </Grid>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            variant="permanent"
+            className={clsx(classes.drawer, {
               [classes.drawerOpen]: open,
               [classes.drawerClose]: !open,
-            }),
-          }}
-          PaperProps={{ elevation: 5 }}
-        >
-          <div className={classes.toolbar}>
-            <img src={logo} alt="logo" />
-            <span className={classes.pageTitle}>Payment Monitoring</span>
-          </div>
-          <Divider />
-          <List>
-            {menuItems[role].map(({ label, icon, link }) => (
-              <Link to={link} key={label}>
-                <ListItem
-                  button
-                  key={label}
-                  style={{
-                    borderRight: selectedMenu === label && "solid #2196f3 0.3em",
-                    backgroundColor: selectedMenu === label && ColorsTheme.aliceBlue,
-                    color: ColorsTheme.dimGray
-                  }}
-                >
-                  <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText primary={label} />
-                </ListItem>
-              </Link>
-            ))}
-            <ListItem
-              button
-              style={{
-                color: "#686f74",
-              }}
-              onClick={handleLogoutClick}
-            >
-              <ListItemIcon>
-                <LogOutIcon />
-              </ListItemIcon>
-              <ListItemText primary="Sign Out" />
-            </ListItem>
-          </List>
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          {children}
-        </main>
-      </div>
-      <div className={classes.footer}>
-        <Grid
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <span style={{ marginLeft: open ? "240px" : "80px" }}>
-            Copyright © 2021 Payment Monitoring
+            })}
+            classes={{
+              paper: clsx({
+                [classes.drawerOpen]: open,
+                [classes.drawerClose]: !open,
+              }),
+            }}
+            PaperProps={{ elevation: 5 }}
+          >
+            <div className={classes.toolbar}>
+              <img src={logo} alt="logo" className={classes.imgToolbar} />
+              <span className={classes.pageTitle}>Payment Monitoring</span>
+            </div>
+            <Divider />
+            <List>
+              {menuItems[role].map(({ label, icon, link }) => (
+                <Link to={link} key={label}>
+                  <ListItem
+                    button
+                    key={label}
+                    style={{
+                      borderRight: selectedMenu === label && "solid #2196f3 0.3em",
+                      backgroundColor: selectedMenu === label && ColorsTheme.aliceBlue,
+                      color: ColorsTheme.dimGray
+                    }}
+                  >
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText primary={label} />
+                  </ListItem>
+                </Link>
+              ))}
+              <ListItem
+                button
+                style={{
+                  color: "#686f74",
+                }}
+                onClick={handleLogoutClick}
+              >
+                <ListItemIcon>
+                  <LogOutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Sign Out" />
+              </ListItem>
+            </List>
+          </Drawer>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            {children}
+          </main>
+        </div>
+        <div className={classes.footer}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Grid item xs={12} sm={6} className={classes.footerLeft} >
+              <span style={{ marginLeft: open ? "240px" : "70px" }}>
+                Copyright © 2021 Payment Monitoring
           </span>
-          <span> Version {process.env.REACT_APP_VERSION}</span>
-        </Grid>
+            </Grid>
+            <Grid item xs={12} sm={6} className={classes.footerRight}>
+              <span style={{ marginLeft: open ? "240px" : "70px" }}> Version {process.env.REACT_APP_VERSION}</span>
+            </Grid>
+          </Grid>
+        </div>
       </div>
-    </div>
+
+    </ThemeProvider>
   );
 }
