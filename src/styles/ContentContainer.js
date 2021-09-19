@@ -11,7 +11,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: ColorsTheme.cultured,
   },
   wrapper: {
-    display: "flex",
+    [theme.breakpoints.down('sm')]: {
+      display: "inline",
+      marginLeft: theme.spacing(6)
+    },
+    [theme.breakpoints.up('md')]: {
+
+      display: "flex"
+    },
   },
   appBar: {
     backgroundColor: ColorsTheme.white,
@@ -67,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
-  imgToolbar:{
+  imgToolbar: {
     width: "100%",
   },
   content: {
@@ -104,7 +111,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       justifyContent: "end"
     },
-  }
+  },
+  titleSectionSpan: {
+    color: ColorsTheme.pacificBlue,
+  },
 }));
 
 export default useStyles;

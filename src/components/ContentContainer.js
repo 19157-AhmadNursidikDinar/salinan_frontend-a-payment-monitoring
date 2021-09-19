@@ -78,7 +78,7 @@ export default function MiniDrawer({
   };
 
   useEffect(() => {
-    if(matches){
+    if (matches) {
       setOpen(false);
     }
   }, [matches])
@@ -133,7 +133,7 @@ export default function MiniDrawer({
           >
             <div className={classes.toolbar}>
               <img src={logo} alt="logo" className={classes.imgToolbar} />
-              <span className={classes.pageTitle}>Payment Monitoring</span>
+              <h1 className={classes.pageTitle}>Pay<span className={classes.titleSectionSpan}>ment</span> Monitoring</h1>
             </div>
             <Divider />
             <List>
@@ -148,8 +148,8 @@ export default function MiniDrawer({
                       color: ColorsTheme.dimGray
                     }}
                   >
-                    <ListItemIcon>{icon}</ListItemIcon>
-                    <ListItemText primary={label} />
+                    <ListItemIcon style={{ color: selectedMenu === label && ColorsTheme.tuftsBlue }}>{icon}</ListItemIcon>
+                    <ListItemText style={{ color: selectedMenu === label && ColorsTheme.tuftsBlue }} primary={label} />
                   </ListItem>
                 </Link>
               ))}
@@ -180,12 +180,12 @@ export default function MiniDrawer({
             alignItems="center"
           >
             <Grid item xs={12} sm={6} className={classes.footerLeft} >
-              <span style={{ marginLeft: open ? "240px" : "70px" }}>
+              <span style={{ marginLeft: matches ? "70px" : open ? "240px" : "70px" }}>
                 Copyright © 2021 Payment Monitoring
           </span>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.footerRight}>
-              <span style={{ marginLeft: open ? "240px" : "70px" }}> Version {process.env.REACT_APP_VERSION}</span>
+              <span style={{ marginLeft: matches ? "70px" : open ? "240px" : "70px" }}> Version {process.env.REACT_APP_VERSION}</span>
             </Grid>
           </Grid>
         </div>

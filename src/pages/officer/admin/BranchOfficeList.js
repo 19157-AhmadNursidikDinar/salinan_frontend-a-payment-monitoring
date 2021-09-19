@@ -30,6 +30,8 @@ import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ColorsTheme from "../../../assets/colors";
 
+import Grid from "@material-ui/core/Grid";
+
 //import api service
 import BranchService from "../../../services/branch.service"
 
@@ -60,9 +62,12 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: ColorsTheme.dodgerBlue,
         "&:hover": {
             backgroundColor: ColorsTheme.blueCrayola,
-        },
-        margin: theme.spacing(1)
+        }
     },
+    actionComponent: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+    }
 }));
 
 const StylingTableCell = withStyles(() => ({
@@ -89,7 +94,7 @@ export default function BranchOfficeList(props) {
     const [pages, setPages] = useState(0);
     const [flashMessage, setFlashMessage] = useState({ success: false, message: '' });
     const [branchs, setBranchs] = useState([]);
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState("Loading...");
     const rowsPage = 10;
 
     //event handling change page
@@ -137,17 +142,22 @@ export default function BranchOfficeList(props) {
 
             <Paper className={classes.PaperSize} elevation={4}>
 
-                <div className={classes.headerTable}>
-                    <Link to="/add-branch">
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
+                    <Link to="/add-branch" className={classes.actionComponent}>
                         <Button className={classes.button} variant="contained" color="primary" startIcon={<AddIcon />}>
-                            Add Kantor Cabang
+                            Add Branch
                         </Button>
                     </Link>
                     <TextField
-                        className="txtfield"
-                        id="txtSearchOffice"
+                        className={classes.actionComponent}
+                        id="txtSearch"
                         type="text"
-                        placeholder="Find Office Address"
+                        placeholder="Search"
                         variant="outlined"
                         size="small"
                         InputProps={{
@@ -155,10 +165,11 @@ export default function BranchOfficeList(props) {
                                 <InputAdornment position="start">
                                     <SearchOutlinedIcon />
                                 </InputAdornment>
-                            )
+                            ),
                         }}
                     />
-                </div>
+                </Grid>
+
                 <Collapse in={flashMessage.success} >
                     <Alert
                         className={classes.alert}
@@ -201,7 +212,7 @@ export default function BranchOfficeList(props) {
                             ).map((branch, index) => (
                                 <StylingTableRow key={index + 1}>
                                     <StylingTableCell width="10%">{pages * rowsPage + index + 1}</StylingTableCell>
-                                    <StylingTableCell>{branch.id === 1? "pusat" : branch.branch_name }</StylingTableCell>
+                                    <StylingTableCell>{branch.id === 1 ? "pusat" : branch.branch_name}</StylingTableCell>
                                     <StylingTableCell width="25%" align="center">
                                         <Link to="/detail-branch" className={classes.buttonMargin}>
                                             <Button
