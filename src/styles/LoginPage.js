@@ -12,13 +12,13 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "row",
         width: "100%",
-        minHeight: "100vh",
+        height: "100%",
         backgroundColor: ColorsTheme.grayWeb,
     },
     leftSide: {
         flex: 1,
         display: "flex",
-        minHeight: "100vh",
+        height: "100%",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: ColorsTheme.white,
@@ -89,15 +89,27 @@ const useStyles = makeStyles((theme) => ({
     },
     wrappedTxtFieldCustomer: {
         display: "flex",
-        padding: "8px 10px",
-        marginBottom: "12px",
-        marginTop: "4px",
-        marginLeft: "auto",
-        marginRight: "auto",
+        margin: theme.spacing(1),
+        paddingTop: "8px",
+        paddingBottom: "8px",
+        paddingRight: "15px",
+        minWidth: "100%",
+        "&:before": {
+            borderColor: ColorsTheme.white,
+        },
+        "&:after": {
+            borderColor: ColorsTheme.white,
+        },
+        "&:not(.Mui-disabled):hover::before": {
+            borderColor: ColorsTheme.white,
+        },
     },
     wrappedTxtFieldOfficer: {
         display: "flex",
         margin: theme.spacing(1),
+        paddingTop: "8px",
+        paddingBottom: "8px",
+        paddingRight: "15px",
         minWidth: "100%",
         "&:before": {
             borderColor: ColorsTheme.white,
@@ -112,6 +124,7 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: "100%",
+        paddingRight: "15px",
         "&:before": {
             borderColor: ColorsTheme.white,
         },
@@ -124,12 +137,19 @@ const useStyles = makeStyles((theme) => ({
     },
     wrappedRememberMe: {
         display: "flex",
-        padding: "8px 10px",
-        marginBottom: "12px",
-        flexDirection: "row",
-        alignItems: "center",
-        color: ColorsTheme.Onyx,
-        fontWeight: "bold",
+        margin: theme.spacing(1),
+        paddingTop: "8px",
+        paddingBottom: "8px",
+        minWidth: "100%",
+        "&:before": {
+            borderColor: ColorsTheme.white,
+        },
+        "&:after": {
+            borderColor: ColorsTheme.white,
+        },
+        "&:not(.Mui-disabled):hover::before": {
+            borderColor: ColorsTheme.white,
+        },
     },
     wrappedSignIn: {
         display: "flex",
@@ -170,7 +190,7 @@ const useStyles = makeStyles((theme) => ({
         },
         flex: 1,
         width: "100%",
-        minHeight: "100vh",
+        height: "100%",
         backgroundColor: ColorsTheme.aliceBlue,
         paddingBottom: "10%",
         paddingLeft: "5%",
