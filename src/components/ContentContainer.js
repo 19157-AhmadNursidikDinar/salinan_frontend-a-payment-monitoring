@@ -11,6 +11,7 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import PersonIcon from "@material-ui/icons/Person";
+import BusinessIcon from '@material-ui/icons/Business';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -20,34 +21,41 @@ import HomeIcon from "@material-ui/icons/Home";
 import LogOutIcon from "@material-ui/icons/ExitToApp";
 import { FaEdit } from "react-icons/fa";
 
-import logo from "../assets/logo.svg";
+import logo from "../assets/images/logo.svg";
+import ColorsTheme from "../assets/colors"
 import useStyles from "../styles/ContentContainer";
-import { version } from "../../package.json";
+import AuthService from "../services/auth.service";
+import { useHistory } from "react-router-dom";
 
 const menuItems = {
   customer: [
-    { label: "Beranda", icon: <HomeIcon />, link: "/customer" },
+    { label: "Beranda", icon: <HomeIcon />, 
+      link: "/customer" 
+    },
     {
       label: "Payment Request",
-      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />, link: "/add-payment-request"
+      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />, 
+      link: "/add-payment-request"
     },
-    { label: "Sign Out", icon: <LogOutIcon />, link: "/" },
+    { label: "Sign Out", icon: <LogOutIcon />, 
+      link: "/" ,
+    },
   ],
   admin: [
     { label: "Beranda", icon: <HomeIcon />, link: "/admin" },
     {
-      label: "Service Lvl Agreement",
-      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />, link: "/service-level-agreement"
+      label: "Daftar Kantor Cabang",
+      icon: <BusinessIcon />, link: "/branch-office-list"
     },
-    { label: "Sign Out", icon: <LogOutIcon />, link: "/login-officer" }
+    {
+      label: "Service Lvl Agreement",
+      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
+      link: "/service-level-agreement",
+    },
   ],
-  accounting: [
-    { label: "Beranda", icon: <HomeIcon />, link: "/accounting" },
-    { label: "Sign Out", icon: <LogOutIcon />, link: "/login-officer" },
-  ],
+  accounting: [{ label: "Beranda", icon: <HomeIcon />, link: "/accounting" }],
   generalSupport: [
     { label: "Beranda", icon: <HomeIcon />, link: "/general-support" },
-    { label: "Sign Out", icon: <LogOutIcon />, link: "/login-officer" },
   ],
 };
 
@@ -57,9 +65,14 @@ export default function MiniDrawer({
   selectedMenu = "Beranda",
 }) {
   const classes = useStyles();
+  const history = useHistory();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(!open);
+  };
+  const handleLogoutClick = () => {
+    AuthService.logout();
+    history.push("/");
   };
 
   return (
@@ -115,14 +128,14 @@ export default function MiniDrawer({
           <Divider />
           <List>
             {menuItems[role].map(({ label, icon, link }) => (
-              <Link to={link}>
+              <Link to={link} key={label}>
                 <ListItem
                   button
                   key={label}
                   style={{
                     borderRight: selectedMenu === label && "solid #2196f3 0.3em",
-                    backgroundColor: selectedMenu === label && "#e3f2fd",
-                    color: '#686f74'
+                    backgroundColor: selectedMenu === label && ColorsTheme.aliceBlue,
+                    color: ColorsTheme.dimGray
                   }}
                 >
                   <ListItemIcon>{icon}</ListItemIcon>
@@ -130,6 +143,18 @@ export default function MiniDrawer({
                 </ListItem>
               </Link>
             ))}
+            <ListItem
+              button
+              style={{
+                color: "#686f74",
+              }}
+              onClick={handleLogoutClick}
+            >
+              <ListItemIcon>
+                <LogOutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sign Out" />
+            </ListItem>
           </List>
         </Drawer>
         <main className={classes.content}>
@@ -147,7 +172,7 @@ export default function MiniDrawer({
           <span style={{ marginLeft: open ? "240px" : "80px" }}>
             Copyright © 2021 Payment Monitoring
           </span>
-          <span> Version {version}</span>
+          <span> Version {process.env.REACT_APP_VERSION}</span>
         </Grid>
       </div>
     </div>

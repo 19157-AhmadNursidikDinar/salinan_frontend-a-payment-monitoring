@@ -17,10 +17,11 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
-import TablePaginationActions from "../../../components/table/generalSupport/TablePagination";
+import TablePaginationActions from "../../../components/table/payment/TablePagination";
 import Paper from "@material-ui/core/Paper";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import ColorsTheme from "../../../assets/colors";
 
 //making Get List Account using Array Object
 const rows = [
@@ -101,6 +102,12 @@ const useStyles = makeStyles((theme) => ({
   buttonMargin: {
     margin: theme.spacing(1)
   },
+  button: {
+    backgroundColor: ColorsTheme.dodgerBlue,
+    "&:hover": {
+      backgroundColor: ColorsTheme.blueCrayola,
+    },
+  },
 }));
 
 const StylingTableCell = withStyles(() => ({
@@ -124,7 +131,6 @@ const StylingTableRow = withStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
-  const router = useHistory()
   const [paging, setPaging] = React.useState(0);
   const rowsPerPage = 7;
 
@@ -147,7 +153,7 @@ export default function Home() {
       <Paper className={classes.PaperSize} elevation={4}>
         <div className={classes.headerTable}>
           <Link to="/add-user">
-            <Button variant="contained" color="primary" startIcon={<AddIcon/>}>
+            <Button className={classes.button} variant="contained" color="primary" startIcon={<AddIcon />}>
               Add New Role Account
             </Button>
           </Link>
@@ -182,9 +188,9 @@ export default function Home() {
             <TableBody>
               {(rowsPerPage > 0
                 ? rows.slice(
-                    paging * rowsPerPage,
-                    paging * rowsPerPage + rowsPerPage
-                  )
+                  paging * rowsPerPage,
+                  paging * rowsPerPage + rowsPerPage
+                )
                 : rows
               ).map((row) => (
                 <StylingTableRow key={row.no}>
@@ -204,7 +210,7 @@ export default function Home() {
                       </Button>
                     </Link>
                     <Link to="/update-user" className={classes.buttonMargin}>
-                      <Button variant="contained" color="primary" size="small" 
+                      <Button variant="contained" color="primary" size="small"
                         startIcon={<EditIcon />}>
                         Update
                       </Button>
