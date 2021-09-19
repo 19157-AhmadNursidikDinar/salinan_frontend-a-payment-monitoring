@@ -79,10 +79,7 @@ function FormAddUser() {
     
     const handleRole = (event) => {
         setRole(event.target.value);
-        event.target.value === 'adminRole' ? setNewUser({...newUser, "role_id": 1,})
-        : event.target.value === 'generalSupportRole' ? setNewUser({...newUser, "role_id": 2,})
-        : event.target.value === 'accountingRole' ? setNewUser({...newUser, "role_id": 3,})
-        : event.target.value === 'userRole' && setNewUser({...newUser, "role_id": 4,})
+        setNewUser({...newUser, "role_id": event.target.value,})
     };
 
     const handleBranch = (event) => {
@@ -100,18 +97,6 @@ function FormAddUser() {
         event.preventDefault();
     };
 
-    const handleClickSnackBar = () => {
-        setOpen(true);
-      };
-    
-      const handleCloseSnackBar = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-    
-        setOpen(false);
-      };
-
     async function PostCreateNewRole() {
         if (fullname !== '' && username !== '' && role_id !== 0 && password !== '') {
             try {
@@ -122,8 +107,9 @@ function FormAddUser() {
                     role_id,
                     branch_id,
                 })
+                response.data.error  ? alert(response.data.msg) : router.push('/admin')
             } catch (error) {
-                throw 'new role' + error
+                console.log(error);
             }
         } else {
             setErorMessege('require failed')
@@ -173,10 +159,10 @@ function FormAddUser() {
                                 value={role}
                                 onChange={handleRole}
                             >
-                                <MenuItem value={"adminRole"}>Admin</MenuItem>
-                                <MenuItem value={"generalSupportRole"}>General Support</MenuItem>
-                                <MenuItem value={"accountingRole"}>Accounting</MenuItem>
-                                <MenuItem value={"userRole"}>User</MenuItem>
+                                <MenuItem value={1}>Admin</MenuItem>
+                                <MenuItem value={2}>General Support</MenuItem>
+                                <MenuItem value={3}>Accounting</MenuItem>
+                                <MenuItem value={4}>User</MenuItem>
                             </Select>
                         </FormControl>
                         {erorMessage && <text style={{color:'red'}}>{role_id === 0 && erorMessage}</text> }
@@ -248,7 +234,7 @@ function FormAddUser() {
                         color="primary"
                         className={classes.BtnBack}
                         startIcon={<ArrowBackIosRoundedIcon />}
-                        onClick={router.goBack()}
+                        onClick={()=>router.goBack()}
                     >
                         Kembali
                     </Button>
@@ -257,7 +243,7 @@ function FormAddUser() {
                         color="primary"
                         className={classes.BtnSave}
                         endIcon={<SaveRoundedIcon />}
-                        onClick={PostCreateNewRole}
+                        onClick={()=>PostCreateNewRole()}
                     >
                         Simpan
                     </Button>
@@ -285,3 +271,5 @@ export default function AddUser() {
         </ContentContainer>
     );
 }
+
+

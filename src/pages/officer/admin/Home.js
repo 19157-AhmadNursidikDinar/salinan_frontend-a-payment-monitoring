@@ -19,7 +19,7 @@ import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import TablePaginationActions from "../../../components/table/generalSupport/TablePagination";
 import Paper from "@material-ui/core/Paper";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 //making Get List Account using Array Object
@@ -124,6 +124,7 @@ const StylingTableRow = withStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
+  const router = useHistory()
   const [paging, setPaging] = React.useState(0);
   const rowsPerPage = 7;
 
