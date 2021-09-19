@@ -11,19 +11,19 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import PersonIcon from "@material-ui/icons/Person";
-import BusinessIcon from '@material-ui/icons/Business';
+import BusinessIcon from "@material-ui/icons/Business";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Link } from "react-router-dom";
 
 import HomeIcon from "@material-ui/icons/Home";
-import LogOutIcon from "@material-ui/icons/ExitToApp";
 import { FaEdit } from "react-icons/fa";
 
 import logo from "../assets/images/logo.svg";
-import ColorsTheme from "../assets/colors"
+import ColorsTheme from "../assets/colors";
 import useStyles from "../styles/ContentContainer";
+import SignOutDialog from "./dialogs/SignOutDialog";
 import AuthService from "../services/auth.service";
 import { useHistory } from "react-router-dom";
 
@@ -40,7 +40,8 @@ const menuItems = {
     { label: "Beranda", icon: <HomeIcon />, link: "/admin" },
     {
       label: "Daftar Kantor Cabang",
-      icon: <BusinessIcon />, link: "/branch-office-list"
+      icon: <BusinessIcon />,
+      link: "/branch-office-list",
     },
     {
       label: "Service Lvl Agreement",
@@ -128,9 +129,11 @@ export default function MiniDrawer({
                   button
                   key={label}
                   style={{
-                    borderRight: selectedMenu === label && "solid #2196f3 0.3em",
-                    backgroundColor: selectedMenu === label && ColorsTheme.aliceBlue,
-                    color: ColorsTheme.dimGray
+                    borderRight:
+                      selectedMenu === label && "solid #2196f3 0.3em",
+                    backgroundColor:
+                      selectedMenu === label && ColorsTheme.aliceBlue,
+                    color: ColorsTheme.dimGray,
                   }}
                 >
                   <ListItemIcon>{icon}</ListItemIcon>
@@ -138,18 +141,7 @@ export default function MiniDrawer({
                 </ListItem>
               </Link>
             ))}
-            <ListItem
-              button
-              style={{
-                color: "#686f74",
-              }}
-              onClick={handleLogoutClick}
-            >
-              <ListItemIcon>
-                <LogOutIcon />
-              </ListItemIcon>
-              <ListItemText primary="Sign Out" />
-            </ListItem>
+            <SignOutDialog handleConfirm={handleLogoutClick} />
           </List>
         </Drawer>
         <main className={classes.content}>

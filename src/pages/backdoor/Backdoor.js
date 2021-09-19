@@ -4,7 +4,7 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Honeypot from "./Honeypot";
-import CustomizedDialogs from "../../components/CustomizedDialogs";
+import CustomizedDialogs from "../../components/dialogs/CustomizedDialogs";
 import HeatlCheck from "./entities/HeatlCheck";
 import HeatlCheckJWT from "./entities/HeatlCheckJWT";
 
