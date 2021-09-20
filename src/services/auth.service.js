@@ -26,14 +26,7 @@ class AuthService {
   }
 
   logout() {
-    const sessionToken = localStorage.getItem("token");
-    if (sessionToken) {
-      localStorage.removeItem("token");
-    }
-    const localStorageToken = window.sessionStorage.getItem("token");
-    if (localStorageToken) {
-      window.sessionStorage.removeItem("token");
-    }
+    AuthToken.removeToken();
   }
 
   getUserRole() {

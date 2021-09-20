@@ -1,4 +1,3 @@
-import AuthService from "../services/auth.service";
 const session = window.sessionStorage;
 
 class AuthToken {
@@ -22,10 +21,21 @@ class AuthToken {
     const item = JSON.parse(itemStr);
     const now = Math.round(new Date() / 1000);
     if (now > item.expiry) {
-      AuthService.logout();
+      this.removeToken();
       return null;
     }
     return item.value;
+  }
+
+  removeToken() {
+    const sessionToken = localStorage.getItem("token");
+    if (sessionToken) {
+      localStorage.removeItem("token");
+    }
+    const localStorageToken = window.sessionStorage.getItem("token");
+    if (localStorageToken) {
+      window.sessionStorage.removeItem("token");
+    }
   }
 }
 
