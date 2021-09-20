@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -26,6 +26,18 @@ const styles = (theme) => ({
     color: theme.palette.grey[500],
   },
 });
+
+const useStyles = makeStyles((theme) => ({
+  btnSignIn: {
+    display: "flex",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "10px !important",
+    background: "linear-gradient(45deg, #15aad9 30%, #7ee0ff 90%)",
+  },
+}));
 
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
@@ -59,6 +71,7 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 export default function CustomizedDialogs({ handleConfirm }) {
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -102,15 +115,11 @@ export default function CustomizedDialogs({ handleConfirm }) {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button
-            autoFocus
-            onClick={handleClose}
-            color="primary"
-            variant="outlined"
-          >
+          <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <Button
+            className={classes.btnSignIn}
             autoFocus
             onClick={handleSignOut}
             color="primary"
