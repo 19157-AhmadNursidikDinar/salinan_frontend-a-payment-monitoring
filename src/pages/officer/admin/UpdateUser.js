@@ -106,29 +106,34 @@ function FormUpdateUser() {
                     </Grid>
                 </Grid>
             </Container>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Link to="/admin">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.BtnBack}
-                            startIcon={<ArrowBackIosRoundedIcon />}
-                        >
-                            Kembali
+            <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+            >
+
+                <Link to="/admin">
+                    <Button size="small"
+                        variant="contained"
+                        color="primary"
+                        className={classes.BtnBack}
+                        startIcon={<ArrowBackIosRoundedIcon />}
+                    >
+                        Back
                         </Button>
-                    </Link>
-                    <Link to="/admin">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.BtnSave}
-                            endIcon={<SaveRoundedIcon />}
-                        >
-                            Update
+                </Link>
+                <Link to="/admin">
+                    <Button size="small"
+                        variant="contained"
+                        color="primary"
+                        className={classes.BtnSave}
+                        endIcon={<SaveRoundedIcon />}
+                    >
+                        Save
                         </Button>
-                    </Link>
-                </Grid>
+                </Link>
+
             </Grid>
         </Paper>
     );

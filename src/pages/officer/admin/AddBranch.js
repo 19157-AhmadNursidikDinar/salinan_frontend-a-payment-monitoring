@@ -12,10 +12,6 @@ import { makeStyles } from '@material-ui/core/styles';
 //@material-ui/icons
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 import ArrowBackIosRounded from "@material-ui/icons/ArrowBackIosRounded";
-import CachedIcon from '@material-ui/icons/Cached';
-
-import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 //links
 import { Link } from "react-router-dom";
@@ -31,7 +27,8 @@ import BranchService from "../../../services/branch.service"
 //Styling Page
 const useTheStyle = makeStyles((theme) => ({
     PaperSize: {
-        padding: 20,
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
     },
     BtnSave: {
         backgroundColor: ColorsTheme.dodgerBlue,
@@ -39,6 +36,7 @@ const useTheStyle = makeStyles((theme) => ({
             backgroundColor: ColorsTheme.blueCrayola,
         },
         marginTop: 30,
+        marginRight: theme.spacing(2),
         float: 'right',
     },
     BtnBack: {
@@ -47,13 +45,12 @@ const useTheStyle = makeStyles((theme) => ({
             backgroundColor: ColorsTheme.blueCrayola,
         },
         marginTop: 30,
+        marginLeft: theme.spacing(2),
         float: 'left',
     },
 }));
 
 function FormAddBranch(props) {
-  const getTheme = useTheme();
-  const matches = useMediaQuery(getTheme.breakpoints.down('sm'));
 
     const classes = useTheStyle();
 
@@ -81,68 +78,53 @@ function FormAddBranch(props) {
         <Paper className={classes.PaperSize} elevation={4}>
             <form onSubmit={formik.handleSubmit}>
                 <Container maxWidth="md">
-<Grid
-                    spacing={3}
-                    direction="row"
-                    alignItems="center"
-                    justify="center">
+                    <Grid
+                        spacing={3}
+                        direction="row"
+                        alignItems="center"
+                        justify="center">
 
-                    <Grid item xs={12}>
-                        <TextField
-                            id="branchName"
-                            name="branchName"
-                            label="Nama Kantor Cabang"
-                            variant="outlined"
-                            value={formik.values.branchName}
-                            onChange={formik.handleChange}
-                            fullWidth
-                            disabled={formik.isSubmitting}
-                            error={
-                                Boolean(formik.errors.branchName) && formik.touched.branchName
-                            }
-                            helperText={formik.errors.branchName}
-                        />
+                        <Grid item xs={12}>
+                            <TextField
+                                id="branchName"
+                                name="branchName"
+                                label="Nama Kantor Cabang"
+                                variant="outlined"
+                                value={formik.values.branchName}
+                                onChange={formik.handleChange}
+                                fullWidth
+                                disabled={formik.isSubmitting}
+                                error={
+                                    Boolean(formik.errors.branchName) && formik.touched.branchName
+                                }
+                                helperText={formik.errors.branchName}
+                            />
+                        </Grid>
                     </Grid>
-                </Grid>
-                
+
                 </Container>
-                <Grid container spacing={3}>
+                <Grid container spacing={1}>
                     <Grid item xs={12}>
                         <Link to="/branch-office-list">
-                            {matches? <Button
-                                variant="contained"
-                                color="primary"
-                                className={classes.BtnBack}
-                            >
-                                <ArrowBackIosRounded />
-                            </Button> : <Button
+                            <Button size="small"
                                 variant="contained"
                                 color="primary"
                                 className={classes.BtnBack}
                                 startIcon={<ArrowBackIosRounded />}
                             >
-                                Kembali
-                            </Button>}
-                            
+                                Back
+                            </Button>
                         </Link>
-                        {matches? <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.BtnSave}
-                            type="submit"
-                        >
-                            {formik.isSubmitting ? <CachedIcon/> : <SaveRoundedIcon />}
-                        </Button>:
-                        <Button
+                        <Button size="small"
                             variant="contained"
                             color="primary"
                             className={classes.BtnSave}
                             endIcon={<SaveRoundedIcon />}
                             type="submit"
                         >
-                            {formik.isSubmitting ? "Menyimpan..." : "Simpan"}
-                        </Button>}
-                        
+                            {formik.isSubmitting ? "Saving..." : "Save"}
+                        </Button>
+
 
                     </Grid>
                 </Grid>

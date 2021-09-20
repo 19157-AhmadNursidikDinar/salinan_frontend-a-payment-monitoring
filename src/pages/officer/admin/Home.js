@@ -237,7 +237,7 @@ export default function Home() {
                         size="small"
                         startIcon={<DeleteIcon />}
                       >
-                        Hapus
+                        Delete
                       </Button>
                     </Link>
                   </StylingTableCell>
