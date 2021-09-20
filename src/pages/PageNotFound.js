@@ -1,38 +1,19 @@
-import { Grid } from '@material-ui/core';
-import React from 'react';
+import React from "react";
+import { Grid } from "@material-ui/core";
+
+//style
 import Logo from "../assets/logoPM.png"
+import useStyles from "../styles/PageNotFound";
 
 export default function PageNotFound() {
+    const classes = useStyles();
     return (
-
-        <div className="container"
-            style={{
-                backgroundColor: "#E5E5E5",
-                alignItems: "center",
-            }}>
-
-            <Grid container justify="center" alignItems="center">
-                <img
-                    style={{
-                        height: "90px",
-                    }} src={Logo} />
-
-                <h1
-                    style={{
-                        fontSize: "40px",
-                        marginLeft: "20px"
-                    }}
-                >404 - PAGE NOT FOUND
-
-                    <p
-                        style={{
-                            fontSize: "small",
-                            fontWeight: "lighter",
-                        }}
-                    >The page you are looking for might have been removed had its name changed
-                        <br />or is temporarily unavailable.</p>
-                </h1>
-            </Grid>
-        </div>
+        <Grid className={classes.content} container justify="center" >
+            <img src={Logo} alt="error-logo" className={classes.imageError} />
+            <h1 className={classes.descError}>404 - PAGE NOT FOUND
+                <p className={classes.textError}>The page you are looking for might have been removed had its name changed
+                    <br />or is temporarily unavailable.</p>
+            </h1>
+        </Grid>
     );
 }
