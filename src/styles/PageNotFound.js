@@ -1,9 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
+import ColorsTheme from "../assets/colors";
 
 const useStyles = makeStyles({
 
     content: {
-        backgroundColor: "#F0F2F5",
+        backgroundColor: ColorsTheme.cultured,
         height: "100vh",
         alignItems: "center"
     },

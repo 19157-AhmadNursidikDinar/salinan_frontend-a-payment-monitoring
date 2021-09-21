@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 
 //style
-import Logo from "../assets/logoPM.png"
+import Logo from "../assets/images/logoPM.png";
 import useStyles from "../styles/PageNotFound";
 
 export default function PageNotFound() {
