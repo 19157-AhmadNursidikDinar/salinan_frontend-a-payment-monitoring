@@ -31,8 +31,20 @@ class AuthService {
 
   getUserRole() {
     const token = AuthToken.getToken();
-    const decoded = jwt_decode(token);
-    return decoded.role || null;
+    let mRole = null;
+    if (Boolean(token)) {
+      const { role } = jwt_decode(token);
+      if (role === "USER") {
+        mRole = "customer";
+      } else if (role === "ADMIN") {
+        mRole = "admin";
+      } else if (role === "GENERAL-SUPPORT") {
+        mRole = "general-support";
+      } else if (role === "ACCOUNTING") {
+        mRole = "accounting";
+      }
+    }
+    return mRole;
   }
 }
 

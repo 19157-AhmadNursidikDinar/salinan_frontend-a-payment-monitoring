@@ -24,6 +24,7 @@ import useStyles from "../../styles/LoginPage";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
+import AuthToken from "../../utils/auth-token";
 
 const BlueCheckbox = withStyles({
   root: {
@@ -64,16 +65,15 @@ export default function LoginOfficer(props) {
       // console.log({ result });
       if (!Boolean(result.error)) {
         const role = AuthService.getUserRole();
-        if (role === "ADMIN") {
+        if (role === "admin") {
           props.history.push("/admin");
-        } else if (role === "GENERAL-SUPPORT") {
+        } else if (role === "general-support") {
           props.history.push("/general-support");
-        } else if (role === "ACCOUNTING") {
+        } else if (role === "accounting") {
           props.history.push("/accounting");
-        } else if (role === "USER") {
-          props.history.push("/customer");
         } else {
-          setErrorMsg("undefined role");
+          AuthToken.removeToken();
+          setErrorMsg("Account can't be found");
         }
       } else {
         setErrorMsg(result.error.response.data.msg);
@@ -89,12 +89,15 @@ export default function LoginOfficer(props) {
             <div className={classes.flexCenter}>
               <div className={classes.headerLogo}>
                 <img src={Logo} alt="app-logo" className={classes.headLogo} />
-                <h1 className={classes.titleSection}>
-                  Pay<span className={classes.titleSectionSpan}>ment</span> <br /> Monitoring
+              <h1 className={classes.titleSection}>
+                Pay<span className={classes.titleSectionSpan}>ment</span> <br />{" "}
+                Monitoring
               </h1>
               </div>
             </div>
-            <h3 className={classes.txtSignIn}>Sign in to continue our application </h3>
+            <h3 className={classes.txtSignIn}>
+              Sign in to continue our application{" "}
+            </h3>
             <div className={classes.innerBox}>
               {errorMsg && (
                 <Alert severity="error" style={{ margin: "0.5em 0" }}>

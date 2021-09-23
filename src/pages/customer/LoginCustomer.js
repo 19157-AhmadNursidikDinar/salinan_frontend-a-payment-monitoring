@@ -21,6 +21,7 @@ import useStyles from "../../styles/LoginPage";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
+import AuthToken from "../../utils/auth-token";
 
 const BlueCheckbox = withStyles({
   root: {
@@ -61,16 +62,11 @@ export default function LoginCustomer(props) {
       // console.log({ result });
       if (!Boolean(result.error)) {
         const role = AuthService.getUserRole();
-        if (role === "ADMIN") {
-          props.history.push("/admin");
-        } else if (role === "GENERAL-SUPPORT") {
-          props.history.push("/general-support");
-        } else if (role === "ACCOUNTING") {
-          props.history.push("/accounting");
-        } else if (role === "USER") {
+        if (role === "customer") {
           props.history.push("/customer");
         } else {
-          setErrorMsg("undefined role");
+          AuthToken.removeToken();
+          setErrorMsg("Account can't be found");
         }
       } else {
         setErrorMsg(result.error.response.data.msg);
@@ -86,8 +82,9 @@ export default function LoginCustomer(props) {
             <div className={classes.flexCenter}>
               <div className={classes.headerLogo}>
                 <img src={Logo} alt="app-logo" className={classes.headLogo} />
-                <h1 className={classes.titleSection}>
-                  Pay<span className={classes.titleSectionSpan}>ment</span> <br /> Monitoring
+              <h1 className={classes.titleSection}>
+                Pay<span className={classes.titleSectionSpan}>ment</span> <br />{" "}
+                Monitoring
               </h1>
               </div>
             </div>
@@ -200,7 +197,11 @@ export default function LoginCustomer(props) {
         </div>
         <div className={classes.img}>
           <img className={classes.circledImage} src={Circle} alt="Round.png" />
-          <img className={classes.bankerImage} src={BankerLogo} alt="BankerLogo" />
+          <img
+            className={classes.bankerImage}
+            src={BankerLogo}
+            alt="BankerLogo"
+          />
         </div>
       </div>
       </Grid>
