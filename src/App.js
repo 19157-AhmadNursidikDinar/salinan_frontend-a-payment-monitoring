@@ -16,6 +16,7 @@ import ServiceLevelAgreement from "./pages/officer/admin/ServiceLevelAgreement";
 import PaymentRequestDetailGeneralSupport from "./pages/officer/generalSupport/PaymentRequestDetail";
 import PaymentRequestDetailAcounting from "./pages/officer/accounting/PaymentRequestDetail";
 import BranchOfficeList from "./pages/officer/admin/BranchOfficeList";
+import PageNotFound from "./pages/PageNotFound";
 import Backdoor from "./pages/backdoor/Backdoor";
 import AuthProvider from "./components/AuthProvider";
 
@@ -62,6 +63,9 @@ function App() {
           />
         </AuthProvider>
         <Route exact path="/backdoor" component={Backdoor} />
+         
+        {/* Masukan halaman baru diatas line ini */}
+        <Route component={PageNotFound} />
       </Router>
     </>
   );

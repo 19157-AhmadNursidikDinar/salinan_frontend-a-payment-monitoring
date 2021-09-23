@@ -11,19 +11,19 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import PersonIcon from "@material-ui/icons/Person";
-import BusinessIcon from '@material-ui/icons/Business';
+import BusinessIcon from "@material-ui/icons/Business";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Link } from "react-router-dom";
 
 import HomeIcon from "@material-ui/icons/Home";
-import LogOutIcon from "@material-ui/icons/ExitToApp";
 import { FaEdit } from "react-icons/fa";
 
 import logo from "../assets/images/logo.svg";
-import ColorsTheme from "../assets/colors"
+import ColorsTheme from "../assets/colors";
 import useStyles from "../styles/ContentContainer";
+import SignOutDialog from "./dialogs/SignOutDialog";
 import AuthService from "../services/auth.service";
 import { useHistory } from "react-router-dom";
 
@@ -43,7 +43,8 @@ const menuItems = {
     { label: "Beranda", icon: <HomeIcon />, link: "/admin" },
     {
       label: "Daftar Kantor Cabang",
-      icon: <BusinessIcon />, link: "/branch-office-list"
+      icon: <BusinessIcon />,
+      link: "/branch-office-list",
     },
     {
       label: "Service Lvl Agreement",
@@ -121,7 +122,7 @@ export default function MiniDrawer({
             variant="permanent"
             className={clsx(classes.drawer, {
               [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
+              [classes.drawerClose]: !open,]
             })}
             classes={{
               paper: clsx({
@@ -182,7 +183,7 @@ export default function MiniDrawer({
             <Grid item xs={12} sm={6} className={classes.footerLeft} >
               <span style={{ marginLeft: matches ? "70px" : open ? "240px" : "70px" }}>
                 Copyright © 2021 Payment Monitoring
-          </span>
+              </span>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.footerRight}>
               <span style={{ marginLeft: matches ? "70px" : open ? "240px" : "70px" }}> Version {process.env.REACT_APP_VERSION}</span>

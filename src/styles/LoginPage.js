@@ -204,6 +204,7 @@ const useStyles = makeStyles((theme) => ({
     },
     welcome: {
         ...FontsTheme.roboto_bold,
+        marginBottom:"0.25em",
         fontSize: "40px",
         lineHeight: "30px",
         color: ColorsTheme.Onyx,

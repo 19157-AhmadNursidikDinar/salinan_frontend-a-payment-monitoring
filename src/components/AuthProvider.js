@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import AuthService from "../services/auth.service";
+import AuthToken from "../utils/auth-token";
 
 const routes = {
   login: ["/", "/login-officer"],
@@ -24,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
   React.useEffect(() => {
     if (location.pathname !== "/backdoor") {
-      const token = localStorage.getItem("token");
+      const token = AuthToken.getToken();
       let role = "";
       if (token) {
         role = AuthService.getUserRole();
