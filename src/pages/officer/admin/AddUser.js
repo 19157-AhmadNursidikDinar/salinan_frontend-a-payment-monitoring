@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useHistory } from "react-router-dom";
+import { useFormik } from 'formik';
 //Material-Ui Cores
 import {
     Button,
@@ -25,7 +26,11 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 //Links
 import ContentContainer from "../../../components/ContentContainer";
-import { Link, useHistory } from "react-router-dom";
+import RoleService from '../../../services/role.service'
+import branchService from '../../../services/branch.service';
+
+
+
 
 //PAGE STYLE
 const useMyStyles = makeStyles((theme) => ({
@@ -52,14 +57,10 @@ const useMyStyles = makeStyles((theme) => ({
 
 
 
-const url = '34.101.232.64:8000'
 function FormAddUser() {
     const router = useHistory()
     const classes = useMyStyles();
-    const [open, setOpen] = useState(false);
     const [dataBranch, setDataBranch] = useState([])
-    const [erorMessage, setErorMessege] = useState()
-    const [usernameErrorMessage, setUsernameErrorMessage] = useState('')
     const [newUser, setNewUser] = useState({
         "fullname": "",
         "username": "",
@@ -68,7 +69,7 @@ function FormAddUser() {
         "branch_id": 1
     });
     const {fullname, username, password, role_id, branch_id} = newUser
-
+  
     //STATE "Role"
     const [role, setRole] = useState('');
     const [branch, setBranch] = useState()
@@ -76,6 +77,26 @@ function FormAddUser() {
     const [values, setValues] = useState({
         showPassword: false,
     });
+
+    const formik = useFormik({
+        initialValues: {
+            fullname: "",
+            username: "",
+            password: "",
+            role_id: 0,
+            branch_id: 1
+        },
+        onSubmit: values => {
+          alert(JSON.stringify(values, null, 2));
+        },
+      });
+
+    const handleName = (event)=>{
+        //formik.handleChange
+        setNewUser({
+            ...newUser, 'fullname'  : event.target.value
+        })
+    }
     
     const handleRole = (event) => {
         setRole(event.target.value);
@@ -96,40 +117,83 @@ function FormAddUser() {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-
-    async function PostCreateNewRole() {
-        if (fullname !== '' && username !== '' && role_id !== 0 && password !== '') {
-            try {
-                const response = await axios.post(`http://34.101.232.64:8000/api/v1/user/create`,{
-                    fullname,
-                    username,
-                    password,
-                    role_id,
-                    branch_id,
-                })
-                response.data.error  ? alert(response.data.msg) : router.push('/admin')
-            } catch (error) {
-                console.log(error);
-            }
+    
+    function buttonOnClick() {
+        if (fullname === '' || username === '' || password === '' || role_id === 0 ) {
+            return ( 
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.BtnSave}
+                    endIcon={<SaveRoundedIcon />}
+                    onClick={()=>{SaveOnclick()}}
+                    disabled
+                >
+                    Simpan
+                </Button>
+            )
+           
         } else {
-            setErorMessege('require failed')
+            if (role_id !== 4) {
+                return ( 
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.BtnSave}
+                        endIcon={<SaveRoundedIcon />}
+                        onClick={()=>{SaveOnclick()}}
+                    >
+                        Simpan
+                    </Button>
+                )
+            } else if ( role_id === 4 ){
+                if (branch_id !== 1) {
+                    return(
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.BtnSave}
+                            endIcon={<SaveRoundedIcon />}
+                            onClick={()=>{SaveOnclick()}}
+                        >
+                            Simpan
+                        </Button>
+                    )
+                    
+                } else {
+                    return(
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.BtnSave}
+                            endIcon={<SaveRoundedIcon />}
+                            onClick={()=>{SaveOnclick()}}
+                            disabled
+                        >
+                            Simpan
+                        </Button>
+                    )
+                   
+                }
+            }
         }
     }
 
     async function GetBranchID() {
-        try {
-            const branchID = await axios.get(`http://${url}/api/v1/branch`)
-            setDataBranch(branchID.data.data)
-        } catch (error) {
-            throw 'response data branch' + error
-        }
+        const branchID = await branchService.getAllBranch()
+        setDataBranch(branchID.data)
     }
+    async function SaveOnclick() {
+        const data = await RoleService.CreateNewRole(newUser)
+        !data.error && router.push('/admin')
+    }
+
+   
 
     useEffect(() => {
         GetBranchID()
     }, [])
-    
-    console.log(newUser);
+
     //PAGE ADD USER
     return (
         <Paper className={classes.PaperSize} elevation={4}>
@@ -142,12 +206,11 @@ function FormAddUser() {
                             label="Nama"
                             variant="outlined"
                             fullWidth
+                            //value={formik.values.fullname}
                             onChange={(e)=>setNewUser({
-                            ...newUser, 'fullname'  : e.target.value
+                                ...newUser, 'fullname'  : e.target.value
                             })}
-                        />
-                        {erorMessage && <text style={{color:'red'}}>{fullname === '' && erorMessage}</text> }
-                        
+                        />                        
                     </Grid>
                     <Grid item xs={12}>
                         <FormControl variant="outlined" fullWidth>
@@ -165,10 +228,9 @@ function FormAddUser() {
                                 <MenuItem value={4}>User</MenuItem>
                             </Select>
                         </FormControl>
-                        {erorMessage && <text style={{color:'red'}}>{role_id === 0 && erorMessage}</text> }
                     </Grid>
                     {
-                        role === 'userRole' &&
+                        role === 4 &&
                         <Grid item xs={12}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel htmlFor="user-roles">Branch</InputLabel>
@@ -184,7 +246,6 @@ function FormAddUser() {
                                     }
                                 </Select>
                             </FormControl>
-                            {erorMessage && <text style={{color:'red'}}>{branch_id === 0 && erorMessage}</text> }
                         </Grid>
                     }
                     <Grid item xs={12}>
@@ -196,7 +257,6 @@ function FormAddUser() {
                             fullWidth
                             onChange={(e)=>setNewUser({...newUser, 'username'  : e.target.value})}
                         />
-                        {erorMessage && <text style={{color:'red'}}>{username === '' && erorMessage}</text> }
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -223,7 +283,6 @@ function FormAddUser() {
                                 ...newUser, 'password'  : e.target.value
                               })}
                         />
-                        {erorMessage && <text style={{color:'red'}}>{password === '' && erorMessage}</text> }
                     </Grid>
                 </Grid>
             </Container>
@@ -238,15 +297,7 @@ function FormAddUser() {
                     >
                         Kembali
                     </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.BtnSave}
-                        endIcon={<SaveRoundedIcon />}
-                        onClick={()=>PostCreateNewRole()}
-                    >
-                        Simpan
-                    </Button>
+                   {buttonOnClick()}
                 </Grid>
             </Grid>
         </Paper>
@@ -255,6 +306,7 @@ function FormAddUser() {
 }
 
 export default function AddUser() {
+   
     return (
         <ContentContainer role="admin" selectedMenu="Beranda">
             <div
