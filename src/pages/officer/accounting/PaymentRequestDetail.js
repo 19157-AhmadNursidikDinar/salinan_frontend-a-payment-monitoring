@@ -9,7 +9,7 @@ import {
     Table,
     TableBody,
     TableContainer,
-  
+
 } from "@material-ui/core";
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
@@ -21,10 +21,10 @@ function PaymentRequestDetail(props) {
     const classes = useStyles();
     const handleClickGoBack = () => {
         props.history.goBack();
-      }
+    }
 
     return (
-        <ContentContainer role="generalSupport">
+        <ContentContainer role="accounting">
             <div
                 style={{
                     width: "100%",
@@ -35,34 +35,34 @@ function PaymentRequestDetail(props) {
             </div>
             <div className={classes.root}>
                 <Card className={classes.cardRequest}>
-                    <Container fixed>
-                        <CardContent>
+                    <CardContent>
+                        <Container fixed>
                             <TableContainer className={classes.table}>
-                                <Table className={classes.table} aria-label="simple table">
+                                <Table className={classes.table} aria-label="simple table" size='small'>
                                     <TableBody>
-                                        <PaymentStatusSelector/>
+                                        <PaymentStatusSelector />
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                        </CardContent>
-                    </Container>
+                        </Container>
+                    </CardContent>
                     <CardActions className={classes.cardActions}>
-                        <Button
+                        <Button size="small"
                             variant="contained"
                             color="primary"
                             className={classes.buttonAction}
                             onClick={handleClickGoBack}
                             startIcon={<ArrowBackIosRoundedIcon />}
-                            >
-                            Kembali
+                        >
+                            Back
                         </Button>
-                        <Button
+                        <Button size="small"
                             variant="contained"
                             color="primary"
                             className={classes.buttonAction}
                             endIcon={<SaveRoundedIcon />}
-                            // onClick={handleClickNewPayment}
-                            >
+                        // onClick={handleClickNewPayment}
+                        >
                             Save
                         </Button>
                     </CardActions>

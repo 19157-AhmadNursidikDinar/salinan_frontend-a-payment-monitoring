@@ -11,7 +11,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: ColorsTheme.cultured,
   },
   wrapper: {
-    display: "flex",
+    [theme.breakpoints.down('sm')]: {
+      display: "inline",
+      marginLeft: theme.spacing(6)
+    },
+    [theme.breakpoints.up('md')]: {
+
+      display: "flex"
+    },
   },
   appBar: {
     backgroundColor: ColorsTheme.white,
@@ -67,9 +74,13 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
+  imgToolbar: {
+    width: "100%",
+  },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    overflowX: 'hidden',
   },
   pageTitle: {
     fontSize: "1.15em",
@@ -80,6 +91,29 @@ const useStyles = makeStyles((theme) => ({
     padding: "0.75em 1em",
     width: "100%",
     backgroundColor: ColorsTheme.white, //make relative instead of absolute
+  },
+  footerLeft: {
+    display: "flex",
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: "center",
+      textAlign: "center"
+    },
+    [theme.breakpoints.up('md')]: {
+      justifyContent: "start"
+    },
+  },
+  footerRight: {
+    display: "flex",
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: "center",
+      textAlign: "center"
+    },
+    [theme.breakpoints.up('md')]: {
+      justifyContent: "end"
+    },
+  },
+  titleSectionSpan: {
+    color: ColorsTheme.pacificBlue,
   },
 }));
 

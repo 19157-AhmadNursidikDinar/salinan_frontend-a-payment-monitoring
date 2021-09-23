@@ -3,7 +3,8 @@ import ColorsTheme from "../../../assets/colors";
 
 const useStyles = makeStyles((theme) => ({
     PaperSize: {
-        padding: 40,
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
     },
     BtnSave: {
         backgroundColor: ColorsTheme.dodgerBlue,
@@ -11,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: ColorsTheme.blueCrayola,
         },
         marginTop: 30,
+        marginRight: theme.spacing(2),
         float: 'right',
     },
     BtnBack: {
@@ -19,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: ColorsTheme.blueCrayola,
         },
         marginTop: 30,
+        marginLeft: theme.spacing(2),
         float: 'left',
     },
 }));

@@ -1,7 +1,8 @@
 import { makeStyles } from "@material-ui/core/styles";
 import ColorsTheme from "../../assets/colors";
+import FontsTheme from "../../assets/fonts";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
   },
@@ -43,7 +44,16 @@ const useStyles = makeStyles({
   table: {
     borderBottom: "none",
   },
-});
+  fontDetail: {
+    ...FontsTheme.roboto_bold,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: "14px",
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: "18px",
+    },
+  }
+}));
 
 
 export default useStyles;
