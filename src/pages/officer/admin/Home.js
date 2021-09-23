@@ -22,6 +22,7 @@ import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ColorsTheme from "../../../assets/colors";
+import Grid from "@material-ui/core/Grid";
 
 //making Get List Account using Array Object
 const rows = [
@@ -108,6 +109,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: ColorsTheme.blueCrayola,
     },
   },
+  actionComponent: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  }
 }));
 
 const StylingTableCell = withStyles(() => ({
@@ -151,14 +156,21 @@ export default function Home() {
         <Typography variant="h4">Beranda Admin</Typography>
       </div>
       <Paper className={classes.PaperSize} elevation={4}>
-        <div className={classes.headerTable}>
-          <Link to="/add-user">
-            <Button className={classes.button} variant="contained" color="primary" startIcon={<AddIcon />}>
-              Add New Role Account
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+
+          <Link to="/add-user"
+            className={classes.actionComponent}>
+            <Button fullWidth className={classes.button} variant="contained" color="primary" startIcon={<AddIcon />}>
+              Add Account
             </Button>
           </Link>
           <TextField
-            className="txtfield"
+            className={classes.actionComponent}
             id="txtSearch"
             type="text"
             placeholder="Search"
@@ -172,7 +184,8 @@ export default function Home() {
               ),
             }}
           />
-        </div>
+        </Grid>
+
 
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="custom pagination table">
@@ -199,8 +212,9 @@ export default function Home() {
                   <StylingTableCell>{row.role}</StylingTableCell>
                   <StylingTableCell>{row.username}</StylingTableCell>
                   <StylingTableCell width="25%">
-                    <Link to="/detail-user" className={classes.buttonMargin}>
+                    <Link to="/detail-user" >
                       <Button
+                        className={classes.buttonMargin}
                         variant="contained"
                         color="info"
                         size="small"
@@ -209,20 +223,21 @@ export default function Home() {
                         Detail
                       </Button>
                     </Link>
-                    <Link to="/update-user" className={classes.buttonMargin}>
-                      <Button variant="contained" color="primary" size="small"
+                    <Link to="/update-user" >
+                      <Button className={classes.buttonMargin} variant="contained" color="primary" size="small"
                         startIcon={<EditIcon />}>
                         Update
                       </Button>
                     </Link>
-                    <Link to="/hapus-user" className={classes.buttonMargin}>
+                    <Link to="/hapus-user" >
                       <Button
+                        className={classes.buttonMargin}
                         variant="contained"
                         color="secondary"
                         size="small"
                         startIcon={<DeleteIcon />}
                       >
-                        Hapus
+                        Delete
                       </Button>
                     </Link>
                   </StylingTableCell>

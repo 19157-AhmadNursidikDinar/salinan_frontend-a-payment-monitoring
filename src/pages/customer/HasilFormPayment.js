@@ -14,18 +14,40 @@ import TableRow from "@material-ui/core/TableRow";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 import ContentContainer from "../../components/ContentContainer";
 import useStyles from "../../styles/customer/HasilFormPayment";
-import ColorsTheme from "../../assets/colors";
 
-const TableCell = withStyles({
-  root: {
-    borderBottom: "none",
-    fontSize: "18px",
-    fontWeight: 600,
-  },
-})(MuiTableCell);
+import Chip from "../../components/ActionChip";
 
+const TableCell = withStyles((theme) => ({
+    root: {
+        borderBottom: "none",
+        fontWeight: 600,
+        [theme.breakpoints.down('sm')]: {
+            fontSize: "12px",
+        },
+        [theme.breakpoints.up('md')]: {
+            fontSize: "18px",
+        },
+    },
+}))(MuiTableCell);
+
+const convertActionToChipColor = (action) => {
+  let result = "grey";
+  if (["Rejected by Accounting", "Rejected by GS"].includes(
+    action)) {
+    result = "red"
+  } else if (action === "Disetujui") {
+    result = "green"
+
+  } else if (action === "Menunggu Konfirmasi") {
+    result = "blue"
+  }
+  return result;
+}
 
 
 const createData = (description, value) => {
@@ -41,10 +63,12 @@ const rows = [
   createData("Nama Rek. / Penerima", "MD. Mubarokul Huda"),
   createData("No. Rekening Penerima", "15000757050"),
   createData("Request Terkirim", "Jum’at, 9 Juli 2021 (09.00 PM)"),
-  createData("Status Request", "Diteruskan ke Accounting"),
+  createData("Status Request", "Menunggu Konfirmasi"),
 ];
 
 function HasilFormPayment(props) {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
 
   const handleClickNewPayment = () => {
@@ -72,7 +96,7 @@ function HasilFormPayment(props) {
           <Container fixed>
             <CardContent>
               <TableContainer className={classes.table}>
-                <Table className={classes.table} aria-label="simple table">
+                <Table className={classes.table} aria-label="simple table" size='small'>
                   <TableBody>
                     {rows.map((row) => (
                       <TableRow key={row.name}>
@@ -80,15 +104,12 @@ function HasilFormPayment(props) {
                         <TableCell align="center">:</TableCell>
                         {row.description === "Status Request" ? (
                           <TableCell>
-                            <span
-                              style={{
-                                backgroundColor: ColorsTheme.aquaMarine,
-                                borderRadius: 8,
-                                padding: 6,
-                              }}
-                            >
-                              {row.value}
-                            </span>
+                <Chip
+                  label={row.value}
+                  color={
+                    convertActionToChipColor(row.value)
+                  }
+                />
                           </TableCell>
                         ) : (
                           <TableCell>{row.value}</TableCell>
@@ -101,23 +122,23 @@ function HasilFormPayment(props) {
             </CardContent>
           </Container>
           <CardActions className={classes.cardActions}>
-            <Button
+            <Button size="small"
               variant="contained"
               color="primary"
               className={classes.buttonAction}
               onClick={handleClickGoBack}
               startIcon={<ArrowBackIosIcon />}
             >
-              Kembali
+              Back
             </Button>
-            <Button
+            <Button size="small"
               variant="contained"
               color="primary"
               className={classes.buttonAction}
               endIcon={<ArrowForwardIosIcon />}
               onClick={handleClickNewPayment}
-            >
-              Buat Payment Request Baru
+            > {matches ? 'New' : 'New Payment Request'}
+              
             </Button>
           </CardActions>
         </Card>

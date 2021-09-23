@@ -9,7 +9,7 @@ import {
     Table,
     TableBody,
     TableContainer,
-  
+
 } from "@material-ui/core";
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
@@ -21,7 +21,7 @@ function PaymentRequestDetail(props) {
     const classes = useStyles();
     const handleClickGoBack = () => {
         props.history.goBack();
-      }
+    }
 
     return (
         <ContentContainer role="generalSupport">
@@ -40,29 +40,29 @@ function PaymentRequestDetail(props) {
                             <TableContainer className={classes.table}>
                                 <Table className={classes.table} aria-label="simple table">
                                     <TableBody>
-                                        <PaymentStatusSelector/>
+                                        <PaymentStatusSelector />
                                     </TableBody>
                                 </Table>
                             </TableContainer>
                         </CardContent>
                     </Container>
                     <CardActions className={classes.cardActions}>
-                        <Button
+                        <Button size="small"
                             variant="contained"
                             color="primary"
                             className={classes.buttonAction}
                             onClick={handleClickGoBack}
                             startIcon={<ArrowBackIosRoundedIcon />}
-                            >
-                            Kembali
+                        >
+                            Back
                         </Button>
-                        <Button
+                        <Button size="small"
                             variant="contained"
                             color="primary"
                             className={classes.buttonAction}
                             endIcon={<SaveRoundedIcon />}
-                            // onClick={handleClickNewPayment}
-                            >
+                        // onClick={handleClickNewPayment}
+                        >
                             Save
                         </Button>
                     </CardActions>

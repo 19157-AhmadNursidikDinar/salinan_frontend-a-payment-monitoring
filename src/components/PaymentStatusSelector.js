@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 // Material ui core
 import {
@@ -9,20 +9,25 @@ import {
     TableRow
 } from "@material-ui/core";
 import MuiTableCell from "@material-ui/core/TableCell";
-import { withStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import useStyles from "../styles/customer/HasilFormPayment";
 
-const TableCell = withStyles({
+const TableCell = withStyles((theme) => ({
     root: {
         borderBottom: "none",
-        fontSize: "18px",
         fontWeight: 600,
+        [theme.breakpoints.down('sm')]: {
+            fontSize: "12px",
+        },
+        [theme.breakpoints.up('md')]: {
+            fontSize: "18px",
+        },
     },
-})(MuiTableCell);
+}))(MuiTableCell);
 
 const createData = (description, value) => {
     return { description, value };
-  };
+};
 
 const rows = [
     createData("Diminta Oleh", "Asep Sunandar"),
@@ -34,7 +39,7 @@ const rows = [
     createData("No. Rekening Penerima", "15000757050"),
     createData("Request Terkirim", "Jum’at, 9 Juli 2021 (09.00 PM)"),
     createData("Status Request", "null"),
-  ];
+];
 
 function PaymentStatusSelector() {
     const classes = useStyles();
@@ -42,27 +47,27 @@ function PaymentStatusSelector() {
 
     return (
         <>
-           {rows.map((row)=>(
+            {rows.map((row) => (
                 <TableRow key={row.name}>
                     <TableCell>{row.description}</TableCell>
                     <TableCell>:</TableCell>
-                    {row.value === "null"  ? (
+                    {row.value === "null" ? (
                         <TableCell>
-                            <FormControl variant="outlined" className={classes.formControl}>
-                            <Select
-                                value={status}
-                                onChange={(e) => setStatus(e.target.value)}
-                                style={{width:350}}
-                            >
-                                <MenuItem value="null">-Ubah Status-</MenuItem>
-                                <MenuItem value="accept">Accept</MenuItem>
-                                <MenuItem value="reject">Reject</MenuItem>
-                            </Select>
+                            <FormControl variant="outlined" className={classes.formControl} fullWidth size="small">
+                                <Select
+                                    value={status}
+                                    onChange={(e) => setStatus(e.target.value)}
+
+                                >
+                                    <MenuItem value="null">-Ubah Status-</MenuItem>
+                                    <MenuItem value="accept">Accept</MenuItem>
+                                    <MenuItem value="reject">Reject</MenuItem>
+                                </Select>
                             </FormControl>
                         </TableCell>
                     ) : (
                         <TableCell>{row.value}</TableCell>
-                    )}                                        
+                    )}
                 </TableRow>
             ))}
             {status === "reject" ? (
@@ -70,20 +75,21 @@ function PaymentStatusSelector() {
                     <TableCell>Alasan</TableCell>
                     <TableCell>:</TableCell>
                     <TableCell>
-                            <TextField
-                                multiline
-                                maxRows={6}
-                                minRows={4}
-                                variant="outlined"
-                                style={{width:350}}/>
+                        <TextField
+                            multiline
+                            maxRows={6}
+                            minRows={4}
+                            variant="outlined"
+                            fullWidth
+                            size="small" />
                     </TableCell>
                 </TableRow>
-                ) : (
-                    <TableCell> </TableCell>
-                )}
-            
+            ) : (
+                <TableCell> </TableCell>
+            )}
+
         </>
-       
+
     )
 }
 export default PaymentStatusSelector

@@ -22,6 +22,7 @@ import useStyles from "../../styles/LoginPage";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
+import AuthToken from "../../utils/auth-token";
 
 const BlueCheckbox = withStyles({
   root: {
@@ -62,17 +63,16 @@ export default function LoginOfficer(props) {
       });
       // console.log({ result });
       if (!Boolean(result.error)) {
-        const role = AuthService.getUserRole();
-        if (role === "ADMIN") {
+       const role = AuthService.getUserRole();
+        if (role === "admin") {
           props.history.push("/admin");
-        } else if (role === "GENERAL-SUPPORT") {
+        } else if (role === "general-support") {
           props.history.push("/general-support");
-        } else if (role === "ACCOUNTING") {
+        } else if (role === "accounting") {
           props.history.push("/accounting");
-        } else if (role === "USER") {
-          props.history.push("/customer");
         } else {
-          setErrorMsg("undefined role");
+          AuthToken.removeToken();
+          setErrorMsg("Account can't be found");
         }
       } else {
         setErrorMsg(result.error.response.data.msg);
