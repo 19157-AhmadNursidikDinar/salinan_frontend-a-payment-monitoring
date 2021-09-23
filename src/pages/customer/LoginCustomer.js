@@ -32,10 +32,10 @@ const BlueCheckbox = withStyles({
 })((props) => <Checkbox color="default" {...props} />);
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().required("Insert username!"),
+  username: Yup.string().required("Insert username"),
   password: Yup.string()
     .min(6, "Use combination of 6 character or more")
-    .required("Insert Password"),
+    .required("Insert password"),
   rememberMe: Yup.boolean(),
 });
 
@@ -85,11 +85,14 @@ export default function LoginCustomer(props) {
             <div className={classes.headerLogo}>
               <img src={Logo} alt="app-logo" className={classes.headLogo} />
               <h1 className={classes.titleSection}>
-                Pay<span className={classes.titleSectionSpan}>ment</span> <br /> Monitoring
+                Pay<span className={classes.titleSectionSpan}>ment</span> <br />{" "}
+                Monitoring
               </h1>
             </div>
           </div>
-          <h3 className={classes.txtSignIn}>Sign in to continue our application</h3>
+          <h3 className={classes.txtSignIn}>
+            Sign in to continue our application
+          </h3>
           <div className={classes.innerBox}>
             {errorMsg && (
               <Alert severity="error" style={{ margin: "0.5em 0" }}>
@@ -97,8 +100,8 @@ export default function LoginCustomer(props) {
               </Alert>
             )}
             <form onSubmit={formik.handleSubmit}>
-            <div className={classes.userPass}>
-              <div className={classes.wrappedTxtFieldCustomer}>
+              <div className={classes.userPass}>
+                <div className={classes.wrappedTxtFieldCustomer}>
                   <TextField
                     className="txtfield"
                     type="text"
@@ -111,7 +114,9 @@ export default function LoginCustomer(props) {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <PersonIcon style={{ color: ColorsTheme.cyanProcess }} />
+                          <PersonIcon
+                            style={{ color: ColorsTheme.cyanProcess }}
+                          />
                         </InputAdornment>
                       ),
                     }}
@@ -133,7 +138,9 @@ export default function LoginCustomer(props) {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <LockIcon style={{ color: ColorsTheme.cyanProcess }} />
+                          <LockIcon
+                            style={{ color: ColorsTheme.cyanProcess }}
+                          />
                         </InputAdornment>
                       ),
                     }}
@@ -162,13 +169,17 @@ export default function LoginCustomer(props) {
                 <div className={classes.wrappedSignIn}>
                   <Button
                     className={
-                      formik.isSubmitting ? classes.btnSignInLoading : classes.btnSignIn
+                      formik.isSubmitting
+                        ? classes.btnSignInLoading
+                        : classes.btnSignIn
                     }
                     fullWidth
                     type="submit"
                     disabled={formik.isSubmitting}
                   >
-                    <b className={classes.btnSignInBold}>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
+                    <b className={classes.btnSignInBold}>
+                      {formik.isSubmitting ? "Loading..." : "Sign In"}
+                    </b>
                   </Button>
                 </div>
                 <div
@@ -194,7 +205,11 @@ export default function LoginCustomer(props) {
         </div>
         <div className={classes.img}>
           <img className={classes.circledImage} src={Circle} alt="Round.png" />
-          <img className={classes.bankerImage} src={BankerLogo} alt="BankerLogo" />
+          <img
+            className={classes.bankerImage}
+            src={BankerLogo}
+            alt="BankerLogo"
+          />
         </div>
       </div>
     </div>
