@@ -122,7 +122,7 @@ export default function MiniDrawer({
             variant="permanent"
             className={clsx(classes.drawer, {
               [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,]
+              [classes.drawerClose]: !open,
             })}
             classes={{
               paper: clsx({
@@ -154,18 +154,7 @@ export default function MiniDrawer({
                   </ListItem>
                 </Link>
               ))}
-              <ListItem
-                button
-                style={{
-                  color: "#686f74",
-                }}
-                onClick={handleLogoutClick}
-              >
-                <ListItemIcon>
-                  <LogOutIcon />
-                </ListItemIcon>
-                <ListItemText primary="Sign Out" />
-              </ListItem>
+              <SignOutDialog handleConfirm={handleLogoutClick} />
             </List>
           </Drawer>
           <main className={classes.content}>
