@@ -60,16 +60,10 @@ export default function LoginCustomer(props) {
       // console.log({ result });
       if (!Boolean(result.error)) {
         const role = AuthService.getUserRole();
-        if (role === "ADMIN") {
-          props.history.push("/admin");
-        } else if (role === "GENERAL-SUPPORT") {
-          props.history.push("/general-support");
-        } else if (role === "ACCOUNTING") {
-          props.history.push("/accounting");
-        } else if (role === "USER") {
+        if (role === "customer") {
           props.history.push("/customer");
         } else {
-          setErrorMsg("undefined role");
+          setErrorMsg("Account can't be found");
         }
       } else {
         setErrorMsg(result.error.response.data.msg);
@@ -85,11 +79,14 @@ export default function LoginCustomer(props) {
             <div className={classes.headerLogo}>
               <img src={Logo} alt="app-logo" className={classes.headLogo} />
               <h1 className={classes.titleSection}>
-                Pay<span className={classes.titleSectionSpan}>ment</span> <br /> Monitoring
+                Pay<span className={classes.titleSectionSpan}>ment</span> <br />{" "}
+                Monitoring
               </h1>
             </div>
           </div>
-          <h3 className={classes.txtSignIn}>Sign in to continue our application</h3>
+          <h3 className={classes.txtSignIn}>
+            Sign in to continue our application
+          </h3>
           <div className={classes.innerBox}>
             {errorMsg && (
               <Alert severity="error" style={{ margin: "0.5em 0" }}>
@@ -97,8 +94,8 @@ export default function LoginCustomer(props) {
               </Alert>
             )}
             <form onSubmit={formik.handleSubmit}>
-            <div className={classes.userPass}>
-              <div className={classes.wrappedTxtFieldCustomer}>
+              <div className={classes.userPass}>
+                <div className={classes.wrappedTxtFieldCustomer}>
                   <TextField
                     className="txtfield"
                     type="text"
@@ -111,7 +108,9 @@ export default function LoginCustomer(props) {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <PersonIcon style={{ color: ColorsTheme.cyanProcess }} />
+                          <PersonIcon
+                            style={{ color: ColorsTheme.cyanProcess }}
+                          />
                         </InputAdornment>
                       ),
                     }}
@@ -133,7 +132,9 @@ export default function LoginCustomer(props) {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <LockIcon style={{ color: ColorsTheme.cyanProcess }} />
+                          <LockIcon
+                            style={{ color: ColorsTheme.cyanProcess }}
+                          />
                         </InputAdornment>
                       ),
                     }}
@@ -162,13 +163,17 @@ export default function LoginCustomer(props) {
                 <div className={classes.wrappedSignIn}>
                   <Button
                     className={
-                      formik.isSubmitting ? classes.btnSignInLoading : classes.btnSignIn
+                      formik.isSubmitting
+                        ? classes.btnSignInLoading
+                        : classes.btnSignIn
                     }
                     fullWidth
                     type="submit"
                     disabled={formik.isSubmitting}
                   >
-                    <b className={classes.btnSignInBold}>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
+                    <b className={classes.btnSignInBold}>
+                      {formik.isSubmitting ? "Loading..." : "Sign In"}
+                    </b>
                   </Button>
                 </div>
                 <div
@@ -194,7 +199,11 @@ export default function LoginCustomer(props) {
         </div>
         <div className={classes.img}>
           <img className={classes.circledImage} src={Circle} alt="Round.png" />
-          <img className={classes.bankerImage} src={BankerLogo} alt="BankerLogo" />
+          <img
+            className={classes.bankerImage}
+            src={BankerLogo}
+            alt="BankerLogo"
+          />
         </div>
       </div>
     </div>
