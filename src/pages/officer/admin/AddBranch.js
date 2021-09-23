@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 //@material-ui/icons
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 import ArrowBackIosRounded from "@material-ui/icons/ArrowBackIosRounded";
+
 //links
 import { Link } from "react-router-dom";
 import ContentContainer from "../../../components/ContentContainer";
@@ -26,7 +27,8 @@ import BranchService from "../../../services/branch.service"
 //Styling Page
 const useTheStyle = makeStyles((theme) => ({
     PaperSize: {
-        padding: 40,
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
     },
     BtnSave: {
         backgroundColor: ColorsTheme.dodgerBlue,
@@ -34,6 +36,7 @@ const useTheStyle = makeStyles((theme) => ({
             backgroundColor: ColorsTheme.blueCrayola,
         },
         marginTop: 30,
+        marginRight: theme.spacing(2),
         float: 'right',
     },
     BtnBack: {
@@ -42,11 +45,13 @@ const useTheStyle = makeStyles((theme) => ({
             backgroundColor: ColorsTheme.blueCrayola,
         },
         marginTop: 30,
+        marginLeft: theme.spacing(2),
         float: 'left',
     },
 }));
 
 function FormAddBranch(props) {
+
     const classes = useTheStyle();
 
     const validationSchema = Yup.object().shape({
@@ -72,15 +77,14 @@ function FormAddBranch(props) {
     return (
         <Paper className={classes.PaperSize} elevation={4}>
             <form onSubmit={formik.handleSubmit}>
-                <Container>
+                <Container maxWidth="md">
                     <Grid
-                        container
                         spacing={3}
                         direction="row"
                         alignItems="center"
                         justify="center">
 
-                        <Grid item xs={8}>
+                        <Grid item xs={12}>
                             <TextField
                                 id="branchName"
                                 name="branchName"
@@ -97,28 +101,30 @@ function FormAddBranch(props) {
                             />
                         </Grid>
                     </Grid>
+
                 </Container>
-                <Grid container spacing={3}>
+                <Grid container spacing={1}>
                     <Grid item xs={12}>
                         <Link to="/branch-office-list">
-                            <Button
+                            <Button size="small"
                                 variant="contained"
                                 color="primary"
                                 className={classes.BtnBack}
                                 startIcon={<ArrowBackIosRounded />}
                             >
-                                Kembali
+                                Back
                             </Button>
                         </Link>
-                        <Button
+                        <Button size="small"
                             variant="contained"
                             color="primary"
                             className={classes.BtnSave}
                             endIcon={<SaveRoundedIcon />}
                             type="submit"
                         >
-                            {formik.isSubmitting ? "Menyimpan..." : "Simpan"}
+                            {formik.isSubmitting ? "Saving..." : "Save"}
                         </Button>
+
 
                     </Grid>
                 </Grid>

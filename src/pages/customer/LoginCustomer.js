@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Alert from "@material-ui/lab/Alert";
+import Grid from '@material-ui/core/Grid';
 import InputAdornment from "@material-ui/core/InputAdornment";
 //import @material-ui/icons for icon username, password dan checkbox rememberMe
 import PersonIcon from "@material-ui/icons/Person";
@@ -78,116 +79,121 @@ export default function LoginCustomer(props) {
   });
 
   return (
-    <div className={classes.container}>
-      <div className={classes.leftSide}>
-        <div className={classes.boxContainer}>
-          <div className={classes.flexCenter}>
-            <div className={classes.headerLogo}>
-              <img src={Logo} alt="app-logo" className={classes.headLogo} />
-              <h1 className={classes.titleSection}>
-                Pay<span className={classes.titleSectionSpan}>ment</span> <br /> Monitoring
+    <Grid container className={classes.root}>
+      <Grid item xs={12} md={6}>
+        <div className={classes.leftSide}>
+          <div className={classes.boxContainer}>
+            <div className={classes.flexCenter}>
+              <div className={classes.headerLogo}>
+                <img src={Logo} alt="app-logo" className={classes.headLogo} />
+                <h1 className={classes.titleSection}>
+                  Pay<span className={classes.titleSectionSpan}>ment</span> <br /> Monitoring
               </h1>
+              </div>
+            </div>
+            <h3 className={classes.txtSignIn}>Sign in to continue our application</h3>
+            <div className={classes.innerBox}>
+              {errorMsg && (
+                <Alert severity="error" style={{ margin: "0.5em 0" }}>
+                  {errorMsg}
+                </Alert>
+              )}
+              <form onSubmit={formik.handleSubmit}>
+                <div className={classes.userPass}>
+                  <div className={classes.wrappedTxtFieldCustomer}>
+                    <TextField
+                      className="txtfield"
+                      type="text"
+                      placeholder="Username"
+                      name="username"
+                      value={formik.values.username}
+                      onChange={formik.handleChange}
+                      variant="outlined"
+                      fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <PersonIcon style={{ color: ColorsTheme.cyanProcess }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                      disabled={formik.isSubmitting}
+                      error={
+                        Boolean(formik.errors.username) && formik.touched.username
+                      }
+                      helperText={formik.errors.username}
+                    />
+                  </div>
+                  <div className={classes.wrappedTxtFieldCustomer}>
+                    <TextField
+                      name="password"
+                      className="txtfield"
+                      type="password"
+                      placeholder="Password"
+                      variant="outlined"
+                      fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <LockIcon style={{ color: ColorsTheme.cyanProcess }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      disabled={formik.isSubmitting}
+                      error={
+                        Boolean(formik.errors.password) && formik.touched.password
+                      }
+                      helperText={formik.errors.password}
+                    />
+                  </div>
+                  <div className={classes.wrappedRememberMe}>
+                    <FormControlLabel
+                      control={
+                        <BlueCheckbox
+                          name="rememberMe"
+                          checked={formik.values.rememberMe}
+                          onChange={formik.handleChange}
+                          disabled={formik.isSubmitting}
+                        />
+                      }
+                      label="Remember Me"
+                    />
+                  </div>
+                  <div className={classes.wrappedSignIn}>
+                    <Button
+                      className={
+                        formik.isSubmitting ? classes.btnSignInLoading : classes.btnSignIn
+                      }
+                      fullWidth
+                      type="submit"
+                      disabled={formik.isSubmitting}
+                    >
+                      <b className={classes.btnSignInBold}>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
+                    </Button>
+                  </div>
+                  <div
+                    style={{
+                      marginTop: 20,
+                      justifyContent: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <Link className={classes.switchSignIn} to="/login-officer">
+                      Sign In as Officer
+                  </Link>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
-          <h3 className={classes.txtSignIn}>Sign in to continue our application</h3>
-          <div className={classes.innerBox}>
-            {errorMsg && (
-              <Alert severity="error" style={{ margin: "0.5em 0" }}>
-                {errorMsg}
-              </Alert>
-            )}
-            <form onSubmit={formik.handleSubmit}>
-            <div className={classes.userPass}>
-              <div className={classes.wrappedTxtFieldCustomer}>
-                  <TextField
-                    className="txtfield"
-                    type="text"
-                    placeholder="Username"
-                    name="username"
-                    value={formik.values.username}
-                    onChange={formik.handleChange}
-                    variant="outlined"
-                    fullWidth
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <PersonIcon style={{ color: ColorsTheme.cyanProcess }} />
-                        </InputAdornment>
-                      ),
-                    }}
-                    disabled={formik.isSubmitting}
-                    error={
-                      Boolean(formik.errors.username) && formik.touched.username
-                    }
-                    helperText={formik.errors.username}
-                  />
-                </div>
-                <div className={classes.wrappedTxtFieldCustomer}>
-                  <TextField
-                    name="password"
-                    className="txtfield"
-                    type="password"
-                    placeholder="Password"
-                    variant="outlined"
-                    fullWidth
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LockIcon style={{ color: ColorsTheme.cyanProcess }} />
-                        </InputAdornment>
-                      ),
-                    }}
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    disabled={formik.isSubmitting}
-                    error={
-                      Boolean(formik.errors.password) && formik.touched.password
-                    }
-                    helperText={formik.errors.password}
-                  />
-                </div>
-                <div className={classes.wrappedRememberMe}>
-                  <FormControlLabel
-                    control={
-                      <BlueCheckbox
-                        name="rememberMe"
-                        checked={formik.values.rememberMe}
-                        onChange={formik.handleChange}
-                        disabled={formik.isSubmitting}
-                      />
-                    }
-                    label="Remember Me"
-                  />
-                </div>
-                <div className={classes.wrappedSignIn}>
-                  <Button
-                    className={
-                      formik.isSubmitting ? classes.btnSignInLoading : classes.btnSignIn
-                    }
-                    fullWidth
-                    type="submit"
-                    disabled={formik.isSubmitting}
-                  >
-                    <b className={classes.btnSignInBold}>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
-                  </Button>
-                </div>
-                <div
-                  style={{
-                    marginTop: 20,
-                    justifyContent: "center",
-                    display: "flex",
-                  }}
-                >
-                  <Link className={classes.switchSignIn} to="/login-officer">
-                    Sign In as Officer
-                  </Link>
-                </div>
-              </div>
-            </form>
-          </div>
         </div>
-      </div>
-      <div className={classes.rightSide}>
+
+      </Grid>
+      <Grid item xs={0} md={6}>
+
+        <div className={classes.rightSide}>
         <div className={classes.welcomeTitle}>
           <h1 className={classes.welcome}>WELCOME BACK,</h1>
           <h2 className={classes.textNotice}>Make your payment efficiently</h2>
@@ -197,6 +203,7 @@ export default function LoginCustomer(props) {
           <img className={classes.bankerImage} src={BankerLogo} alt="BankerLogo" />
         </div>
       </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 }

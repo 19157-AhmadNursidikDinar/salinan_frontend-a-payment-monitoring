@@ -149,14 +149,14 @@ function FormRequest(props) {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button
+            <Button size="small"
               variant="contained"
               color="primary"
               className={classes.button}
               endIcon={<SendRounded />}
               onClick={handleSubmit}
             >
-              Submit Payment Request
+              Submit
             </Button>
           </Grid>
         </Grid>

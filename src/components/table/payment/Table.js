@@ -169,7 +169,7 @@ export default function GeneralSupport({ role }) {
               <StyledTableCell align="center">
                 <Link to={`${role}/payment-detail`}>
                   <Button size="small" variant="contained" color="primary">
-                    Lihat Detail
+                    Detail
                   </Button>
                 </Link>
               </StyledTableCell>
