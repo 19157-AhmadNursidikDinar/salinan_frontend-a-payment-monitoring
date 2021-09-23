@@ -125,6 +125,7 @@ export default function LoginCustomer(props) {
                       Boolean(formik.errors.username) && formik.touched.username
                     }
                     helperText={formik.errors.username}
+                    data-test="txt-username"
                   />
                 </div>
                 <div className={classes.wrappedTxtFieldCustomer}>
@@ -151,6 +152,7 @@ export default function LoginCustomer(props) {
                       Boolean(formik.errors.password) && formik.touched.password
                     }
                     helperText={formik.errors.password}
+                    data-test="txt-password"
                   />
                 </div>
                 <div className={classes.wrappedRememberMe}>
@@ -176,6 +178,7 @@ export default function LoginCustomer(props) {
                     fullWidth
                     type="submit"
                     disabled={formik.isSubmitting}
+                    data-test="btn-submit"
                   >
                     <b className={classes.btnSignInBold}>
                       {formik.isSubmitting ? "Loading..." : "Sign In"}

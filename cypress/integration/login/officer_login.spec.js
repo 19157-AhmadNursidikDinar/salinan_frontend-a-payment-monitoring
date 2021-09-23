@@ -4,39 +4,45 @@ describe("Officer Login", () => {
   });
 
   it("general support can login", () => {
-    cy.findByRole("textbox").type("mygeneralsupport");
-    cy.findByPlaceholderText(/password/i).type("123456");
-    cy.findByRole("button", { name: /general support/i }).click();
-    cy.findByRole("option", { name: /general support/i }).click();
-    cy.findByRole("button", { name: /sign in/i }).click();
+    cy.get("[data-test='txt-username']").type("mygeneralsupport");
+    cy.get("[data-test='txt-password']").type("123456");
+    cy.get("[data-test='select-role']")
+      .click()
+      .get("[data-test='opt-role-generalSupport']")
+      .click();
+    cy.get("[data-test='btn-submit']").click();
     cy.findByRole("heading", { name: /daftar payment request/i }).should(
       "be.visible"
     );
-    cy.findByRole("button", { name: /sign out/i }).click();
-    cy.findByRole("button", { name: /sign out/i }).click();
+    cy.get("[data-test='btn-signout']").click();
+    cy.get("[data-test='btn-confirm-signout']").click();
   });
 
   it("accounting can login", () => {
-    cy.findByRole("textbox").type("myaccounting");
-    cy.findByPlaceholderText(/password/i).type("123456");
-    cy.findByRole("button", { name: /general support/i }).click();
-    cy.findByRole("option", { name: /general support/i }).click();
-    cy.findByRole("button", { name: /sign in/i }).click();
+    cy.get("[data-test='txt-username']").type("myaccounting");
+    cy.get("[data-test='txt-password']").type("123456");
+    cy.get("[data-test='select-role']")
+      .click()
+      .get("[data-test='opt-role-accounting']")
+      .click();
+    cy.get("[data-test='btn-submit']").click();
     cy.findByRole("heading", { name: /daftar payment request/i }).should(
       "be.visible"
     );
-    cy.findByRole("button", { name: /sign out/i }).click();
-    cy.findByRole("button", { name: /sign out/i }).click();
+    cy.get("[data-test='btn-signout']").click();
+    cy.get("[data-test='btn-confirm-signout']").click();
   });
 
   it("admin can login", () => {
-    cy.findByRole("textbox").type("myadmin");
-    cy.findByPlaceholderText(/password/i).type("123456");
-    cy.findByRole("button", { name: /general support/i }).click();
-    cy.findByRole("option", { name: /general support/i }).click();
-    cy.findByRole("button", { name: /sign in/i }).click();
+    cy.get("[data-test='txt-username']").type("myadmin");
+    cy.get("[data-test='txt-password']").type("123456");
+    cy.get("[data-test='select-role']")
+      .click()
+      .get("[data-test='opt-role-admin']")
+      .click();
+    cy.get("[data-test='btn-submit']").click();
     cy.findByRole("heading", { name: /beranda admin/i }).should("be.visible");
-    cy.findByRole("button", { name: /sign out/i }).click();
-    cy.findByRole("button", { name: /sign out/i }).click();
+    cy.get("[data-test='btn-signout']").click();
+    cy.get("[data-test='btn-confirm-signout']").click();
   });
 });

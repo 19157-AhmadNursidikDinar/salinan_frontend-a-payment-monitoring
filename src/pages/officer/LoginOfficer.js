@@ -35,7 +35,6 @@ const BlueCheckbox = withStyles({
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Insert username"),
-  loginAs: Yup.string().required("Insert role"),
   password: Yup.string()
     .min(6, "Use combination of 6 character or more")
     .required("Insert Password"),
@@ -44,12 +43,12 @@ const validationSchema = Yup.object().shape({
 
 export default function LoginOfficer(props) {
   const classes = useStyles();
+  const [role, setRole] = useState("generalSupport");
   const [errorMsg, setErrorMsg] = useState("");
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
-      loginAs: "generalSupport",
       rememberMe: false,
     },
     validationSchema: validationSchema,
@@ -129,6 +128,7 @@ export default function LoginOfficer(props) {
                       Boolean(formik.errors.username) && formik.touched.username
                     }
                     helperText={formik.errors.username}
+                    data-test="txt-username"
                   />
                 </div>
                 <div className={classes.wrappedTxtFieldOfficer}>
@@ -155,14 +155,15 @@ export default function LoginOfficer(props) {
                       Boolean(formik.errors.password) && formik.touched.password
                     }
                     helperText={formik.errors.password}
+                    data-test="txt-password"
                   />
                 </div>
                 <div className={classes.wrappedTxtFieldOfficer}>
                   <TextField
-                    id="standard-select"
                     select
-                    value={formik.loginAs || "generalSupport"}
-                    onChange={formik.handleChange}
+                    name="loginAs"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
                     disabled={formik.isSubmitting}
                     variant="outlined"
                     fullWidth
@@ -175,10 +176,23 @@ export default function LoginOfficer(props) {
                         </InputAdornment>
                       ),
                     }}
+                    data-test="select-role"
                   >
-                    <MenuItem value="generalSupport">General Support</MenuItem>
-                    <MenuItem value="accounting">Accounting</MenuItem>
-                    <MenuItem value="admin">Admin</MenuItem>
+                    <MenuItem
+                      data-test="opt-role-generalSupport"
+                      value="generalSupport"
+                    >
+                      General Support
+                    </MenuItem>
+                    <MenuItem
+                      data-test="opt-role-accounting"
+                      value="accounting"
+                    >
+                      Accounting
+                    </MenuItem>
+                    <MenuItem data-test="opt-role-admin" value="admin">
+                      Admin
+                    </MenuItem>
                   </TextField>
                 </div>
               </div>
@@ -195,7 +209,7 @@ export default function LoginOfficer(props) {
                   label="Remember Me"
                 />
               </div>
-              <div className={classes.wrappedSignIn} fullWidth>
+              <div className={classes.wrappedSignIn}>
                 <Button
                   className={
                     formik.isSubmitting
@@ -205,6 +219,7 @@ export default function LoginOfficer(props) {
                   fullWidth
                   type="submit"
                   disabled={formik.isSubmitting}
+                  data-test="btn-submit"
                 >
                   <b className={classes.btnSignInBold}>
                     {formik.isSubmitting ? "Loading..." : "Sign In"}

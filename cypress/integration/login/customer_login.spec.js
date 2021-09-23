@@ -4,13 +4,13 @@ describe("Customer Login", () => {
   });
 
   it("customer can login", () => {
-    cy.findByRole("textbox").type("myuser");
-    cy.findByPlaceholderText(/password/i).type("123456");
-    cy.findByRole("button", { name: /sign in/i }).click();
+    cy.get("[data-test='txt-username']").type("myuser");
+    cy.get("[data-test='txt-password']").type("123456");
+    cy.get("[data-test='btn-submit']").click();
     cy.findByRole("heading", { name: /daftar payment request/i }).should(
       "be.visible"
     );
-    cy.findByRole("button", { name: /sign out/i }).click();
-    cy.findByRole("button", { name: /sign out/i }).click();
+    cy.get("[data-test='btn-signout']").click();
+    cy.get("[data-test='btn-confirm-signout']").click();
   });
 });

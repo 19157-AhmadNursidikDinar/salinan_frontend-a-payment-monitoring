@@ -1,5 +1,5 @@
 import "@testing-library/cypress/add-commands";
-// const COMMAND_DELAY = 1500;
+// const COMMAND_DELAY = 2000;
 
 // for (const command of [
 //   "visit",
