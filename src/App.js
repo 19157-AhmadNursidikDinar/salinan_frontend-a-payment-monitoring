@@ -19,45 +19,98 @@ import BranchOfficeList from "./pages/officer/admin/BranchOfficeList";
 import PageNotFound from "./pages/errors/PageNotFound";
 import Backdoor from "./pages/backdoor/Backdoor";
 import PreloginRoutes from "./components/protectedRoutes/PreloginRoutes";
+import PostloginRoutes from "./components/protectedRoutes/PostloginRoutes";
 
 function App() {
   return (
     <Router>
       <Switch>
-        {/* <AuthProvider> */}
         <PreloginRoutes exact path="/" component={LoginCustomer} />
         <PreloginRoutes path="/login-officer" component={LoginOfficer} />
-        <Route exact path="/customer" component={CustomerHome} />
-        <Route exact path="/admin" component={AdminHome} />
-        <Route exact path="/add-user" component={AdminAddUser} />
-        <Route exact path="/update-user" component={AdminUpdateUser} />
-        <Route exact path="/branch-office-list" component={BranchOfficeList} />
-        <Route exact path="/add-branch" component={AdminAddBranch} />
-        <Route exact path="/detail-user" component={AdminDetailUser} />
-        <Route exact path="/accounting" component={AccountingHome} />
-        <Route exact path="/general-support" component={GeneralSupportHome} />
-        <Route exact path="/add-payment-request" component={IsiFormPayment} />
-        <Route
+        <PostloginRoutes
+          exact
+          path="/customer"
+          component={CustomerHome}
+          role="customer"
+        />
+        <PostloginRoutes
+          exact
+          path="/admin"
+          component={AdminHome}
+          role="admin"
+        />
+        <PostloginRoutes
+          exact
+          path="/add-user"
+          component={AdminAddUser}
+          role="admin"
+        />
+        <PostloginRoutes
+          exact
+          path="/update-user"
+          component={AdminUpdateUser}
+          role="admin"
+        />
+        <PostloginRoutes
+          exact
+          path="/branch-office-list"
+          component={BranchOfficeList}
+          role="admin"
+        />
+        <PostloginRoutes
+          exact
+          path="/add-branch"
+          component={AdminAddBranch}
+          role="admin"
+        />
+        <PostloginRoutes
+          exact
+          path="/detail-user"
+          component={AdminDetailUser}
+          role="admin"
+        />
+        <PostloginRoutes
+          exact
+          path="/accounting"
+          component={AccountingHome}
+          role="accounting"
+        />
+        <PostloginRoutes
+          exact
+          path="/general-support"
+          component={GeneralSupportHome}
+          role="general-support"
+        />
+        <PostloginRoutes
+          exact
+          path="/add-payment-request"
+          component={IsiFormPayment}
+          role="customer"
+        />
+        <PostloginRoutes
           exact
           path="/payment-request-result"
           component={HasilFormPayment}
+          role="customer"
         />
-        <Route
+        <PostloginRoutes
           exact
           path="/service-level-agreement"
           component={ServiceLevelAgreement}
+          role="admin"
         />
-        <Route
+        <PostloginRoutes
           exact
           path="/generalSupport/payment-detail"
           component={PaymentRequestDetailGeneralSupport}
+          role="general-support"
         />
-        <Route
+        <PostloginRoutes
           exact
           path="/accounting/payment-detail"
           component={PaymentRequestDetailAcounting}
+          role="accounting"
         />
-        {/* </AuthProvider> */}
         <Route exact path="/backdoor" component={Backdoor} />
 
         {/* Masukan halaman baru diatas line ini */}

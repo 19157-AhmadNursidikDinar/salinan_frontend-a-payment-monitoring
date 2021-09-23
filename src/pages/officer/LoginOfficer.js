@@ -23,6 +23,7 @@ import useStyles from "../../styles/LoginPage";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
+import AuthToken from "../../utils/auth-token";
 
 const BlueCheckbox = withStyles({
   root: {
@@ -70,6 +71,7 @@ export default function LoginOfficer(props) {
         } else if (role === "accounting") {
           props.history.push("/accounting");
         } else {
+          AuthToken.removeToken();
           setErrorMsg("Account can't be found");
         }
       } else {

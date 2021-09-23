@@ -20,6 +20,7 @@ import useStyles from "../../styles/LoginPage";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services/auth.service";
+import AuthToken from "../../utils/auth-token";
 
 const BlueCheckbox = withStyles({
   root: {
@@ -63,6 +64,7 @@ export default function LoginCustomer(props) {
         if (role === "customer") {
           props.history.push("/customer");
         } else {
+          AuthToken.removeToken();
           setErrorMsg("Account can't be found");
         }
       } else {

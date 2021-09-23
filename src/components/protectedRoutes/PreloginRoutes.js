@@ -21,8 +21,6 @@ function PreloginRoutes({ component: Component, ...restOfProps }) {
     } else {
       return <Component {...props} />;
     }
-
-    // isAuthenticated ? <>Authenticated</> : <Component {...props} />;
   };
 
   return <Route {...restOfProps} render={(props) => RouteGateway(props)} />;
