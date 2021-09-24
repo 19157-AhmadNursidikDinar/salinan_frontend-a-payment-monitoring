@@ -5,11 +5,12 @@ import AuthToken from "../utils/auth-token";
 const apiUrl = process.env.REACT_APP_API_BASEURL + "/api/v1/user/";
 
 class AuthService {
-  async login({ username, password, rememberMe }) {
+  async login({ username, password, rememberMe, loginAs = 4 }) {
     try {
       const response = await axios.post(apiUrl + "login", {
         username,
         password,
+        login_as: loginAs,
       });
       // console.log(response);
       if (response.data && response.data.data.token) {

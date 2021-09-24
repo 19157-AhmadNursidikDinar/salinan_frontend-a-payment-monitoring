@@ -93,6 +93,7 @@ export default function CustomizedDialogs({ handleConfirm }) {
           color: "#686f74",
         }}
         onClick={handleClickOpen}
+        data-test="btn-signout"
       >
         <ListItemIcon>
           <LogOutIcon />
@@ -124,6 +125,7 @@ export default function CustomizedDialogs({ handleConfirm }) {
             onClick={handleSignOut}
             color="primary"
             variant="contained"
+            data-test="btn-confirm-signout"
           >
             Sign Out
           </Button>

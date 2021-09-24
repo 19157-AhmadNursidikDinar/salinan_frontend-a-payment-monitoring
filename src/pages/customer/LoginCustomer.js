@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Alert from "@material-ui/lab/Alert";
-import Grid from '@material-ui/core/Grid';
+import Grid from "@material-ui/core/Grid";
 import InputAdornment from "@material-ui/core/InputAdornment";
 //import @material-ui/icons for icon username, password dan checkbox rememberMe
 import PersonIcon from "@material-ui/icons/Person";
@@ -34,10 +34,10 @@ const BlueCheckbox = withStyles({
 })((props) => <Checkbox color="default" {...props} />);
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().required("Insert username!"),
+  username: Yup.string().required("Insert username"),
   password: Yup.string()
     .min(6, "Use combination of 6 character or more")
-    .required("Insert Password"),
+    .required("Insert password"),
   rememberMe: Yup.boolean(),
 });
 
@@ -82,13 +82,15 @@ export default function LoginCustomer(props) {
             <div className={classes.flexCenter}>
               <div className={classes.headerLogo}>
                 <img src={Logo} alt="app-logo" className={classes.headLogo} />
-              <h1 className={classes.titleSection}>
-                Pay<span className={classes.titleSectionSpan}>ment</span> <br />{" "}
-                Monitoring
-              </h1>
+                <h1 className={classes.titleSection}>
+                  Pay<span className={classes.titleSectionSpan}>ment</span>{" "}
+                  <br /> Monitoring
+                </h1>
               </div>
             </div>
-            <h3 className={classes.txtSignIn}>Sign in to continue our application</h3>
+            <h3 className={classes.txtSignIn}>
+              Sign in to continue our application
+            </h3>
             <div className={classes.innerBox}>
               {errorMsg && (
                 <Alert severity="error" style={{ margin: "0.5em 0" }}>
@@ -110,15 +112,19 @@ export default function LoginCustomer(props) {
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <PersonIcon style={{ color: ColorsTheme.cyanProcess }} />
+                            <PersonIcon
+                              style={{ color: ColorsTheme.cyanProcess }}
+                            />
                           </InputAdornment>
                         ),
                       }}
                       disabled={formik.isSubmitting}
                       error={
-                        Boolean(formik.errors.username) && formik.touched.username
+                        Boolean(formik.errors.username) &&
+                        formik.touched.username
                       }
                       helperText={formik.errors.username}
+                      data-test="txt-username"
                     />
                   </div>
                   <div className={classes.wrappedTxtFieldCustomer}>
@@ -132,7 +138,9 @@ export default function LoginCustomer(props) {
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <LockIcon style={{ color: ColorsTheme.cyanProcess }} />
+                            <LockIcon
+                              style={{ color: ColorsTheme.cyanProcess }}
+                            />
                           </InputAdornment>
                         ),
                       }}
@@ -140,9 +148,11 @@ export default function LoginCustomer(props) {
                       onChange={formik.handleChange}
                       disabled={formik.isSubmitting}
                       error={
-                        Boolean(formik.errors.password) && formik.touched.password
+                        Boolean(formik.errors.password) &&
+                        formik.touched.password
                       }
                       helperText={formik.errors.password}
+                      data-test="txt-password"
                     />
                   </div>
                   <div className={classes.wrappedRememberMe}>
@@ -161,13 +171,18 @@ export default function LoginCustomer(props) {
                   <div className={classes.wrappedSignIn}>
                     <Button
                       className={
-                        formik.isSubmitting ? classes.btnSignInLoading : classes.btnSignIn
+                        formik.isSubmitting
+                          ? classes.btnSignInLoading
+                          : classes.btnSignIn
                       }
                       fullWidth
                       type="submit"
                       disabled={formik.isSubmitting}
+                      data-test="btn-submit"
                     >
-                      <b className={classes.btnSignInBold}>{formik.isSubmitting ? "Loading..." : "Sign In"}</b>
+                      <b className={classes.btnSignInBold}>
+                        {formik.isSubmitting ? "Loading..." : "Sign In"}
+                      </b>
                     </Button>
                   </div>
                   <div
@@ -179,31 +194,35 @@ export default function LoginCustomer(props) {
                   >
                     <Link className={classes.switchSignIn} to="/login-officer">
                       Sign In as Officer
-                  </Link>
+                    </Link>
                   </div>
                 </div>
               </form>
             </div>
           </div>
         </div>
-
       </Grid>
       <Grid item xs={0} md={6}>
-
         <div className={classes.rightSide}>
-        <div className={classes.welcomeTitle}>
-          <h1 className={classes.welcome}>WELCOME BACK,</h1>
-          <h2 className={classes.textNotice}>Make your payment efficiently</h2>
+          <div className={classes.welcomeTitle}>
+            <h1 className={classes.welcome}>WELCOME BACK,</h1>
+            <h2 className={classes.textNotice}>
+              Make your payment efficiently
+            </h2>
+          </div>
+          <div className={classes.img}>
+            <img
+              className={classes.circledImage}
+              src={Circle}
+              alt="Round.png"
+            />
+            <img
+              className={classes.bankerImage}
+              src={BankerLogo}
+              alt="BankerLogo"
+            />
+          </div>
         </div>
-        <div className={classes.img}>
-          <img className={classes.circledImage} src={Circle} alt="Round.png" />
-          <img
-            className={classes.bankerImage}
-            src={BankerLogo}
-            alt="BankerLogo"
-          />
-        </div>
-      </div>
       </Grid>
     </Grid>
   );

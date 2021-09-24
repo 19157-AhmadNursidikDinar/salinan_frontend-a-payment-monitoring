@@ -16,7 +16,7 @@ function PageNotFound({ bind }) {
     <Grid className={classes.content} container justify="center">
       <img src={Logo} alt="error-logo" className={classes.imageError} />
       <h1 className={classes.descError}>
-        ERROR 404
+        ERROR <span {...bind}>404</span>
         <p className={classes.textError}>PAGE NOT FOUND</p>
       </h1>
     </Grid>
