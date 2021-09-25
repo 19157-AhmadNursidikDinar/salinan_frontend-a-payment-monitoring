@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 //Material-Ui Cores
 import {
     Button,
@@ -14,7 +15,8 @@ import {
     Select,
     FormControl,
     IconButton,
-    InputAdornment
+    InputAdornment,
+    FormHelperText
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -62,13 +64,9 @@ function FormAddUser() {
     const classes = useMyStyles();
     const [dataBranch, setDataBranch] = useState([])
     const [newUser, setNewUser] = useState({
-        "fullname": "",
-        "username": "",
-        "password": "",
-        "role_id": 0,
         "branch_id": 1
     });
-    const {fullname, username, password, role_id, branch_id} = newUser
+    const {branch_id} = newUser
   
     //STATE "Role"
     const [role, setRole] = useState('');
@@ -78,6 +76,21 @@ function FormAddUser() {
         showPassword: false,
     });
 
+    const validationSchema = Yup.object().shape({
+        fullname: Yup.string()
+          .max(15, 'Must be 15 characters or less')
+          .required('Required'),
+        username: Yup.string()
+          .min(6, 'Min 6 character required ')
+          .max(20, 'Must be 20 characters or less')
+          .required('Required'),
+        password: Yup.string()
+            .required('Required'),
+        role_id: Yup.number()
+            .notOneOf([0], 'msg')
+            .required('Required'),
+      })
+
     const formik = useFormik({
         initialValues: {
             fullname: "",
@@ -86,22 +99,15 @@ function FormAddUser() {
             role_id: 0,
             branch_id: 1
         },
-        onSubmit: values => {
-          alert(JSON.stringify(values, null, 2));
+        validationSchema: validationSchema,
+        validateOnBlur: false,
+        validateOnChange: false,
+        onSubmit: async ({fullname, username, password, role_id}) => {
+            const data = await RoleService.CreateNewRole(newUser)
+            console.log(data);
+            !data.error && router.push('/admin')
         },
       });
-
-    const handleName = (event)=>{
-        //formik.handleChange
-        setNewUser({
-            ...newUser, 'fullname'  : event.target.value
-        })
-    }
-    
-    const handleRole = (event) => {
-        setRole(event.target.value);
-        setNewUser({...newUser, "role_id": event.target.value,})
-    };
 
     const handleBranch = (event) => {
         setBranch(event.target.value);
@@ -119,14 +125,13 @@ function FormAddUser() {
     };
     
     function buttonOnClick() {
-        if (fullname === '' || username === '' || password === '' || role_id === 0 ) {
+        if (formik.values.fullname === '' || formik.values.username === '' || formik.values.password === '' || formik.values.role_id === 0 ) {
             return ( 
                 <Button
                     variant="contained"
                     color="primary"
                     className={classes.BtnSave}
                     endIcon={<SaveRoundedIcon />}
-                    onClick={()=>{SaveOnclick()}}
                     disabled
                 >
                     Simpan
@@ -134,7 +139,7 @@ function FormAddUser() {
             )
            
         } else {
-            if (role_id !== 4) {
+            if (formik.values.role_id !== 4) {
                 return ( 
                     <Button
                         variant="contained"
@@ -146,7 +151,7 @@ function FormAddUser() {
                         Simpan
                     </Button>
                 )
-            } else if ( role_id === 4 ){
+            } else if (formik.values.role_id === 4 ){
                 if (branch_id !== 1) {
                     return(
                         <Button
@@ -154,7 +159,7 @@ function FormAddUser() {
                             color="primary"
                             className={classes.BtnSave}
                             endIcon={<SaveRoundedIcon />}
-                            onClick={()=>{SaveOnclick()}}
+                            //onClick={()=>{SaveOnclick()}}
                         >
                             Simpan
                         </Button>
@@ -167,7 +172,6 @@ function FormAddUser() {
                             color="primary"
                             className={classes.BtnSave}
                             endIcon={<SaveRoundedIcon />}
-                            onClick={()=>{SaveOnclick()}}
                             disabled
                         >
                             Simpan
@@ -181,6 +185,7 @@ function FormAddUser() {
 
     async function GetBranchID() {
         const branchID = await branchService.getAllBranch()
+        console.log(branchID);
         setDataBranch(branchID.data)
     }
     async function SaveOnclick() {
@@ -194,43 +199,62 @@ function FormAddUser() {
         GetBranchID()
     }, [])
 
+    console.log(formik.values);
+    console.log(dataBranch);
     //PAGE ADD USER
     return (
         <Paper className={classes.PaperSize} elevation={4}>
+                <form onSubmit={formik.handleSubmit}>
             <Container>
-                <Grid container spacing={3}>
+                <Grid container spacing={3} >
                     <Grid item xs={12}>
                         <TextField
                             id="AccountName"
-                            name="AccountName"
+                            name='fullname'
                             label="Nama"
                             variant="outlined"
                             fullWidth
-                            //value={formik.values.fullname}
-                            onChange={(e)=>setNewUser({
-                                ...newUser, 'fullname'  : e.target.value
-                            })}
+                            value={formik.values.fullname}
+                            disabled={formik.isSubmitting}
+                            onChange={formik.handleChange}
+                            error={
+                                Boolean(formik.errors.fullname) && formik.touched.fullname
+                              }
+                            helperText={formik.errors.fullname}
+                           
                         />                        
                     </Grid>
                     <Grid item xs={12}>
-                        <FormControl variant="outlined" fullWidth>
+                        <FormControl 
+                            variant="outlined" 
+                            fullWidth 
+                            error={
+                                Boolean(formik.errors.role_id) && formik.touched.role_id
+                              }
+                            className={classes.FormControl}>
                             <InputLabel htmlFor="user-roles">Role</InputLabel>
                             <Select
                                 labelId="user-roles"
                                 label="Role"
                                 id="UserRole"
-                                value={role}
-                                onChange={handleRole}
+                                name='role_id'
+                                value={formik.values.role_id}
+                                onChange={formik.handleChange}
                             >
                                 <MenuItem value={1}>Admin</MenuItem>
                                 <MenuItem value={2}>General Support</MenuItem>
                                 <MenuItem value={3}>Accounting</MenuItem>
                                 <MenuItem value={4}>User</MenuItem>
                             </Select>
+                            {
+
+                                formik.errors.role_id &&<FormHelperText>eror</FormHelperText>
+                            }
+                            
                         </FormControl>
                     </Grid>
                     {
-                        role === 4 &&
+                        formik.values.role_id === 4 &&
                         <Grid item xs={12}>
                             <FormControl variant="outlined" fullWidth>
                                 <InputLabel htmlFor="user-roles">Branch</InputLabel>
@@ -251,20 +275,26 @@ function FormAddUser() {
                     <Grid item xs={12}>
                         <TextField
                             id="UserName"
-                            name="UserName"
+                            name="username"
                             label="Username"
                             variant="outlined"
                             fullWidth
-                            onChange={(e)=>setNewUser({...newUser, 'username'  : e.target.value})}
+                            value={formik.values.username}
+                            onChange={formik.handleChange}
+                            helperText={formik.errors.username}
+                            error={
+                                Boolean(formik.errors.username) && formik.touched.username
+                              }
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
                             id="Password"
-                            name="Password"
+                            name="password"
                             label="Password"
                             variant="outlined"
                             fullWidth
+                            value= {formik.values.password}
                             type={values.showPassword ? "text" : "password"}
                             InputProps={{
                                 endAdornment:
@@ -279,9 +309,11 @@ function FormAddUser() {
                                         </IconButton>
                                     </InputAdornment>
                             }}
-                            onChange={(e)=>setNewUser({
-                                ...newUser, 'password'  : e.target.value
-                              })}
+                            onChange={formik.handleChange}
+                            helperText={formik.errors.password}
+                            error={
+                                Boolean(formik.errors.password) && formik.touched.password
+                              }
                         />
                     </Grid>
                 </Grid>
@@ -297,9 +329,19 @@ function FormAddUser() {
                     >
                         Kembali
                     </Button>
-                   {buttonOnClick()}
+                   {/* {buttonOnClick()} */}
+                   <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        className={classes.BtnSave}
+                        endIcon={<SaveRoundedIcon />}
+                        >
+                        Simpan
+                    </Button>
                 </Grid>
             </Grid>
+            </form>
         </Paper>
     
     );
