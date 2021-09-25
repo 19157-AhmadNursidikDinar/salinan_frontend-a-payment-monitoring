@@ -6,6 +6,23 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import { useLongPress } from "use-long-press";
 
+//style
+import Logo from "../../assets/images/logoPM.png";
+import useStyles from "../../styles/PageNotFound";
+
+function PageNotFound({ bind }) {
+  const classes = useStyles();
+  return (
+    <Grid className={classes.content} container justify="center">
+      <img src={Logo} alt="error-logo" className={classes.imageError} />
+      <h1 className={classes.descError}>
+        ERROR <span {...bind}>404</span>
+        <p className={classes.textError}>PAGE NOT FOUND</p>
+      </h1>
+    </Grid>
+  );
+}
+
 const generateRandomNumber = () => {
   return Math.floor(Math.random() * 9) + 1;
 };
@@ -59,7 +76,7 @@ export default function Backdoor({ handleOpen }) {
           </Grid>
         </Paper>
       )}
-      {!isRevealed && <h1 {...bind2}>Error 404 - Page not found</h1>}
+      {!isRevealed && <PageNotFound bind={bind2} />}
     </Grid>
   );
 }

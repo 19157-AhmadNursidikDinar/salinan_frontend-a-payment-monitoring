@@ -1,19 +1,23 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import AuthToken from "../utils/auth-token";
 
 const apiUrl = process.env.REACT_APP_API_BASEURL + "/api/v1/user/";
 
 class AuthService {
-  async login({ username, password, rememberMe }) {
+  async login({ username, password, rememberMe, loginAs = 4 }) {
     try {
       const response = await axios.post(apiUrl + "login", {
         username,
         password,
+        login_as: loginAs,
       });
       // console.log(response);
       if (response.data && response.data.data.token) {
         // console.log(decoded);
-        localStorage.setItem("token", response.data.data.token);
+        const token = response.data.data.token;
+        const { exp } = jwt_decode(token);
+        AuthToken.setToken(token, exp, rememberMe);
         return response.data;
       }
     } catch (error) {
@@ -23,13 +27,25 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("token");
+    AuthToken.removeToken();
   }
 
   getUserRole() {
-    const token = localStorage.getItem("token");
-    const decoded = jwt_decode(token);
-    return decoded.role || null;
+    const token = AuthToken.getToken();
+    let mRole = null;
+    if (Boolean(token)) {
+      const { role } = jwt_decode(token);
+      if (role === "USER") {
+        mRole = "customer";
+      } else if (role === "ADMIN") {
+        mRole = "admin";
+      } else if (role === "GENERAL-SUPPORT") {
+        mRole = "general-support";
+      } else if (role === "ACCOUNTING") {
+        mRole = "accounting";
+      }
+    }
+    return mRole;
   }
 }
 

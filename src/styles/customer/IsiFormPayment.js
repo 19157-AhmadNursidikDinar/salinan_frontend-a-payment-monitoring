@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme) => ({
         float: "right",
     },
     PaperSize: {
-        padding: 40,
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(2),
     },
 }));
 

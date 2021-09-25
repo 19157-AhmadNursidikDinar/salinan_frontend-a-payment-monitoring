@@ -3,24 +3,34 @@ import ColorsTheme from "../assets/colors";
 import FontsTheme from "../assets/fonts";
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        minHeight: "100vh",
+        backgroundColor: ColorsTheme.grayWeb,
+    },
     container: {
         display: "flex",
         flexDirection: "row",
         width: "100%",
-        minHeight: "100vh",
+        height: "100%",
         backgroundColor: ColorsTheme.grayWeb,
     },
     leftSide: {
         flex: 1,
         display: "flex",
-        width: "50%",
+        height: "100%",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: ColorsTheme.white,
     },
     boxContainer: {
         display: "block",
-        width: "70%",
+        [theme.breakpoints.down('sm')]: {
+            minWidth: "50%",
+        },
+        [theme.breakpoints.up('md')]: {
+            minWidth: "60%",
+        },
         paddingBottom: "50px",
         backgroundColor: ColorsTheme.white,
         borderRadius: "10px",
@@ -53,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
         color: ColorsTheme.pacificBlue,
     },
     txtSignIn: {
-        lineHeight: "20px",
         ...FontsTheme.poppins_bold,
         fontSize: "15px",
         color: ColorsTheme.black,
@@ -61,11 +70,17 @@ const useStyles = makeStyles((theme) => ({
     },
     innerBox: {
         width: "100%",
-        paddingLeft: "20%",
-        paddingRight: "20%",
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
+        [theme.breakpoints.down('sm')]: {
+            paddingLeft: "5%",
+            paddingRight: "5%",
+        },
+        [theme.breakpoints.up('md')]: {
+            paddingLeft: "20%",
+            paddingRight: "20%",
+        },
     },
     userPass: {
         width: "100%",
@@ -74,15 +89,27 @@ const useStyles = makeStyles((theme) => ({
     },
     wrappedTxtFieldCustomer: {
         display: "flex",
-        padding: "8px 10px",
-        marginBottom: "12px",
-        marginTop: "4px",
-        marginLeft: "auto",
-        marginRight: "auto",
+        margin: theme.spacing(1),
+        paddingTop: "8px",
+        paddingBottom: "8px",
+        paddingRight: "15px",
+        minWidth: "100%",
+        "&:before": {
+            borderColor: ColorsTheme.white,
+        },
+        "&:after": {
+            borderColor: ColorsTheme.white,
+        },
+        "&:not(.Mui-disabled):hover::before": {
+            borderColor: ColorsTheme.white,
+        },
     },
     wrappedTxtFieldOfficer: {
         display: "flex",
         margin: theme.spacing(1),
+        paddingTop: "8px",
+        paddingBottom: "8px",
+        paddingRight: "15px",
         minWidth: "100%",
         "&:before": {
             borderColor: ColorsTheme.white,
@@ -97,6 +124,7 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: "100%",
+        paddingRight: "15px",
         "&:before": {
             borderColor: ColorsTheme.white,
         },
@@ -109,12 +137,19 @@ const useStyles = makeStyles((theme) => ({
     },
     wrappedRememberMe: {
         display: "flex",
-        padding: "8px 10px",
-        marginBottom: "12px",
-        flexDirection: "row",
-        alignItems: "center",
-        color: ColorsTheme.Onyx,
-        fontWeight: "bold",
+        margin: theme.spacing(1),
+        paddingTop: "8px",
+        paddingBottom: "8px",
+        minWidth: "100%",
+        "&:before": {
+            borderColor: ColorsTheme.white,
+        },
+        "&:after": {
+            borderColor: ColorsTheme.white,
+        },
+        "&:not(.Mui-disabled):hover::before": {
+            borderColor: ColorsTheme.white,
+        },
     },
     wrappedSignIn: {
         display: "flex",
@@ -147,8 +182,15 @@ const useStyles = makeStyles((theme) => ({
         color: ColorsTheme.ceruleanCrayola,
     },
     rightSide: {
+        [theme.breakpoints.down('sm')]: {
+            display: "none",
+        },
+        [theme.breakpoints.up('md')]: {
+            display: "block",
+        },
         flex: 1,
-        width: "50%",
+        width: "100%",
+        height: "100%",
         backgroundColor: ColorsTheme.aliceBlue,
         paddingBottom: "10%",
         paddingLeft: "5%",
@@ -162,6 +204,7 @@ const useStyles = makeStyles((theme) => ({
     },
     welcome: {
         ...FontsTheme.roboto_bold,
+        marginBottom:"0.25em",
         fontSize: "40px",
         lineHeight: "30px",
         color: ColorsTheme.Onyx,

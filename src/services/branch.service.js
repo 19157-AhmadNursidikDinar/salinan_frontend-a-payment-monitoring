@@ -1,11 +1,14 @@
 import axios from "axios";
+import authHeader from "../utils/auth-header";
 
 const apiUrl = process.env.REACT_APP_API_BASEURL + "/api/v1/branch"
 
 class BranchService {
     async getAllBranch() {
         try {
-            const response = await axios.get(apiUrl)
+            const response = await axios.get(apiUrl, {
+                headers: authHeader(),
+              })
             if (response.data && response.data.data.length > 0){
                 return response.data
             }
