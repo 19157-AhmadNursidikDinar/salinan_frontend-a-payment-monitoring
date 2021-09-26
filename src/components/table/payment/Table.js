@@ -82,9 +82,11 @@ export default function GeneralSupport({ paymentData = [], role }) {
                     page * rowsPerPage + rowsPerPage
                   )
                 : paymentData
-              ).map((row) => (
+              ).map((row, index) => (
                 <StyledTableRow key={row.id}>
-                  <StyledTableCell>{row.id}</StyledTableCell>
+                  <StyledTableCell>
+                    {page * rowsPerPage + index + 1}
+                  </StyledTableCell>
                   <StyledTableCell>
                     {dateOnly(row.tanggal_request)}
                   </StyledTableCell>
@@ -98,7 +100,7 @@ export default function GeneralSupport({ paymentData = [], role }) {
                     />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <Link to={`${role}/payment-detail`}>
+                    <Link to={`${role}/payment-detail/${row.id}`}>
                       <Button size="small" variant="contained" color="primary">
                         Detail
                       </Button>
