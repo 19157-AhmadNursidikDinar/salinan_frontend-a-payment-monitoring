@@ -1,9 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import ContentContainer from "../../components/ContentContainer";
 import Table from "../../components/table/payment/Table";
+import TableSkeleton from "../../components/table/payment/TableSkeleton";
+import PaymentService from "../../services/payment.service";
+import Alert from "@material-ui/lab/Alert";
 
 export default function GeneralSupport() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [paymentData, setPaymentData] = useState([]);
+  const [errorMsg, setErrorMsg] = useState();
+  useEffect(() => {
+    fetchPaymentData();
+  }, []);
+
+  const fetchPaymentData = async () => {
+    setIsLoading(true);
+    const result = await PaymentService.getCustomerPaymentRequestList();
+    setIsLoading(false);
+    if (!Boolean(result.error)) {
+      setPaymentData(result.data);
+      if (Boolean(result.data)) {
+        setErrorMsg("");
+      } else {
+        setErrorMsg("data not found");
+      }
+    } else {
+      setPaymentData(null);
+      setErrorMsg(result.error.response.data.msg);
+    }
+  };
+
   return (
     <ContentContainer role="customer" selectedMenu="Beranda">
       <div
@@ -16,7 +43,12 @@ export default function GeneralSupport() {
       >
         <Typography variant="h4">Daftar Payment Request</Typography>
       </div>
-      <Table />
+      {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
+      {isLoading ? (
+        <TableSkeleton />
+      ) : (
+        <Table paymentData={paymentData} role="customer" />
+      )}
     </ContentContainer>
   );
 }
