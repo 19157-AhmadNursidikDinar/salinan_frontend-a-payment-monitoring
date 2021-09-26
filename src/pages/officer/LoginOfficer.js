@@ -63,7 +63,7 @@ export default function LoginOfficer(props) {
         loginAs: role,
         rememberMe,
       });
-      console.log({ result });
+      // console.log({ result });
       if (!Boolean(result.error)) {
         const role = AuthService.getUserRole();
         if (role === "admin") {
