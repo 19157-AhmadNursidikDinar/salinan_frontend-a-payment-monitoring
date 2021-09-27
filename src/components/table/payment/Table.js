@@ -111,7 +111,6 @@ export default function GeneralSupport({ paymentData = [], role }) {
                         size="small"
                         variant="contained"
                         color="primary"
-                        size="small"
                         startIcon={<DetailIcon />}
                       >
                         Details
