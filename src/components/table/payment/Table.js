@@ -69,9 +69,13 @@ export default function GeneralSupport({ paymentData = [], role }) {
             <TableHead>
               <TableRow>
                 <StyledTableCell>no</StyledTableCell>
-                <StyledTableCell>Tanggal Request</StyledTableCell>
-                <StyledTableCell>Tanggal Pembayaran</StyledTableCell>
-                <StyledTableCell>Action</StyledTableCell>
+                <StyledTableCell align="center">
+                  Tanggal Request
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  Tanggal Pembayaran
+                </StyledTableCell>
+                <StyledTableCell align="center">Action</StyledTableCell>
                 <StyledTableCell></StyledTableCell>
               </TableRow>
             </TableHead>
@@ -87,16 +91,17 @@ export default function GeneralSupport({ paymentData = [], role }) {
                   <StyledTableCell>
                     {page * rowsPerPage + index + 1}
                   </StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell align="center">
                     {dateOnly(row.tanggal_request)}
                   </StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell align="center">
                     {dateOnly(row.tanggal_pembayaran)}
                   </StyledTableCell>
-                  <StyledTableCell>
+                  <StyledTableCell align="center">
                     <Chip
                       label={row.action}
                       color={convertActionToChipColor(row.action)}
+                      size="small"
                     />
                   </StyledTableCell>
                   <StyledTableCell align="center">
