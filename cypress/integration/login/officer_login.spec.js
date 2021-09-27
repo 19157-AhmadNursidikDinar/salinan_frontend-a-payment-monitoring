@@ -3,7 +3,7 @@ describe("Optimistic Officer Login", () => {
     cy.visit("http://localhost:3000/login-officer");
   });
 
-  it("customer can see login form", () => {
+  it("officer can see login form", () => {
     cy.get("[data-test='txt-username']").should("be.visible");
     cy.get("[data-test='txt-password']").should("be.visible");
     cy.get("[data-test='select-role']").should("be.visible");
