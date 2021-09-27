@@ -10,6 +10,7 @@ import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import DetailIcon from "@material-ui/icons/Visibility";
 import TablePaginationActions from "./TablePagination";
 import Chip from "../../ActionChip";
 import ColorsTheme from "../../../assets/colors";
@@ -106,8 +107,14 @@ export default function GeneralSupport({ paymentData = [], role }) {
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <Link to={`${role}/payment-detail/${row.id}`}>
-                      <Button size="small" variant="contained" color="primary">
-                        Detail
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        startIcon={<DetailIcon />}
+                      >
+                        Details
                       </Button>
                     </Link>
                   </StyledTableCell>
