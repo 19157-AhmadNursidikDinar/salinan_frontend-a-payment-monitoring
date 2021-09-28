@@ -14,7 +14,7 @@ import DetailIcon from "@material-ui/icons/Visibility";
 import TablePaginationActions from "./TablePagination";
 import Chip from "../../ActionChip";
 import ColorsTheme from "../../../assets/colors";
-import { dateOnly } from "../../../utils/date-format";
+import { dateOnly, dateAndTime } from "../../../utils/date-format";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -93,7 +93,7 @@ export default function GeneralSupport({ paymentData = [], role }) {
                     {page * rowsPerPage + index + 1}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {dateOnly(row.tanggal_request)}
+                    {dateAndTime(row.tanggal_request)}
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     {dateOnly(row.tanggal_pembayaran)}
