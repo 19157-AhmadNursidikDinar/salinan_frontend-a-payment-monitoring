@@ -15,6 +15,7 @@ import GeneralSupportHome from "./pages/officer/generalSupport/Home";
 import ServiceLevelAgreement from "./pages/officer/admin/ServiceLevelAgreement";
 import PaymentRequestDetailGeneralSupport from "./pages/officer/generalSupport/PaymentRequestDetail";
 import PaymentRequestDetailAcounting from "./pages/officer/accounting/PaymentRequestDetail";
+import PaymentRequestDetailCustomer from "./pages/customer/HasilFormPayment";
 import BranchOfficeList from "./pages/officer/admin/BranchOfficeList";
 import PageNotFound from "./pages/errors/PageNotFound";
 import Backdoor from "./pages/backdoor/Backdoor";
@@ -101,15 +102,21 @@ function App() {
         />
         <PostloginRoutes
           exact
-          path="/generalSupport/payment-detail"
+          path="/generalSupport/payment-detail/:id"
           component={PaymentRequestDetailGeneralSupport}
           role="general-support"
         />
         <PostloginRoutes
           exact
-          path="/accounting/payment-detail"
+          path="/accounting/payment-detail/:id"
           component={PaymentRequestDetailAcounting}
           role="accounting"
+        />
+        <PostloginRoutes
+          exact
+          path="/customer/payment-detail/:id"
+          component={PaymentRequestDetailCustomer}
+          role="customer"
         />
         <Route exact path="/backdoor" component={Backdoor} />
 
