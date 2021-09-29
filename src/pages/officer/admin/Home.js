@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
@@ -17,76 +17,18 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from '@material-ui/icons/Close';
 import TablePaginationActions from "../../../components/table/payment/TablePagination";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ColorsTheme from "../../../assets/colors";
 import Grid from "@material-ui/core/Grid";
+import Alert from '@material-ui/lab/Alert';
 
-//making Get List Account using Array Object
-const rows = [
-  {
-    no: "1",
-    nama: "Dinda Eka",
-    role: "General Support",
-    username: "10001",
-  },
-  {
-    no: "2",
-    nama: "Eka Dinda",
-    role: "Accounting",
-    username: "10002",
-  },
-  {
-    no: "3",
-    nama: "Dinda Eka Saja",
-    role: "Admin",
-    username: "10003",
-  },
-  {
-    no: "4",
-    nama: "Eka Dinda saja",
-    role: "Admin",
-    username: "10004",
-  },
-  {
-    no: "5",
-    nama: "Hidayat",
-    role: "General Support",
-    username: "10005",
-  },
-  {
-    no: "6",
-    nama: "Dinda Eka",
-    role: "General Support",
-    username: "10006",
-  },
-  {
-    no: "7",
-    nama: "Eka Dinda",
-    role: "Accounting",
-    username: "10007",
-  },
-  {
-    no: "8",
-    nama: "Dinda Eka Saja",
-    role: "Admin",
-    username: "10008",
-  },
-  {
-    no: "9",
-    nama: "Eka Dinda saja",
-    role: "Admin",
-    username: "10009",
-  },
-  {
-    no: "10",
-    nama: "Hidayat",
-    role: "General Support",
-    username: "10010",
-  },
-];
+import AuthService from '../../../services/auth.service'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -108,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: ColorsTheme.blueCrayola,
     },
+  }, 
+  messageError: {
+    display: "flex",
+    justifyContent: "center"
   },
   actionComponent: {
     marginTop: theme.spacing(1),
@@ -134,14 +80,40 @@ const StylingTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function Home() {
+export default function Home(props) {
   const classes = useStyles();
-  const [paging, setPaging] = React.useState(0);
+  const [paging, setPaging] = useState(0);
+  const [flashMessage, setFlashMessage] = useState({ success: false, message: '' });
+  const [users, setUsers] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("Loading...");
   const rowsPerPage = 7;
 
   const handleChangePage = (event, newPaging) => {
     setPaging(newPaging);
   };
+
+  // get api data all branch office
+  const fetchData = async () => {
+    const result = await AuthService.getAllUser()
+    if (!Boolean(result.error)) {
+      setUsers(result.data)
+      setErrorMsg("")
+    } else {
+      setUsers([])
+      setErrorMsg(result.error.response.data.msg)
+    }
+  }
+
+  useEffect(() => {
+    // show toast if after input data
+    if (props.location.state) {
+      setFlashMessage(props.location.state)
+    }
+  }, [props.location.state])
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <ContentContainer role="admin" selectedMenu="Beranda">
@@ -186,8 +158,30 @@ export default function Home() {
           />
         </Grid>
 
+        <Collapse in={flashMessage.success} >
+          <Alert
+            className={classes.alert}
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setFlashMessage({ success: false, message: '' });
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+          >
+            {flashMessage.message}
+          </Alert>
+        </Collapse>
 
-        <TableContainer component={Paper}>
+        <div className={classes.messageError}>
+          <h2 style={{ display: errorMsg ? 'block' : 'none' }}>{errorMsg}</h2>
+        </div>
+        <TableContainer component={Paper} style={{ display: errorMsg ? 'none' : 'block' }}>
           <Table className={classes.table} aria-label="custom pagination table">
             <TableHead>
               <TableRow>
@@ -200,18 +194,18 @@ export default function Home() {
             </TableHead>
             <TableBody>
               {(rowsPerPage > 0
-                ? rows.slice(
+                ? users.slice(
                   paging * rowsPerPage,
                   paging * rowsPerPage + rowsPerPage
                 )
-                : rows
-              ).map((row) => (
-                <StylingTableRow key={row.no}>
-                  <StylingTableCell>{row.no}</StylingTableCell>
-                  <StylingTableCell>{row.nama}</StylingTableCell>
-                  <StylingTableCell>{row.role}</StylingTableCell>
-                  <StylingTableCell>{row.username}</StylingTableCell>
-                  <StylingTableCell width="25%">
+                : users
+              ).map((user, index) => (
+                <StylingTableRow key={index + 1}>
+                  <StylingTableCell width="10%">{paging * rowsPerPage + index + 1}</StylingTableCell>
+                  <StylingTableCell>{user.fullname}</StylingTableCell>
+                  <StylingTableCell>{user.branch_id}</StylingTableCell>
+                  <StylingTableCell>{user.branch_name}</StylingTableCell>
+                  <StylingTableCell width="25%" align="center">
                     <Link to="/detail-user" >
                       <Button
                         className={classes.buttonMargin}
@@ -249,7 +243,7 @@ export default function Home() {
                 <TablePagination
                   rowsPerPageOptions={[]}
                   colSpan={5}
-                  count={rows.length}
+                  count={users.length}
                   rowsPerPage={rowsPerPage}
                   page={paging}
                   SelectProps={{
