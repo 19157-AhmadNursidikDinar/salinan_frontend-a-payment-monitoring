@@ -187,8 +187,8 @@ export default function Home(props) {
               <TableRow>
                 <StylingTableCell>no</StylingTableCell>
                 <StylingTableCell>Nama</StylingTableCell>
-                <StylingTableCell>Role</StylingTableCell>
                 <StylingTableCell>Username</StylingTableCell>
+                <StylingTableCell>Kantor Cabang</StylingTableCell>
                 <StylingTableCell align="center">Action</StylingTableCell>
               </TableRow>
             </TableHead>
@@ -203,7 +203,7 @@ export default function Home(props) {
                 <StylingTableRow key={index + 1}>
                   <StylingTableCell width="10%">{paging * rowsPerPage + index + 1}</StylingTableCell>
                   <StylingTableCell>{user.fullname}</StylingTableCell>
-                  <StylingTableCell>{user.branch_id}</StylingTableCell>
+                  <StylingTableCell>{user.username}</StylingTableCell>
                   <StylingTableCell>{user.branch_name}</StylingTableCell>
                   <StylingTableCell width="25%" align="center">
                     <Link to="/detail-user" >
