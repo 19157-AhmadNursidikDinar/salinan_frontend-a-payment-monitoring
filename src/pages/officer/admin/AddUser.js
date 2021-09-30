@@ -63,14 +63,6 @@ function FormAddUser() {
     const router = useHistory()
     const classes = useMyStyles();
     const [dataBranch, setDataBranch] = useState([])
-    const [newUser, setNewUser] = useState({
-        "branch_id": 1
-    });
-    const {branch_id} = newUser
-  
-    //STATE "Role"
-    const [role, setRole] = useState('');
-    const [branch, setBranch] = useState()
     //STATE "Show/Hide Password"
     const [values, setValues] = useState({
         showPassword: false,
@@ -89,6 +81,8 @@ function FormAddUser() {
         role_id: Yup.number()
             .notOneOf([0], 'msg')
             .required('Required'),
+        branch_id: Yup.number()
+            .required('required')
       })
 
     const formik = useFormik({
@@ -102,21 +96,22 @@ function FormAddUser() {
         validationSchema: validationSchema,
         validateOnBlur: false,
         validateOnChange: false,
-        onSubmit: async ({fullname, username, password, role_id}) => {
-            const data = await RoleService.CreateNewRole(newUser)
+        onSubmit: async ({fullname, username, password, role_id, branch_id}) => {
+            const dataUser = {fullname, username, password, role_id, branch_id}
+            const data = await RoleService.CreateNewRole(dataUser)
             console.log(data);
             !data.error && router.push('/admin')
         },
       });
 
-    const handleBranch = (event) => {
-        setBranch(event.target.value);
-        for (const key of dataBranch) {
-           if (key.branch_name === event.target.value) {
-               setNewUser({...newUser, 'branch_id': key.id})
-           }
-        }
-    };
+    // const handleBranch = (event) => {
+    //     setBranch(event.target.value);
+    //     for (const key of dataBranch) {
+    //        if (key.branch_name === event.target.value) {
+    //            setNewUser({...newUser, 'branch_id': key.id})
+    //        }
+    //     }
+    // };
     const handleClickShowPassword = () => {
         setValues({ showPassword: !values.showPassword });
     };
@@ -124,83 +119,14 @@ function FormAddUser() {
         event.preventDefault();
     };
     
-    function buttonOnClick() {
-        if (formik.values.fullname === '' || formik.values.username === '' || formik.values.password === '' || formik.values.role_id === 0 ) {
-            return ( 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.BtnSave}
-                    endIcon={<SaveRoundedIcon />}
-                    disabled
-                >
-                    Simpan
-                </Button>
-            )
-           
-        } else {
-            if (formik.values.role_id !== 4) {
-                return ( 
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.BtnSave}
-                        endIcon={<SaveRoundedIcon />}
-                        onClick={()=>{SaveOnclick()}}
-                    >
-                        Simpan
-                    </Button>
-                )
-            } else if (formik.values.role_id === 4 ){
-                if (branch_id !== 1) {
-                    return(
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.BtnSave}
-                            endIcon={<SaveRoundedIcon />}
-                            //onClick={()=>{SaveOnclick()}}
-                        >
-                            Simpan
-                        </Button>
-                    )
-                    
-                } else {
-                    return(
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.BtnSave}
-                            endIcon={<SaveRoundedIcon />}
-                            disabled
-                        >
-                            Simpan
-                        </Button>
-                    )
-                   
-                }
-            }
-        }
-    }
-
     async function GetBranchID() {
         const branchID = await branchService.getAllBranch()
-        console.log(branchID);
         setDataBranch(branchID.data)
     }
-    async function SaveOnclick() {
-        const data = await RoleService.CreateNewRole(newUser)
-        !data.error && router.push('/admin')
-    }
-
-   
 
     useEffect(() => {
         GetBranchID()
     }, [])
-
-    console.log(formik.values);
-    console.log(dataBranch);
     //PAGE ADD USER
     return (
         <Paper className={classes.PaperSize} elevation={4}>
@@ -253,25 +179,29 @@ function FormAddUser() {
                             
                         </FormControl>
                     </Grid>
-                    {
-                        formik.values.role_id === 4 &&
-                        <Grid item xs={12}>
-                            <FormControl variant="outlined" fullWidth>
-                                <InputLabel htmlFor="user-roles">Branch</InputLabel>
-                                <Select
-                                    labelId="branchAgent"
-                                    label="Branch"
-                                    id="branchAgent"
-                                    value={branch}
-                                    onChange={handleBranch}
-                                >
-                                    {
-                                        dataBranch.map((e)=> e.id !== 1 && <MenuItem value={e.branch_name}>{e.branch_name}</MenuItem>)
-                                    }
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                    }
+                    <Grid item xs={12} style={{display:  formik.values.role_id === 4 ? 'block' : 'none'}}>
+                        <FormControl 
+                            variant="outlined" 
+                            fullWidth
+                            error={
+                                Boolean(formik.errors.branch_id) && formik.touched.branch_id
+                              }
+                            className={classes.FormControl}>
+                            <InputLabel htmlFor="user-roles">Branch</InputLabel>
+                            <Select
+                                labelId="branchAgent"
+                                label="Branch"
+                                id="branchAgent"
+                                value={formik.values.branch_id}
+                                onChange={formik.handleChange}
+                            >
+                                {
+                                    dataBranch.map((e, i)=> e.id !== 1 && <MenuItem value={e.id} key={i}>{e.branch_name}</MenuItem>)
+                                }
+                            </Select>
+                            {formik.errors.branch_id && <FormHelperText>eror</FormHelperText>}
+                        </FormControl>
+                    </Grid>
                     <Grid item xs={12}>
                         <TextField
                             id="UserName"
