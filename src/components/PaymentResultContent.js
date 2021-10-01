@@ -17,6 +17,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useStyles from "../styles/customer/HasilFormPayment";
 import Chip from "./ActionChip";
+import moment from "moment";
 
 const TableCell = withStyles((theme) => ({
   root: {
@@ -57,7 +58,8 @@ function HasilFormPayment({ formValues, resetFormValues }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
-
+  let dt = moment(formValues.payment_date);
+  let formattedDate = dt.format('DD MMMM YYYY')
   const handleClickNewPayment = () => {
     resetFormValues();
   };
@@ -97,7 +99,7 @@ function HasilFormPayment({ formValues, resetFormValues }) {
                   />
                   <MTableRow
                     label="Tanggal Pembayaran"
-                    value={formValues?.payment_date || ""}
+                    value={formattedDate || ""}
                   />
                   <MTableRow
                     label="Jumlah Payment"

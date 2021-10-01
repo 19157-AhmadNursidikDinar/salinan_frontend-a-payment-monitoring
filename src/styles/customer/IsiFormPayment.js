@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(2),
     },
+    RequestDetail: {
+        marginTop: 21,
+    },
 }));
 
 export default useStyles;

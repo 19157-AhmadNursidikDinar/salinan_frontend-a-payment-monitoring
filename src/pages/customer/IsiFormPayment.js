@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import NumberFormat from "react-number-format";
 //import material-ui components
 import Button from "@material-ui/core/Button";
+import Collapse from '@material-ui/core/Collapse';
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -12,6 +13,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import { SendRounded } from "@material-ui/icons";
+import Alert from "@material-ui/lab/Alert";
 //import datepicker components
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
@@ -26,11 +28,14 @@ import useStyles from "../../styles/customer/IsiFormPayment";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import moment from "moment";
+//import API service
+import PaymentService from "../../services/payment.service";
 
 const initValue = {
   customer_name: "",
-  payment_date: moment(new Date()).format("MM-DD-YYYY"),
+  payment_date: moment(new Date()).format("YYYY-MM-DD"),
   request: "daily-needs",
+  detail_request: "",
   amount: "",
   amount_counted: "",
   account_name: "",
@@ -71,34 +76,57 @@ const validationSchema = Yup.object().shape({
 
 function FormRequest({ formValues, handleSubmit }) {
   const classes = useStyles();
+  const [errorMsg, setErrorMsg] = useState();
   const formik = useFormik({
     initialValues: formValues,
     validationSchema: validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit: ({
+    onSubmit: async ({
       customer_name,
       payment_date,
       request,
+      detail_request,
       amount,
       amount_counted,
       account_name,
       account_number,
     }) => {
-      handleSubmit({
+      if (request === "others") {
+        request = detail_request
+      }
+      const result = await PaymentService.insertPayment({
         customer_name,
-        payment_date: moment(payment_date).format("MM-DD-YYYY"),
         request,
         amount,
         amount_counted,
-        account_name,
         account_number,
+        account_name,
+        payment_date,
       });
+
+      if (!Boolean(result.error)) {
+        setErrorMsg("")
+      } else {
+        setErrorMsg(result.error.response.data.msg);
+      }
+
+      handleSubmit(
+        {
+          customer_name,
+          payment_date: moment(payment_date).format("YYYY-MM-DD"),
+          request,
+          amount,
+          amount_counted,
+          account_name,
+          account_number,
+        });
     },
   });
 
   return (
     <Paper className={classes.PaperSize} elevation={4}>
+      {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
       <Container>
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={3}>
@@ -137,9 +165,29 @@ function FormRequest({ formValues, handleSubmit }) {
                   <option value="loan-repayment">loan-repayment</option>
                   <option value="education-fund">education-fund</option>
                   <option value="travel-fund">travel-fund</option>
-                  <option value="bill-payment">ill-payment</option>
+                  <option value="bill-payment">bill-payment</option>
                   <option value="others">others</option>
                 </Select>
+                <Grid item xs={12}>
+                  <Collapse in={formik.values.request === "others"}>
+                    <TextField
+                      id="detail_request"
+                      className={classes.RequestDetail}
+                      label="Detail Keperluan Payment"
+                      variant="outlined"
+                      fullWidth
+                      value={formik.values.detail_request}
+                      onChange={formik.handleChange}
+                      disabled={formik.isSubmitting}
+                      error={
+                        Boolean(formik.errors.request) &&
+                        formik.touched.request
+                      }
+                      helperText={formik.errors.request}
+                      data-test="txt-detail-request"
+                    />
+                  </Collapse>
+                </Grid>
               </FormControl>
             </Grid>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -256,7 +304,7 @@ function FormRequest({ formValues, handleSubmit }) {
           </Grid>
         </form>
       </Container>
-    </Paper>
+    </Paper >
   );
 }
 
