@@ -29,6 +29,7 @@ import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ColorsTheme from "../../../assets/colors";
+import TableSkeleton from "../../../components/table/payment/TableSkeleton";
 
 import Grid from "@material-ui/core/Grid";
 
@@ -94,7 +95,8 @@ export default function BranchOfficeList(props) {
     const [pages, setPages] = useState(0);
     const [flashMessage, setFlashMessage] = useState({ success: false, message: '' });
     const [branchs, setBranchs] = useState([]);
-    const [errorMsg, setErrorMsg] = useState("Loading...");
+    const [isLoading, setIsLoading] = useState(true);
+    const [errorMsg, setErrorMsg] = useState();
     const rowsPage = 10;
 
     //event handling change page
@@ -104,10 +106,18 @@ export default function BranchOfficeList(props) {
 
     // get api data all branch office
     const fetchData = async () => {
+
+        setIsLoading(true);
         const result = await BranchService.getAllBranch()
+
+        setIsLoading(false);
         if (!Boolean(result.error)) {
             setBranchs(result.data)
-            setErrorMsg("")
+            if (Boolean(result.data)) {
+                setErrorMsg("");
+            } else {
+                setErrorMsg("data not found");
+            }
         } else {
             setBranchs([])
             setErrorMsg(result.error.response.data.msg)
@@ -126,20 +136,8 @@ export default function BranchOfficeList(props) {
         fetchData()
     }, [])
 
-    return (
-        <ContentContainer role="admin" selectedMenu="Daftar Kantor Cabang">
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                    paddingBottom: "2em",
-                }}>
-                <Typography variant="h4">
-                    Daftar Kantor Cabang
-                </Typography>
-            </div>
-
+    function PaperListBranch(props) {
+        return (
             <Paper className={classes.PaperSize} elevation={4}>
 
                 <Grid
@@ -199,7 +197,6 @@ export default function BranchOfficeList(props) {
                             <TableRow>
                                 <StylingTableCell>no</StylingTableCell>
                                 <StylingTableCell>Nama Kantor Cabang</StylingTableCell>
-                                <StylingTableCell align="center">Action</StylingTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -213,17 +210,6 @@ export default function BranchOfficeList(props) {
                                 <StylingTableRow key={index + 1}>
                                     <StylingTableCell width="10%">{pages * rowsPage + index + 1}</StylingTableCell>
                                     <StylingTableCell>{branch.id === 1 ? "pusat" : branch.branch_name}</StylingTableCell>
-                                    <StylingTableCell width="25%" align="center">
-                                        <Link to="/detail-branch" className={classes.buttonMargin}>
-                                            <Button
-                                                variant="contained"
-                                                color="info"
-                                                size="small"
-                                                startIcon={<VisibilityIcon />}>
-                                                Detail
-                                            </Button>
-                                        </Link>
-                                    </StylingTableCell>
                                 </StylingTableRow>
                             ))}
                         </TableBody>
@@ -247,6 +233,29 @@ export default function BranchOfficeList(props) {
                     </Table>
                 </TableContainer>
             </Paper>
+
+        );
+    }
+
+    return (
+        <ContentContainer role="admin" selectedMenu="Daftar Kantor Cabang">
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                    paddingBottom: "2em",
+                }}>
+                <Typography variant="h4">
+                    Daftar Kantor Cabang
+                </Typography>
+            </div>
+            {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
+            {isLoading ? (
+                <TableSkeleton />
+            ) : (
+                <PaperListBranch />
+            )}
         </ContentContainer>
     );
 }
