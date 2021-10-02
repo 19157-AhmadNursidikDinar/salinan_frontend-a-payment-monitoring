@@ -1,9 +1,10 @@
 const session = window.sessionStorage;
 
 class AuthToken {
-  setToken(value, expiry, isPresist = false) {
+  setToken(value, username, expiry, isPresist = false) {
     const item = {
       value,
+      username,
       expiry,
     };
     if (isPresist) {
@@ -25,6 +26,15 @@ class AuthToken {
       return null;
     }
     return item.value;
+  }
+
+  getUserName() {
+    const itemStr = session.getItem("token") || localStorage.getItem("token");
+    if (!itemStr) {
+      return null;
+    }
+    const item = JSON.parse(itemStr);
+    return item.username;
   }
 
   removeToken() {

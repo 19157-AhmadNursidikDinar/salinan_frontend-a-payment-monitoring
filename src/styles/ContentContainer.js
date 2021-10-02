@@ -115,6 +115,9 @@ const useStyles = makeStyles((theme) => ({
   titleSectionSpan: {
     color: ColorsTheme.pacificBlue,
   },
+  colorProfile: {
+    backgroundColor: ColorsTheme.pacificBlue,
+  }
 }));
 
 export default useStyles;

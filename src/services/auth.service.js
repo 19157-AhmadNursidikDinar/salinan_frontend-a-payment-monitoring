@@ -17,7 +17,7 @@ class AuthService {
         // console.log(decoded);
         const token = response.data.data.token;
         const { exp } = jwt_decode(token);
-        AuthToken.setToken(token, exp, rememberMe);
+        AuthToken.setToken(token, response.data.data.username,  exp, rememberMe);
         return response.data;
       }
     } catch (error) {

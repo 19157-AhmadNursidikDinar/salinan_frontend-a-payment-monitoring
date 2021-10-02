@@ -10,7 +10,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import PersonIcon from "@material-ui/icons/Person";
+import Typography from "@material-ui/core/Typography";
 import BusinessIcon from "@material-ui/icons/Business";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -29,6 +29,7 @@ import { useHistory } from "react-router-dom";
 
 import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import AuthToken from '../utils/auth-token';
 
 const menuItems = {
   customer: [
@@ -112,9 +113,13 @@ export default function MiniDrawer({
                 >
                   <MenuIcon />
                 </IconButton>
-                <Avatar>
-                  <PersonIcon />
+                <div style={{ display: "flex"}}>
+                <Typography variant="h6" style={{ color: "black", marginRight: 12, display: matches && open ? "none" : "block" }}>{AuthToken.getUserName()}</Typography>
+                <Avatar className={classes.colorProfile}>
+                  { AuthToken.getUserName().charAt(0).toUpperCase() }
                 </Avatar>
+                </div>
+                  
               </Grid>
             </Toolbar>
           </AppBar>
