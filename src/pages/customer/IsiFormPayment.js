@@ -107,26 +107,27 @@ function FormRequest({ formValues, handleSubmit }) {
 
       if (!Boolean(result.error)) {
         setErrorMsg("")
+        handleSubmit(
+          {
+            customer_name,
+            payment_date: moment(payment_date).format("YYYY-MM-DD"),
+            request,
+            amount,
+            amount_counted,
+            account_name,
+            account_number,
+          });
       } else {
         setErrorMsg(result.error.response.data.msg);
       }
-
-      handleSubmit(
-        {
-          customer_name,
-          payment_date: moment(payment_date).format("YYYY-MM-DD"),
-          request,
-          amount,
-          amount_counted,
-          account_name,
-          account_number,
-        });
     },
   });
-
+  //!Form Request
   return (
     <Paper className={classes.PaperSize} elevation={4}>
-      {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
+
+      {Boolean(errorMsg) && <Alert severity="error" className={classes.ResultAlert}>{errorMsg}</Alert>}
+
       <Container>
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={3}>

@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     RequestDetail: {
         marginTop: 21,
     },
+    ResultAlert: {
+        marginBottom: 21,
+    },
 }));
 
 export default useStyles;
