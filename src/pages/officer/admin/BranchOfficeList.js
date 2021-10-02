@@ -4,7 +4,6 @@ import ContentContainer from "../../../components/ContentContainer";
 import TablePaginationActions from "../../../components/table/payment/TablePagination";
 //import from @material-ui/icons
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 //import from @material-ui/core
