@@ -113,13 +113,13 @@ export default function MiniDrawer({
                 >
                   <MenuIcon />
                 </IconButton>
-                <div style={{ display: "flex"}}>
-                <Typography variant="h6" style={{ color: "black", marginRight: 12, display: matches && open ? "none" : "block" }}>{AuthToken.getUserName()}</Typography>
-                <Avatar className={classes.colorProfile}>
-                  { AuthToken.getUserName().charAt(0).toUpperCase() }
-                </Avatar>
+                <div style={{ display: "flex" }}>
+                  <Typography variant="h6" style={{ color: "black", marginRight: 12, display: matches && open ? "none" : "block" }}>{AuthToken.getUserName()}</Typography>
+                  <Avatar className={classes.colorProfile}>
+                    {AuthToken.getUserName().charAt(0).toUpperCase()}
+                  </Avatar>
                 </div>
-                  
+
               </Grid>
             </Toolbar>
           </AppBar>
