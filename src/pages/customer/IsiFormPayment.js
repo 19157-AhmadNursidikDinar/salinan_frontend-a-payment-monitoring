@@ -30,6 +30,7 @@ import { useFormik } from "formik";
 import moment from "moment";
 //import API service
 import PaymentService from "../../services/payment.service";
+const CountedText = require('angka-menjadi-terbilang');
 
 const initValue = {
   customer_name: "",
@@ -69,7 +70,6 @@ const validationSchema = Yup.object().shape({
   payment_date: Yup.string().required("Input required!"),
   request: Yup.string().required("Input required!"),
   amount: Yup.string().required("Input required!"),
-  amount_counted: Yup.string().required("Input required!"),
   account_name: Yup.string().required("Input required!"),
   account_number: Yup.string().required("Input required!"),
 });
@@ -77,6 +77,14 @@ const validationSchema = Yup.object().shape({
 function FormRequest({ formValues, handleSubmit }) {
   const classes = useStyles();
   const [errorMsg, setErrorMsg] = useState();
+
+  function CapitalizeWords(str) {
+    return str.replace(/\w\S*/g, function (kata) {
+      const kataBaru = kata.slice(0, 1).toUpperCase() + kata.substr(1);
+      return kataBaru
+    });
+  }
+
   const formik = useFormik({
     initialValues: formValues,
     validationSchema: validationSchema,
@@ -94,6 +102,9 @@ function FormRequest({ formValues, handleSubmit }) {
     }) => {
       if (request === "others") {
         request = detail_request
+      }
+      if (amount > 0) {
+        amount_counted = amount_counted = CapitalizeWords(CountedText(formik.values.amount) + " rupiah");
       }
       const result = await PaymentService.insertPayment({
         customer_name,
@@ -122,12 +133,12 @@ function FormRequest({ formValues, handleSubmit }) {
       }
     },
   });
-  //!Form Request
+
   return (
     <Paper className={classes.PaperSize} elevation={4}>
-
+      {/* Error Message */}
       {Boolean(errorMsg) && <Alert severity="error" className={classes.ResultAlert}>{errorMsg}</Alert>}
-
+      {/* ------------- */}
       <Container>
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={3}>
@@ -235,16 +246,16 @@ function FormRequest({ formValues, handleSubmit }) {
             <Grid item xs={12}>
               <TextField
                 id="amount_counted"
-                name="amount_counted"
+                className={classes.DisabledField}
                 label="Terbilang"
                 variant="outlined"
                 minRows={2}
                 maxRows={4}
                 multiline
                 fullWidth
-                value={formik.values.amount_counted}
+                value={Boolean(formik.values.amount) ? CapitalizeWords(CountedText(formik.values.amount) + " rupiah") : ""}
                 onChange={formik.handleChange}
-                disabled={formik.isSubmitting}
+                disabled
                 error={
                   Boolean(formik.errors.amount_counted) &&
                   formik.touched.amount_counted

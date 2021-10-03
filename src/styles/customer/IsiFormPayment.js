@@ -20,6 +20,11 @@ const useStyles = makeStyles((theme) => ({
     ResultAlert: {
         marginBottom: 21,
     },
+    DisabledField: {
+        "& .MuiInputBase-root.Mui-disabled": {
+            color: ColorsTheme.black
+        }
+    }
 }));
 
 export default useStyles;
