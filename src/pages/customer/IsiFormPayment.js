@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import NumberFormat from "react-number-format";
 //import material-ui components
 import Button from "@material-ui/core/Button";
-import Collapse from '@material-ui/core/Collapse';
+//import Collapse from '@material-ui/core/Collapse';
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -36,7 +36,7 @@ const initValue = {
   customer_name: "",
   payment_date: moment(new Date()).format("YYYY-MM-DD"),
   request: "daily-needs",
-  detail_request: "",
+  // detail_request: "",
   amount: "",
   amount_counted: "",
   account_name: "",
@@ -94,15 +94,15 @@ function FormRequest({ formValues, handleSubmit }) {
       customer_name,
       payment_date,
       request,
-      detail_request,
+      // detail_request,
       amount,
       amount_counted,
       account_name,
       account_number,
     }) => {
-      if (request === "others") {
-        request = detail_request
-      }
+      // if (request === "others") {
+      //   request = detail_request
+      // }
       if (amount > 0) {
         amount_counted = amount_counted = CapitalizeWords(CountedText(formik.values.amount) + " rupiah");
       }
@@ -180,7 +180,8 @@ function FormRequest({ formValues, handleSubmit }) {
                   <option value="bill-payment">bill-payment</option>
                   <option value="others">others</option>
                 </Select>
-                <Grid item xs={12}>
+                {/* !Field Detail_Request */}
+                {/* <Grid item xs={12}>
                   <Collapse in={formik.values.request === "others"}>
                     <TextField
                       id="detail_request"
@@ -199,7 +200,7 @@ function FormRequest({ formValues, handleSubmit }) {
                       data-test="txt-detail-request"
                     />
                   </Collapse>
-                </Grid>
+                </Grid> */}
               </FormControl>
             </Grid>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
