@@ -30,7 +30,7 @@ import { useFormik } from "formik";
 import moment from "moment";
 //import API service
 import PaymentService from "../../services/payment.service";
-const CountedText = require('angka-menjadi-terbilang');
+import CountedText from "angka-menjadi-terbilang";
 
 const initValue = {
   customer_name: "",
@@ -81,7 +81,7 @@ function FormRequest({ formValues, handleSubmit }) {
   function CapitalizeWords(str) {
     return str.replace(/\w\S*/g, function (kata) {
       const kataBaru = kata.slice(0, 1).toUpperCase() + kata.substr(1);
-      return kataBaru
+      return kataBaru;
     });
   }
 
@@ -104,7 +104,9 @@ function FormRequest({ formValues, handleSubmit }) {
       //   request = detail_request
       // }
       if (amount > 0) {
-        amount_counted = amount_counted = CapitalizeWords(CountedText(formik.values.amount) + " rupiah");
+        amount_counted = amount_counted = CapitalizeWords(
+          CountedText(formik.values.amount) + " rupiah"
+        );
       }
       const result = await PaymentService.insertPayment({
         customer_name,
@@ -117,17 +119,16 @@ function FormRequest({ formValues, handleSubmit }) {
       });
 
       if (!Boolean(result.error)) {
-        setErrorMsg("")
-        handleSubmit(
-          {
-            customer_name,
-            payment_date: moment(payment_date).format("YYYY-MM-DD"),
-            request,
-            amount,
-            amount_counted,
-            account_name,
-            account_number,
-          });
+        setErrorMsg("");
+        handleSubmit({
+          customer_name,
+          payment_date: moment(payment_date).format("YYYY-MM-DD"),
+          request,
+          amount,
+          amount_counted,
+          account_name,
+          account_number,
+        });
       } else {
         setErrorMsg(result.error.response.data.msg);
       }
@@ -137,7 +138,11 @@ function FormRequest({ formValues, handleSubmit }) {
   return (
     <Paper className={classes.PaperSize} elevation={4}>
       {/* Error Message */}
-      {Boolean(errorMsg) && <Alert severity="error" className={classes.ResultAlert}>{errorMsg}</Alert>}
+      {Boolean(errorMsg) && (
+        <Alert severity="error" className={classes.ResultAlert}>
+          {errorMsg}
+        </Alert>
+      )}
       {/* ------------- */}
       <Container>
         <form onSubmit={formik.handleSubmit}>
@@ -254,7 +259,13 @@ function FormRequest({ formValues, handleSubmit }) {
                 maxRows={4}
                 multiline
                 fullWidth
-                value={Boolean(formik.values.amount) ? CapitalizeWords(CountedText(formik.values.amount) + " rupiah") : ""}
+                value={
+                  Boolean(formik.values.amount)
+                    ? CapitalizeWords(
+                        CountedText(formik.values.amount) + " rupiah"
+                      )
+                    : ""
+                }
                 onChange={formik.handleChange}
                 disabled
                 error={
@@ -317,7 +328,7 @@ function FormRequest({ formValues, handleSubmit }) {
           </Grid>
         </form>
       </Container>
-    </Paper >
+    </Paper>
   );
 }
 
