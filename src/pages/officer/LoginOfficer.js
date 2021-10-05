@@ -40,30 +40,31 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "Use combination of 6 character or more")
     .required("Insert password"),
+  loginAs: Yup.number().required("Insert role"),
   rememberMe: Yup.boolean(),
 });
 
 export default function LoginOfficer(props) {
   const classes = useStyles();
-  const [role, setRole] = useState(1);
   const [errorMsg, setErrorMsg] = useState("");
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
+      loginAs: 1,
       rememberMe: false,
     },
     validationSchema: validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit: async ({ username, password, rememberMe }) => {
+    onSubmit: async ({ username, password, rememberMe, loginAs }) => {
       const result = await AuthService.login({
         username,
         password,
-        loginAs: role,
+        loginAs,
         rememberMe,
       });
-      console.log({ result });
+      // console.log({ result });
       if (!Boolean(result.error)) {
         const role = AuthService.getUserRole();
         if (role === "admin") {
@@ -167,8 +168,8 @@ export default function LoginOfficer(props) {
                     <TextField
                       select
                       name="loginAs"
-                      value={role}
-                      onChange={(e) => setRole(e.target.value)}
+                      value={formik.values.loginAs}
+                      onChange={formik.handleChange}
                       disabled={formik.isSubmitting}
                       variant="outlined"
                       fullWidth
@@ -181,6 +182,10 @@ export default function LoginOfficer(props) {
                           </InputAdornment>
                         ),
                       }}
+                      error={
+                        Boolean(formik.errors.loginAs) && formik.touched.loginAs
+                      }
+                      helperText={formik.errors.loginAs}
                       data-test="select-role"
                     >
                       <MenuItem data-test="opt-role-admin" value={1}>
