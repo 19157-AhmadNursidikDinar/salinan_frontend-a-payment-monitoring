@@ -47,6 +47,22 @@ class AuthService {
     }
     return mRole;
   }
+
+  setupInterceptor() {
+    axios.interceptors.response.use(
+      function (response) {
+        return response;
+      },
+      function (error) {
+        if (401 === error.response.status) {
+          AuthToken.removeToken();
+          window.location = "/";
+        } else {
+          return Promise.reject(error);
+        }
+      }
+    );
+  }
 }
 
 export default new AuthService();
