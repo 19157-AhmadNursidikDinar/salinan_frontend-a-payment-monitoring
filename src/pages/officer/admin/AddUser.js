@@ -89,24 +89,22 @@ function FormAddUser() {
   }, []);
 
   const validationSchema = Yup.object().shape({
-    fullname: Yup.string()
-      .max(15, "Must be 15 characters or less")
-      .required("Required"),
+    fullname: Yup.string().required("Input required"),
     username: Yup.string()
       .min(6, "Min 6 character required ")
       .max(20, "Must be 20 characters or less")
       .matches(/^\S+$/, "This field cannot contain any spaces")
-      .required("Required"),
+      .required("Input required"),
     password: Yup.string()
       .min(6, "Min 6 character required ")
-      .required("Required"),
+      .required("Input required"),
     passwordConfirmation: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Required"),
-    role_id: Yup.number().required("Required"),
+      .required("Input required"),
+    role_id: Yup.number().required("Input required"),
     branch_id: Yup.number().when("role_id", {
       is: 4,
-      then: Yup.number().required("Required"),
+      then: Yup.number().required("Input required"),
     }),
   });
 
@@ -193,6 +191,7 @@ function FormAddUser() {
                     Boolean(formik.errors.fullname) && formik.touched.fullname
                   }
                   helperText={formik.errors.fullname}
+                  data-test="txt-fullname"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -213,6 +212,7 @@ function FormAddUser() {
                     value={formik.values.role_id}
                     onChange={formik.handleChange}
                     disabled={formik.isSubmitting}
+                    data-test="select-role"
                   >
                     <MenuItem value={1}>Admin</MenuItem>
                     <MenuItem value={2}>General Support</MenuItem>
@@ -247,6 +247,7 @@ function FormAddUser() {
                     value={formik.values.branch_id}
                     onChange={formik.handleChange}
                     disabled={formik.isSubmitting}
+                    data-test="select-branch"
                   >
                     <MenuItem value="">none</MenuItem>
                     {dataBranch.map(
@@ -266,7 +267,6 @@ function FormAddUser() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  id="UserName"
                   name="username"
                   label="Username"
                   variant="outlined"
@@ -278,6 +278,7 @@ function FormAddUser() {
                   error={
                     Boolean(formik.errors.username) && formik.touched.username
                   }
+                  data-test="txt-username"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -307,6 +308,7 @@ function FormAddUser() {
                   error={
                     Boolean(formik.errors.password) && formik.touched.password
                   }
+                  data-test="txt-password"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -337,6 +339,7 @@ function FormAddUser() {
                     Boolean(formik.errors.passwordConfirmation) &&
                     formik.touched.passwordConfirmation
                   }
+                  data-test="txt-passwordConfirmation"
                 />
               </Grid>
             </Grid>
@@ -358,6 +361,7 @@ function FormAddUser() {
                   className={classes.BtnSave}
                   endIcon={<SaveRoundedIcon />}
                   disabled={formik.isSubmitting}
+                  data-test="btn-submit"
                 >
                   {formik.isSubmitting ? "Loading..." : "Save"}
                 </Button>
