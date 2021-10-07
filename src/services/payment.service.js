@@ -1,5 +1,7 @@
 import axios from "axios";
 import authHeader from "../utils/auth-header";
+import AuthService from "./auth.service";
+AuthService.setupInterceptor();
 const apiUrl = process.env.REACT_APP_API_BASEURL + "/api/v1/payment-request";
 
 class PaymentService {
