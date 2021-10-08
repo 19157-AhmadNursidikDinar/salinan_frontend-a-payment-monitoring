@@ -26,7 +26,7 @@ import ColorsTheme from "../../../assets/colors";
 import Grid from "@material-ui/core/Grid";
 import Alert from '@material-ui/lab/Alert';
 
-import AuthService from '../../../services/auth.service'
+import UserService from '../../../services/user.service'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -93,7 +93,7 @@ export default function Home(props) {
 
   const fetchData = async () => {
     setIsLoading(true);
-    const result = await AuthService.getAllUser()
+    const result = await UserService.getAllUser()
     setIsLoading(false);
     if (!Boolean(result.error)) {
       setUsers(result.data)

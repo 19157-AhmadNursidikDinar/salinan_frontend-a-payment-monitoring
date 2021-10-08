@@ -1,7 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import AuthToken from "../utils/auth-token";
-import authHeader from "../utils/auth-header";
 
 const apiUrl = process.env.REACT_APP_API_BASEURL + "/api/v1/user/";
 
@@ -47,19 +46,6 @@ class AuthService {
       }
     }
     return mRole;
-  }
-
-  async getAllUser() {
-    try {
-      const response = await axios.get(apiUrl, {
-        headers: authHeader()
-      });
-      if (response.data && response.data.data.length > 0) {
-        return response.data
-      }
-    } catch (error) {
-      return { error }
-    }
   }
 }
 
