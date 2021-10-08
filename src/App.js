@@ -14,13 +14,14 @@ import AdminUpdateUser from "./pages/officer/admin/UpdateUser";
 import GeneralSupportHome from "./pages/officer/generalSupport/Home";
 import ServiceLevelAgreement from "./pages/officer/admin/ServiceLevelAgreement";
 import PaymentRequestDetailGeneralSupport from "./pages/officer/generalSupport/PaymentRequestDetail";
-import PaymentRequestDetailAcounting from "./pages/officer/accounting/PaymentRequestDetail";
+import PaymentRequestDetailAccounting from "./pages/officer/accounting/PaymentRequestDetail";
 import PaymentRequestDetailCustomer from "./pages/customer/HasilFormPayment";
 import BranchOfficeList from "./pages/officer/admin/BranchOfficeList";
 import PageNotFound from "./pages/errors/PageNotFound";
 import Backdoor from "./pages/backdoor/Backdoor";
 import PreloginRoutes from "./components/protectedRoutes/PreloginRoutes";
 import PostloginRoutes from "./components/protectedRoutes/PostloginRoutes";
+
 
 function App() {
   return (
@@ -109,7 +110,7 @@ function App() {
         <PostloginRoutes
           exact
           path="/accounting/payment-detail/:id"
-          component={PaymentRequestDetailAcounting}
+          component={PaymentRequestDetailAccounting}
           role="accounting"
         />
         <PostloginRoutes
