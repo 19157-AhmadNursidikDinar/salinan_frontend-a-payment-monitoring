@@ -107,6 +107,15 @@ export default function DetailPayment({ paymentDetail, children }) {
                             />
                         </TableCell>
                     </TableRow>
+                    {Boolean(paymentDetail.reason) &&
+                        <TableRow>
+                            <TableCell>Keterangan</TableCell>
+                            <TableCell align="center">:</TableCell>
+                            <TableCell>
+                                {paymentDetail.reason || ""}
+                            </TableCell>
+                        </TableRow>
+                    }
                     {children}
                 </TableBody>
             </Table>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { Alert } from "@material-ui/lab";
 import PaymentService from "../../../services/payment.service";
 import DetailSkeleton from "../../../components/DetailSkeleton";
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 // Material ui core
 import {
   Typography,
@@ -26,13 +26,48 @@ import PaymentStatusSelector from "../../../components/PaymentStatusSelector";
 
 
 function PaymentRequestDetailGeneralSupport(props) {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useStyles();
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [paymentDetail, setPaymentDetail] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
+
+  const validationStage = (stage) => {
+    let result = "null";
+    if (stage === "accept") {
+      result = "PENDING-GS";
+    } else {
+      result = "PENDING-GS-REJECT";
+    }
+    return result;
+  }
+
+  const validationSchema = Yup.object().shape({
+    stage: Yup.string().required("Input required!").notOneOf(["null"], "Input required!"),
+    reason: Yup.string().when("stage", {
+      is: "reject",
+      then: Yup.string().required("Input required!"),
+    }),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      stage: "null",
+      reason: ""
+    },
+    validationSchema: validationSchema,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: async ({ stage, reason }) => {
+      const idPayment = parseInt(id);
+      const stagePayment = validationStage(stage);
+      const result = await PaymentService.updatePaymentRequestStage({ idPayment, stagePayment, reason });
+      if (!Boolean(result.error)) {
+        props.history.push("/general-support");
+      }
+    }
+  });
+
   useEffect(() => {
     fetchPaymentDetail(id);
   }, [id]);
@@ -53,10 +88,6 @@ function PaymentRequestDetailGeneralSupport(props) {
       setErrorMsg(result.error.response.data.msg);
     }
   };
-
-  const handleClickNewPayment = () => {
-    props.history.push("/add-payment-request");
-  }
 
   const handleClickGoBack = () => {
     props.history.goBack();
@@ -80,32 +111,35 @@ function PaymentRequestDetailGeneralSupport(props) {
       ) : (
         <div className={classes.root}>
           <Card className={classes.cardRequest}>
-            <Container fixed>
-              <CardContent>
-                <DetailPayment paymentDetail={paymentDetail}>
-                  <PaymentStatusSelector />
-                </DetailPayment>
-              </CardContent>
-            </Container>
-            <CardActions className={classes.cardActions}>
-              <Button size="small"
-                variant="contained"
-                color="primary"
-                className={classes.buttonAction}
-                onClick={handleClickGoBack}
-                startIcon={<ArrowBackIosRoundedIcon />}
-              >
-                Back
+            <form onSubmit={formik.handleSubmit}>
+              <Container fixed>
+                <CardContent>
+                    <DetailPayment paymentDetail={paymentDetail}>
+                      {!Boolean(paymentDetail.reason) && <PaymentStatusSelector formik={formik} />}
+                  </DetailPayment>
+                </CardContent>
+              </Container>
+              <CardActions className={classes.cardActions}>
+                <Button size="small"
+                  variant="contained"
+                  color="primary"
+                  className={classes.buttonAction}
+                  onClick={handleClickGoBack}
+                  startIcon={<ArrowBackIosRoundedIcon />}
+                >
+                  Back
               </Button>
-              <Button size="small"
-                variant="contained"
-                color="primary"
-                className={classes.buttonAction}
-                endIcon={<SaveRoundedIcon />}
-                onClick={handleClickNewPayment}
-              > {matches ? 'Update' : 'Update Payment Request'}
-              </Button>
-            </CardActions>
+                <Button size="small"
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  className={classes.buttonAction}
+                  endIcon={<SaveRoundedIcon />}
+                >
+                  {formik.isSubmitting ? "Updating..." : "Update"}
+                </Button>
+              </CardActions>
+            </form>
           </Card>
         </div>
       )}
