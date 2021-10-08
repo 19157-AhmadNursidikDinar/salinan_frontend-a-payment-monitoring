@@ -1,11 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import TextField from "@material-ui/core/TextField";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import ContentContainer from "../../../components/ContentContainer";
@@ -17,76 +14,19 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
+import TableSkeleton from "../../../components/table/payment/TableSkeleton";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from '@material-ui/icons/Close';
 import TablePaginationActions from "../../../components/table/payment/TablePagination";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ColorsTheme from "../../../assets/colors";
 import Grid from "@material-ui/core/Grid";
+import Alert from '@material-ui/lab/Alert';
 
-//making Get List Account using Array Object
-const rows = [
-  {
-    no: "1",
-    nama: "Dinda Eka",
-    role: "General Support",
-    username: "10001",
-  },
-  {
-    no: "2",
-    nama: "Eka Dinda",
-    role: "Accounting",
-    username: "10002",
-  },
-  {
-    no: "3",
-    nama: "Dinda Eka Saja",
-    role: "Admin",
-    username: "10003",
-  },
-  {
-    no: "4",
-    nama: "Eka Dinda saja",
-    role: "Admin",
-    username: "10004",
-  },
-  {
-    no: "5",
-    nama: "Hidayat",
-    role: "General Support",
-    username: "10005",
-  },
-  {
-    no: "6",
-    nama: "Dinda Eka",
-    role: "General Support",
-    username: "10006",
-  },
-  {
-    no: "7",
-    nama: "Eka Dinda",
-    role: "Accounting",
-    username: "10007",
-  },
-  {
-    no: "8",
-    nama: "Dinda Eka Saja",
-    role: "Admin",
-    username: "10008",
-  },
-  {
-    no: "9",
-    nama: "Eka Dinda saja",
-    role: "Admin",
-    username: "10009",
-  },
-  {
-    no: "10",
-    nama: "Hidayat",
-    role: "General Support",
-    username: "10010",
-  },
-];
+import UserService from '../../../services/user.service'
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -108,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: ColorsTheme.blueCrayola,
     },
+  },
+  messageError: {
+    display: "flex",
+    justifyContent: "center"
   },
   actionComponent: {
     marginTop: theme.spacing(1),
@@ -134,27 +78,48 @@ const StylingTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function Home() {
+export default function Home(props) {
   const classes = useStyles();
-  const [paging, setPaging] = React.useState(0);
-  const rowsPerPage = 7;
+  const [paging, setPaging] = useState(0);
+  const [flashMessage, setFlashMessage] = useState({ success: false, message: '' });
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState();
+  const rowsPerPage = 10;
 
   const handleChangePage = (event, newPaging) => {
     setPaging(newPaging);
   };
 
-  return (
-    <ContentContainer role="admin" selectedMenu="Beranda">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          width: "100%",
-          paddingBottom: "2em",
-        }}
-      >
-        <Typography variant="h4">Beranda Admin</Typography>
-      </div>
+  const fetchData = async () => {
+    setIsLoading(true);
+    const result = await UserService.getAllUser()
+    setIsLoading(false);
+    if (!Boolean(result.error)) {
+      setUsers(result.data)
+      if (Boolean(result.data)) {
+        setErrorMsg("");
+      } else {
+        setErrorMsg("data not found");
+      }
+    } else {
+      setUsers([])
+      setErrorMsg(result.error.response.data.msg)
+    }
+  }
+
+  useEffect(() => {
+    if (props.location.state) {
+      setFlashMessage(props.location.state)
+    }
+  }, [props.location.state])
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  function PaperListUser(props) {
+    return (
       <Paper className={classes.PaperSize} elevation={4}>
         <Grid
           container
@@ -186,61 +151,50 @@ export default function Home() {
           />
         </Grid>
 
-
-        <TableContainer component={Paper}>
+        <Collapse in={flashMessage.success} >
+          <Alert
+            className={classes.alert}
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setFlashMessage({ success: false, message: '' });
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+          >
+            {flashMessage.message}
+          </Alert>
+        </Collapse>
+        <TableContainer component={Paper} >
           <Table className={classes.table} aria-label="custom pagination table">
             <TableHead>
               <TableRow>
                 <StylingTableCell>no</StylingTableCell>
                 <StylingTableCell>Nama</StylingTableCell>
-                <StylingTableCell>Role</StylingTableCell>
                 <StylingTableCell>Username</StylingTableCell>
-                <StylingTableCell align="center">Action</StylingTableCell>
+                <StylingTableCell>Role</StylingTableCell>
+                <StylingTableCell>Kantor Cabang</StylingTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {(rowsPerPage > 0
-                ? rows.slice(
+                ? users.slice(
                   paging * rowsPerPage,
                   paging * rowsPerPage + rowsPerPage
                 )
-                : rows
-              ).map((row) => (
-                <StylingTableRow key={row.no}>
-                  <StylingTableCell>{row.no}</StylingTableCell>
-                  <StylingTableCell>{row.nama}</StylingTableCell>
-                  <StylingTableCell>{row.role}</StylingTableCell>
-                  <StylingTableCell>{row.username}</StylingTableCell>
-                  <StylingTableCell width="25%">
-                    <Link to="/detail-user" >
-                      <Button
-                        className={classes.buttonMargin}
-                        variant="contained"
-                        color="info"
-                        size="small"
-                        startIcon={<VisibilityIcon />}
-                      >
-                        Detail
-                      </Button>
-                    </Link>
-                    <Link to="/update-user" >
-                      <Button className={classes.buttonMargin} variant="contained" color="primary" size="small"
-                        startIcon={<EditIcon />}>
-                        Update
-                      </Button>
-                    </Link>
-                    <Link to="/hapus-user" >
-                      <Button
-                        className={classes.buttonMargin}
-                        variant="contained"
-                        color="secondary"
-                        size="small"
-                        startIcon={<DeleteIcon />}
-                      >
-                        Delete
-                      </Button>
-                    </Link>
-                  </StylingTableCell>
+                : users
+              ).map((user, index) => (
+                <StylingTableRow key={index + 1}>
+                  <StylingTableCell width="10%">{paging * rowsPerPage + index + 1}</StylingTableCell>
+                  <StylingTableCell>{user.fullname}</StylingTableCell>
+                  <StylingTableCell>{user.username}</StylingTableCell>
+                  <StylingTableCell>{user.role_name}</StylingTableCell>
+                  <StylingTableCell>{user.branch_name}</StylingTableCell>
                 </StylingTableRow>
               ))}
             </TableBody>
@@ -249,7 +203,7 @@ export default function Home() {
                 <TablePagination
                   rowsPerPageOptions={[]}
                   colSpan={5}
-                  count={rows.length}
+                  count={users.length}
                   rowsPerPage={rowsPerPage}
                   page={paging}
                   SelectProps={{
@@ -264,6 +218,29 @@ export default function Home() {
           </Table>
         </TableContainer>
       </Paper>
+
+    );
+  }
+
+  return (
+    <ContentContainer role="admin" selectedMenu="Beranda">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+          paddingBottom: "2em",
+        }}
+      >
+        <Typography variant="h4">Beranda Admin</Typography>
+      </div>
+
+      {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
+      {isLoading ? (
+        <TableSkeleton />
+      ) : (
+        <PaperListUser />
+      )}
     </ContentContainer>
   );
 }

@@ -26,6 +26,19 @@ class UserService {
       return { error };
     }
   }
+
+    async getAllUser() {
+    try {
+      const response = await axios.get(apiUrl, {
+        headers: authHeader()
+      });
+      if (response.data && response.data.data.length > 0) {
+        return response.data
+      }
+    } catch (error) {
+      return { error }
+    }
+  }
 }
 
 export default new UserService();
