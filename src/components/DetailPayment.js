@@ -28,7 +28,7 @@ const TableCell = withStyles((theme) => ({
 
 const convertActionToChipColor = (action) => {
     let result = "grey";
-    if (["Rejected by Accounting", "Rejected by GS"].includes(action)) {
+    if (["Rejected By Accounting", "Rejected By General Support"].includes(action)) {
         result = "red";
     } else if (action === "Disetujui") {
         result = "green";
