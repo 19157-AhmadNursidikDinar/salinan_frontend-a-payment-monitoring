@@ -48,7 +48,8 @@ const convertActionToChipColor = (action) => {
     result = "red"
   } else if (action === "Disetujui") {
     result = "green"
-
+  } else if (action === "Menunggu Konfirmasi General Support") {
+    result = "blue"
   } else if (action === "Menunggu Konfirmasi Accounting") {
     result = "blue"
   }
@@ -171,8 +172,8 @@ function PaymentRequestDetailAccounting(props) {
                         <TableCell align="center">:</TableCell>
                     <TableCell>
                         <Chip
-                        label="Menunggu Konfirmasi Accounting"
-                        color={convertActionToChipColor("Menunggu Konfirmasi Accounting")}
+                        label={paymentDetail.stage}
+                        color={convertActionToChipColor(paymentDetail.stage)}
                       />
                     </TableCell>
                     </TableRow>  

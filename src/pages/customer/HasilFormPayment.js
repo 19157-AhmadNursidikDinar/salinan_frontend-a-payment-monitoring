@@ -47,8 +47,9 @@ const convertActionToChipColor = (action) => {
     result = "red"
   } else if (action === "Disetujui") {
     result = "green"
-
   } else if (action === "Menunggu Konfirmasi General Support") {
+    result = "blue"
+  } else if (action === "Menunggu Konfirmasi Accounting") {
     result = "blue"
   }
   return result;
@@ -169,8 +170,8 @@ export default function HasilFormPayment(props) {
                     <TableCell align="center">:</TableCell>
                     <TableCell>
                       <Chip
-                        label="Menunggu Konfirmasi General Support"
-                        color={convertActionToChipColor("Menunggu Konfirmasi General Support")}
+                        label={paymentDetail.stage}
+                        color={convertActionToChipColor(paymentDetail.stage)}
                       />
                     </TableCell>
                     </TableRow>
