@@ -34,7 +34,7 @@ import CountedText from "angka-menjadi-terbilang";
 
 const initValue = {
   customer_name: "",
-  payment_date: moment(new Date()).format("YYYY-MM-DD"),
+  payment_date: new Date(),
   request: "daily-needs",
   // detail_request: "",
   amount: "",
@@ -74,6 +74,10 @@ const validationSchema = Yup.object().shape({
   account_number: Yup.string().required("Input required!"),
 });
 
+const DisabledTextFieldComponent = (props) => {
+  return <TextField {...props} inputProps={{ readOnly: true }} />;
+};
+
 function FormRequest({ formValues, handleSubmit }) {
   const classes = useStyles();
   const [errorMsg, setErrorMsg] = useState();
@@ -100,6 +104,16 @@ function FormRequest({ formValues, handleSubmit }) {
       account_name,
       account_number,
     }) => {
+      console.log({
+        customer_name,
+        payment_date,
+        request,
+        // detail_request,
+        amount,
+        amount_counted,
+        account_name,
+        account_number,
+      });
       // if (request === "others") {
       //   request = detail_request
       // }
@@ -208,18 +222,18 @@ function FormRequest({ formValues, handleSubmit }) {
                 </Grid> */}
               </FormControl>
             </Grid>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Grid item xs={12}>
+            <Grid item xs={12}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
-                  name="payment_date"
-                  label="Tanggal Pembayaran Aktual"
-                  variant="outlined"
-                  format="dd/MM/yyyy"
+                  id="date-picker-dialog"
+                  label="Tanggal Pembayaran"
+                  inputVariant="outlined"
+                  format="yyyy-MM-dd"
+                  value={formik.values.date}
+                  onChange={(value) => formik.setFieldValue("date", value)}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
                   }}
-                  value={formik.payment_date}
-                  onChange={formik.handleChange}
                   fullWidth
                   disabled={formik.isSubmitting}
                   error={
@@ -227,10 +241,11 @@ function FormRequest({ formValues, handleSubmit }) {
                     formik.touched.payment_date
                   }
                   helperText={formik.errors.payment_date}
+                  TextFieldComponent={DisabledTextFieldComponent}
                   data-test="txt-payment_date"
                 />
-              </Grid>
-            </MuiPickersUtilsProvider>
+              </MuiPickersUtilsProvider>
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 id="amount"
