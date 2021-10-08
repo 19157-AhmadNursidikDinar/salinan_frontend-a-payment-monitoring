@@ -17,8 +17,9 @@ import ContentContainer from "../../../components/ContentContainer";
 import PaymentStatusSelector from "../../../components/PaymentStatusSelector";
 import useStyles from "../../../styles/customer/HasilFormPayment";
 
-function PaymentRequestDetail(props) {
+function PaymentRequestDetailGeneralSupport(props) {
     const classes = useStyles();
+    
     const handleClickGoBack = () => {
         props.history.goBack();
     }
@@ -72,4 +73,4 @@ function PaymentRequestDetail(props) {
     );
 }
 
-export default PaymentRequestDetail;
+export default PaymentRequestDetailGeneralSupport;

@@ -1,5 +1,10 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import NumberFormat from "react-number-format";
+import { Alert } from "@material-ui/lab";
+import DetailPaymentService from "../services/detail.payment.service";
+import { dateOnly } from "../utils/date-format";
+import DetailSkeleton from "../components/DetailSkeleton";
 // Material ui core
 import {
     FormControl,
@@ -25,39 +30,97 @@ const TableCell = withStyles((theme) => ({
     },
 }))(MuiTableCell);
 
-const createData = (description, value) => {
-    return { description, value };
-};
-
-const rows = [
-    createData("Diminta Oleh", "Asep Sunandar"),
-    createData("Keperluan Payment", "SPP Juli 2020"),
-    createData("Tanggal Pembayaran", "Sabtu, 10 Juli 2020"),
-    createData("Jumlah Payment", "Rp. 1.000.000"),
-    createData("Terbilang", "Satu juta rupiah"),
-    createData("Nama Rek. / Penerima", "MD. Mubarokul Huda"),
-    createData("No. Rekening Penerima", "15000757050"),
-    createData("Request Terkirim", "Jum’at, 9 Juli 2021 (09.00 PM)"),
-    createData("Status Request", "null"),
-];
+const MTableRow = ({ label, value }) => {
+    return (
+      <TableRow>
+        <TableCell>{label}</TableCell>
+        <TableCell align="center">:</TableCell>
+        <TableCell>{value}</TableCell>
+      </TableRow>
+    );
+  };
 
 function PaymentStatusSelector() {
     const classes = useStyles();
     const [status, setStatus] = useState('null');
+    const {id} = useParams();
+    const [isLoading, setIsLoading] = useState (false);
+    const [paymentDetail, setPaymentDetail] = useState ([]);
+    const [errorMsg, setErrorMsg] = useState ();
+    useEffect(() => {
+      fetchPaymentDetail();
+    }, []);
+  
+    const fetchPaymentDetail = async () => {
+      setIsLoading (true);
+      const result = await DetailPaymentService.getOfficerDetailPayment(id);
+      setIsLoading (false);
+      if (!Boolean(result.error)) {
+          setPaymentDetail(result.data);
+          if (Boolean(result.data)) {
+            setErrorMsg("");
+          }else {
+            setErrorMsg("data not found");
+          }
+      } else {
+        setPaymentDetail(null);
+        setErrorMsg(result.error.response.data.msg);
+      }
+    };
 
+    const CurrencyFormat = (props) => {
+      return (
+        <NumberFormat
+          value={paymentDetail.amount}
+          prefix="Rp."
+          decimalSeparator="."
+          displayType="text"
+          thousandSeparator={true}
+          allowNegative={true} />
+      )
+    }
+  
     return (
         <>
-            {rows.map((row) => (
-                <TableRow key={row.name}>
-                    <TableCell>{row.description}</TableCell>
-                    <TableCell>:</TableCell>
-                    {row.value === "null" ? (
+          {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
+      {isLoading ? (  
+           <DetailSkeleton />
+      ) : (
+            <TableRow>
+               <MTableRow
+                    label="Diminta Oleh"
+                    value={paymentDetail.customer_name || ""}
+                  />
+                  <MTableRow
+                    label="Keperluan Payment"
+                    value={paymentDetail.request || ""}
+                  />
+                  <MTableRow
+                    label="Tanggal Pembayaran"
+                    value={dateOnly(paymentDetail.payment_date) || ""}
+                  />
+                  <MTableRow
+                    label="Jumlah Payment"
+                    value={CurrencyFormat(paymentDetail.amount)}
+                  />
+                  <MTableRow
+                    label="Terbilang"
+                    value={paymentDetail.amount_counted || ""}
+                  />
+                  <MTableRow
+                    label="Nama Rek. Penerima"
+                    value={paymentDetail.account_name || ""}
+                  />
+                  <MTableRow
+                    label="No. Rekening Penerima"
+                    value={paymentDetail.account_number || ""}
+                  />
+                    {paymentDetail.value === "null" ? (
                         <TableCell>
                             <FormControl variant="outlined" className={classes.formControl} fullWidth size="small">
                                 <Select
                                     value={status}
                                     onChange={(e) => setStatus(e.target.value)}
-
                                 >
                                     <MenuItem value="null">-Ubah Status-</MenuItem>
                                     <MenuItem value="accept">Accept</MenuItem>
@@ -66,10 +129,10 @@ function PaymentStatusSelector() {
                             </FormControl>
                         </TableCell>
                     ) : (
-                        <TableCell>{row.value}</TableCell>
+                        <TableCell>{paymentDetail.value}</TableCell>
                     )}
-                </TableRow>
-            ))}
+            </TableRow>
+      )}
             {status === "reject" ? (
                 <TableRow>
                     <TableCell>Alasan</TableCell>
@@ -87,9 +150,8 @@ function PaymentStatusSelector() {
             ) : (
                 <TableCell> </TableCell>
             )}
-
         </>
-
     )
 }
+
 export default PaymentStatusSelector
