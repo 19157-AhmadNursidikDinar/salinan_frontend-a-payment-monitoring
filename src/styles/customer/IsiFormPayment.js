@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 21,
     },
     ResultAlert: {
-        marginBottom: 21,
+        margin: '0 1.5em 1.5em 1.5em',
     },
     DisabledField: {
         "& .MuiInputBase-root.Mui-disabled": {
