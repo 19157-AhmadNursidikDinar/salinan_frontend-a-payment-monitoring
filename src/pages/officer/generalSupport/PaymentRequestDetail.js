@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Alert } from "@material-ui/lab";
-import DetailPaymentService from "../../../services/detail.payment.service";
+import PaymentService from "../../../services/payment.service";
 import DetailSkeleton from "../../../components/DetailSkeleton";
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -39,7 +39,7 @@ function PaymentRequestDetailGeneralSupport(props) {
 
   const fetchPaymentDetail = async (id) => {
     setIsLoading(true);
-    const result = await DetailPaymentService.getOfficerDetailPayment(id);
+    const result = await PaymentService.getDetailPayment(id);
     setIsLoading(false);
     if (!Boolean(result.error)) {
       setPaymentDetail(result.data);

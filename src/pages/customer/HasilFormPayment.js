@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import DetailSkeleton from "../../components/DetailSkeleton";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-import DetailPaymentService from "../../services/detail.payment.service";
+import PaymentService from "../../services/payment.service";
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -27,14 +27,14 @@ export default function HasilFormPayment(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [paymentDetail, setPaymentDetail] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
-  
+
   useEffect(() => {
     fetchPaymentDetail(id);
   }, [id]);
 
   const fetchPaymentDetail = async (id) => {
     setIsLoading(true);
-    const result = await DetailPaymentService.getCustomerDetailPayment(id);
+    const result = await PaymentService.getDetailPayment(id);
     setIsLoading(false);
     if (!Boolean(result.error)) {
       setPaymentDetail(result.data);

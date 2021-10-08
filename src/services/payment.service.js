@@ -29,6 +29,20 @@ class PaymentService {
       return { error };
     }
   }
+
+  async getDetailPayment(id) {
+    try {
+      const response = await axios.get(apiUrl + "/detail/" + id, {
+        headers: authHeader(),
+      });
+      if (Boolean(response.data)) {
+        return response.data
+      }
+    }
+    catch (error) {
+      return { error };
+    }
+  }
 }
 
 export default new PaymentService();
