@@ -15,7 +15,6 @@ export default function ServiceLevelAgreement() {
             >
                 <Typography variant="h4">Service Level Agreement</Typography>
             </div>
-
         </ContentContainer>
     );
 }
