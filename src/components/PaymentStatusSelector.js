@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // Material ui core
 import {
     FormControl,
@@ -28,30 +28,34 @@ const TableCell = withStyles((theme) => ({
 function PaymentStatusSelector() {
     const classes = useStyles();
     const [status, setStatus] = useState('null');
-  
+
     return (
         <>
-        
-        
             <TableRow>
-                        <TableCell>
-                            <FormControl variant="outlined" className={classes.formControl} fullWidth size="small">
-                                <Select
-                                    value={status}
-                                    onChange={(e) => setStatus(e.target.value)}
-                                >
-                                    <MenuItem value="null">-Ubah Status-</MenuItem>
-                                    <MenuItem value="accept">Accept</MenuItem>
-                                    <MenuItem value="reject">Reject</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </TableCell>
+                <TableCell>
+                    Update Status Request
+                </TableCell>
+                <TableCell align="center">
+                    :
+                </TableCell>
+                <TableCell>
+                    <FormControl variant="outlined" className={classes.formControl} fullWidth size="small">
+                        <Select
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                        >
+                            <MenuItem value="null">-Ubah Status-</MenuItem>
+                            <MenuItem value="accept">Accept</MenuItem>
+                            <MenuItem value="reject">Reject</MenuItem>
+                        </Select>
+                    </FormControl>
+                </TableCell>
             </TableRow>
-      
+
             {status === "reject" ? (
                 <TableRow>
                     <TableCell>Alasan</TableCell>
-                    <TableCell>:</TableCell>
+                    <TableCell align="center">:</TableCell>
                     <TableCell>
                         <TextField
                             multiline
