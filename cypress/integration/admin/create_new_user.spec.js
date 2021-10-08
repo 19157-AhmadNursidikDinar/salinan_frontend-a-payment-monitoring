@@ -36,7 +36,8 @@ describe("Optimistic case create new user", () => {
     cy.get("[data-test='txt-username']").type(userData.username);
     cy.get("[data-test='txt-password']").type(userData.password);
     cy.get("[data-test='txt-passwordConfirmation']").type(userData.password);
-    // cy.get("[data-test='btn-submit']").click();
+    cy.get("[data-test='btn-submit']").click();
+    cy.findByRole("heading", { name: /beranda admin/i }).should("be.visible");
   });
 
   after(() => {
