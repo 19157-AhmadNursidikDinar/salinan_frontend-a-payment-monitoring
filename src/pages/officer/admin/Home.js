@@ -91,7 +91,6 @@ export default function Home(props) {
     setPaging(newPaging);
   };
 
-  // get api data all branch office
   const fetchData = async () => {
     setIsLoading(true);
     const result = await AuthService.getAllUser()
@@ -110,7 +109,6 @@ export default function Home(props) {
   }
 
   useEffect(() => {
-    // show toast if after input data
     if (props.location.state) {
       setFlashMessage(props.location.state)
     }
