@@ -61,6 +61,6 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 | Role            | Username         | Password |
 | --------------- | ---------------- | -------- |
 | Admin           | myadmin          | 123456   |
-| Customer        | myuser           | 123456   |
+| Customer        | mycustomer3      | 123456   |
 | Accounting      | myaccounting     | 123456   |
 | General Support | mygeneralsupport | 123456   |

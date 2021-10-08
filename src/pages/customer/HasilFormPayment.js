@@ -80,7 +80,7 @@ function HasilFormPayment(props) {
   }
 
   return (
-    <ContentContainer role="customer" selectedMenu={props.location.state.from}>
+    <ContentContainer role="customer">
       <div
         style={{
           display: "flex",
@@ -89,7 +89,7 @@ function HasilFormPayment(props) {
           paddingBottom: "2em",
         }}
       >
-        <Typography variant="h4">Hasil Payment Request</Typography>
+        <Typography variant="h4">Payment Request</Typography>
       </div>
       <div className={classes.root}>
         <Card className={classes.cardRequest}>

@@ -10,85 +10,12 @@ import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import DetailIcon from "@material-ui/icons/Visibility";
 import TablePaginationActions from "./TablePagination";
 import Chip from "../../ActionChip";
 import ColorsTheme from "../../../assets/colors";
+import { dateOnly, dateAndTime } from "../../../utils/date-format";
 import { Link } from "react-router-dom";
-
-const rows = [
-  {
-    no: "1",
-    tgl_request: "11 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Menunggu Konfirmasi",
-  },
-  {
-    no: "2",
-    tgl_request: "12 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Disetujui",
-  },
-  {
-    no: "3",
-    tgl_request: "13 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Rejected by Accounting",
-  },
-  {
-    no: "4",
-    tgl_request: "14 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Rejected by GS",
-  },
-  {
-    no: "5",
-    tgl_request: "11 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Menunggu Konfirmasi",
-  },
-  {
-    no: "6",
-    tgl_request: "12 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Disetujui",
-  },
-  {
-    no: "7",
-    tgl_request: "13 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Rejected by Accounting",
-  },
-  {
-    no: "8",
-    tgl_request: "14 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Rejected by GS",
-  },
-  {
-    no: "9",
-    tgl_request: "11 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Menunggu Konfirmasi",
-  },
-  {
-    no: "10",
-    tgl_request: "12 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Disetujui",
-  },
-  {
-    no: "11",
-    tgl_request: "13 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Rejected by Accounting",
-  },
-  {
-    no: "12",
-    tgl_request: "14 Agustus 2012",
-    tgl_pembayaran: "13 September 2021",
-    action: "Rejected by GS",
-  },
-];
 
 const useStyles = makeStyles({
   table: {
@@ -116,19 +43,17 @@ const StyledTableRow = withStyles((theme) => ({
 
 const convertActionToChipColor = (action) => {
   let result = "grey";
-  if (["Rejected by Accounting", "Rejected by GS"].includes(
-    action)) {
-    result = "red"
-  } else if (action === "Disetujui") {
-    result = "green"
-
-  } else if (action === "Menunggu Konfirmasi") {
-    result = "blue"
+  if (action.startsWith("Rejected by")) {
+    result = "red";
+  } else if (action.startsWith("Disetujui")) {
+    result = "green";
+  } else if (action.startsWith("Menunggu Konfirmasi")) {
+    result = "blue";
   }
   return result;
-}
+};
 
-export default function GeneralSupport({ role }) {
+export default function GeneralSupport({ paymentData = [], role }) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const rowsPerPage = 8;
@@ -138,62 +63,83 @@ export default function GeneralSupport({ role }) {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="custom pagination table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>no</StyledTableCell>
-            <StyledTableCell>Tanggal Request</StyledTableCell>
-            <StyledTableCell>Tanggal Pembayaran</StyledTableCell>
-            <StyledTableCell>Action</StyledTableCell>
-            <StyledTableCell></StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map((row) => (
-            <StyledTableRow key={row.no}>
-              <StyledTableCell>{row.no}</StyledTableCell>
-              <StyledTableCell>{row.tgl_request}</StyledTableCell>
-              <StyledTableCell>{row.tgl_pembayaran}</StyledTableCell>
-              <StyledTableCell>
-                <Chip
-                  label={row.action}
-                  color={
-                    convertActionToChipColor(row.action)
-                  }
+    <>
+      {Boolean(paymentData) && (
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="custom pagination table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>no</StyledTableCell>
+                <StyledTableCell align="center">
+                  Tanggal Request
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  Tanggal Pembayaran
+                </StyledTableCell>
+                <StyledTableCell align="center">Action</StyledTableCell>
+                <StyledTableCell></StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {(rowsPerPage > 0
+                ? paymentData.slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                  )
+                : paymentData
+              ).map((row, index) => (
+                <StyledTableRow key={row.id}>
+                  <StyledTableCell>
+                    {page * rowsPerPage + index + 1}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {dateAndTime(row.tanggal_request)}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {dateOnly(row.tanggal_pembayaran)}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Chip
+                      label={row.action}
+                      color={convertActionToChipColor(row.action)}
+                      size="small"
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Link to={`${role}/payment-detail/${row.id}`}>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        startIcon={<DetailIcon />}
+                      >
+                        Details
+                      </Button>
+                    </Link>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[]}
+                  colSpan={5}
+                  count={paymentData.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: { "aria-label": "rows per page" },
+                    native: true,
+                  }}
+                  onPageChange={handleChangePage}
+                  ActionsComponent={TablePaginationActions}
                 />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <Link to={`${role}/payment-detail`}>
-                  <Button size="small" variant="contained" color="primary">
-                    Detail
-                  </Button>
-                </Link>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[]}
-              colSpan={5}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: { "aria-label": "rows per page" },
-                native: true,
-              }}
-              onPageChange={handleChangePage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      )}
+    </>
   );
 }
