@@ -63,7 +63,8 @@ function PaymentRequestDetailGeneralSupport(props) {
       const stagePayment = validationStage(stage);
       const result = await PaymentService.updatePaymentRequestStage({ idPayment, stagePayment, reason });
       if (!Boolean(result.error)) {
-        props.history.push("/general-support");
+        const msg = stagePayment === "PENDING-GS" ? "Payment request telah diteruskan ke accounting" : "Payment request berhasil ditolak";
+        props.history.push("/general-support", { success: true, message: msg });
       }
     }
   });

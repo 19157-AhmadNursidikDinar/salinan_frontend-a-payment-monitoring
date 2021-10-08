@@ -62,7 +62,8 @@ function PaymentRequestDetailAccounting(props) {
       const stagePayment = validationStage(stage);
       const result = await PaymentService.updatePaymentRequestStage({ idPayment, stagePayment, reason });
       if (!Boolean(result.error)) {
-        props.history.push("/accounting");
+        const msg = stagePayment === "PENDING-ACCOUNTING" ? "Payment request berhasil disetujui" : "Payment request berhasil ditolak";
+        props.history.push("/accounting", { success: true, message: msg });
       }
     }
   });

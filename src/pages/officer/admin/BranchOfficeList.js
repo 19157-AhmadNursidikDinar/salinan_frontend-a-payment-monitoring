@@ -167,25 +167,7 @@ export default function BranchOfficeList(props) {
                     />
                 </Grid>
 
-                <Collapse in={flashMessage.success} >
-                    <Alert
-                        className={classes.alert}
-                        action={
-                            <IconButton
-                                aria-label="close"
-                                color="inherit"
-                                size="small"
-                                onClick={() => {
-                                    setFlashMessage({ success: false, message: '' });
-                                }}
-                            >
-                                <CloseIcon fontSize="inherit" />
-                            </IconButton>
-                        }
-                    >
-                        {flashMessage.message}
-                    </Alert>
-                </Collapse>
+
 
                 <div className={classes.messageError}>
                     <h2 style={{ display: errorMsg ? 'block' : 'none' }}>{errorMsg}</h2>
@@ -249,6 +231,25 @@ export default function BranchOfficeList(props) {
                     Daftar Kantor Cabang
                 </Typography>
             </div>
+            <Collapse in={flashMessage.success} >
+                <Alert
+                    className={classes.alert}
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setFlashMessage({ success: false, message: '' });
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                >
+                    {flashMessage.message}
+                </Alert>
+            </Collapse>
             {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
             {isLoading ? (
                 <TableSkeleton />
