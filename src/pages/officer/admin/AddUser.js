@@ -130,7 +130,7 @@ function FormAddUser() {
       };
       //   console.log({ dataUser });
       const result = await UserService.CreateNewUser(dataUser);
-      console.log({ result });
+      // console.log({ result });
       if (!Boolean(result.error)) {
         setErrorMsg("");
         router.push("/admin");
