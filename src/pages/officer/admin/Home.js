@@ -179,6 +179,7 @@ export default function Home(props) {
                 <StylingTableCell>no</StylingTableCell>
                 <StylingTableCell>Nama</StylingTableCell>
                 <StylingTableCell>Username</StylingTableCell>
+                <StylingTableCell>Role</StylingTableCell>
                 <StylingTableCell>Kantor Cabang</StylingTableCell>
               </TableRow>
             </TableHead>
@@ -194,6 +195,7 @@ export default function Home(props) {
                   <StylingTableCell width="10%">{paging * rowsPerPage + index + 1}</StylingTableCell>
                   <StylingTableCell>{user.fullname}</StylingTableCell>
                   <StylingTableCell>{user.username}</StylingTableCell>
+                  <StylingTableCell>{user.role_name}</StylingTableCell>
                   <StylingTableCell>{user.branch_name}</StylingTableCell>
                 </StylingTableRow>
               ))}
