@@ -35,9 +35,7 @@ function PaymentStatusSelector({ formik }) {
                 <TableCell>
                     Update Status Request
                 </TableCell>
-                <TableCell align="center">
-                    :
-                </TableCell>
+                <TableCell align="center">:</TableCell>
                 <TableCell>
                     <FormControl
                         variant="outlined"

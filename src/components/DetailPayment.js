@@ -53,7 +53,7 @@ const MTableRow = ({ label, value }) => {
 export default function DetailPayment({ paymentDetail, children }) {
     const classes = useStyles();
 
-    const CurrencyFormat = (props) => {
+    const CurrencyFormat = () => {
         return (
             <NumberFormat
                 value={paymentDetail.amount}
@@ -97,24 +97,20 @@ export default function DetailPayment({ paymentDetail, children }) {
                         label="No. Rekening Penerima"
                         value={paymentDetail.account_number || ""}
                     />
-                    <TableRow>
-                        <TableCell>Status Request</TableCell>
-                        <TableCell align="center">:</TableCell>
-                        <TableCell>
+                    <MTableRow
+                        label="Status Request"
+                        value={
                             <Chip
                                 label={paymentDetail.stage}
                                 color={convertActionToChipColor(paymentDetail.stage)}
                             />
-                        </TableCell>
-                    </TableRow>
+                        }
+                    />
                     {Boolean(paymentDetail.reason) &&
-                        <TableRow>
-                            <TableCell>Keterangan</TableCell>
-                            <TableCell align="center">:</TableCell>
-                            <TableCell>
-                                {paymentDetail.reason || ""}
-                            </TableCell>
-                        </TableRow>
+                        <MTableRow
+                            label="Keterangan"
+                            value={paymentDetail.reason || ""}
+                        />
                     }
                     {children}
                 </TableBody>
