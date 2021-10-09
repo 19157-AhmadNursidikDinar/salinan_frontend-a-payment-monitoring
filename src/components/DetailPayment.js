@@ -10,6 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import { withStyles } from "@material-ui/core/styles";
 import useStyles from "../styles/HasilFormPayement";
 import { dateOnly } from "../utils/date-format";
+import { convertActionToChipColor } from "../utils/chip-utils";
 
 import Chip from "./ActionChip";
 
@@ -26,18 +27,6 @@ const TableCell = withStyles((theme) => ({
     },
 }))(MuiTableCell);
 
-const convertActionToChipColor = (action) => {
-    let result = "grey";
-    if (["Rejected By Accounting", "Rejected By General Support"].includes(action)) {
-        result = "red";
-    } else if (action === "Disetujui") {
-        result = "green";
-    } else if (["Menunggu Konfirmasi General Support", "Menunggu Konfirmasi Accounting"].includes(action)) {
-        result = "blue";
-    }
-    return result;
-};
-
 const MTableRow = ({ label, value }) => {
     return (
         <TableRow>
@@ -47,8 +36,6 @@ const MTableRow = ({ label, value }) => {
         </TableRow>
     );
 };
-
-
 
 export default function DetailPayment({ paymentDetail, children }) {
     const classes = useStyles();
@@ -102,7 +89,7 @@ export default function DetailPayment({ paymentDetail, children }) {
                         value={
                             <Chip
                                 label={paymentDetail.stage}
-                                color={convertActionToChipColor(paymentDetail.stage)}
+                                color={convertActionToChipColor(paymentDetail.stage||"")}
                             />
                         }
                     />

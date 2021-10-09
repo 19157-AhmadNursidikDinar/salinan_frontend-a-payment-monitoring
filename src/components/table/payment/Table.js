@@ -15,6 +15,7 @@ import TablePaginationActions from "./TablePagination";
 import Chip from "../../ActionChip";
 import ColorsTheme from "../../../assets/colors";
 import { dateOnly, dateAndTime } from "../../../utils/date-format";
+import { convertActionToChipColor } from "../../../utils/chip-utils";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -40,18 +41,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-
-const convertActionToChipColor = (action) => {
-  let result = "grey";
-  if (action.startsWith("Rejected by")) {
-    result = "red";
-  } else if (action.startsWith("Disetujui")) {
-    result = "green";
-  } else if (action.startsWith("Menunggu Konfirmasi")) {
-    result = "blue";
-  }
-  return result;
-};
 
 export default function GeneralSupport({ paymentData = [], role }) {
   const classes = useStyles();
