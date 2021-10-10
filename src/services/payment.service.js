@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import authHeader from "../utils/auth-header";
 
 const apiUrl = process.env.REACT_APP_API_BASEURL + "/api/v1/payment-request";
@@ -48,7 +49,7 @@ class PaymentService {
         amount_counted: amount_counted,
         account_number: account_number,
         account_name: account_name,
-        payment_date: payment_date,
+        payment_date: moment(payment_date).format("YYYY-MM-DD"),
       };
 
       const response = await axios.post(apiUrl + "/create", dataPayment, {
