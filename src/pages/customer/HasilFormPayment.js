@@ -75,6 +75,7 @@ export default function HasilFormPayment(props) {
   const [errorMsg, setErrorMsg] = useState ();
   useEffect(() => {
     fetchPaymentDetail();
+    // eslint-disable-next-line
   }, []);
 
   const fetchPaymentDetail = async () => {
