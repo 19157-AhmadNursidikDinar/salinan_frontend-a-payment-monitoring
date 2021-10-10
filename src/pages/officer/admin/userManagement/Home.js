@@ -5,7 +5,7 @@ import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import TextField from "@material-ui/core/TextField";
 import AddIcon from '@material-ui/icons/Add';
 import InputAdornment from "@material-ui/core/InputAdornment";
-import ContentContainer from "../../../components/ContentContainer";
+import ContentContainer from "../../../../components/ContentContainer";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
@@ -14,19 +14,19 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
-import TableSkeleton from "../../../components/table/payment/TableSkeleton";
+import TableSkeleton from "../../../../components/table/payment/TableSkeleton";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
-import TablePaginationActions from "../../../components/table/payment/TablePagination";
+import TablePaginationActions from "../../../../components/table/payment/TablePagination";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import ColorsTheme from "../../../assets/colors";
+import ColorsTheme from "../../../../assets/colors";
 import Grid from "@material-ui/core/Grid";
 import Alert from '@material-ui/lab/Alert';
 
-import UserService from '../../../services/user.service'
+import UserService from '../../../../services/user.service'
 
 const useStyles = makeStyles((theme) => ({
   table: {

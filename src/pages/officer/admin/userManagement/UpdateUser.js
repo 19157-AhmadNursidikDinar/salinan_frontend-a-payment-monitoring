@@ -18,8 +18,8 @@ import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 //Custom Components
-import ContentContainer from "../../../components/ContentContainer";
-import useStyles from '../../../styles/officer/admin/FormUser';
+import ContentContainer from "../../../../components/ContentContainer";
+import useStyles from '../../../../styles/officer/admin/FormUser';
 //Links
 import { Link } from "react-router-dom";
 

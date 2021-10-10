@@ -15,14 +15,14 @@ import ArrowBackIosRounded from "@material-ui/icons/ArrowBackIosRounded";
 
 //links
 import { Link } from "react-router-dom";
-import ContentContainer from "../../../components/ContentContainer";
-import ColorsTheme from "../../../assets/colors";
+import ContentContainer from "../../../../components/ContentContainer";
+import ColorsTheme from "../../../../assets/colors";
 //use formik
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 //import api service
-import BranchService from "../../../services/branch.service"
+import BranchService from "../../../../services/branch.service"
 
 //Styling Page
 const useTheStyle = makeStyles((theme) => ({

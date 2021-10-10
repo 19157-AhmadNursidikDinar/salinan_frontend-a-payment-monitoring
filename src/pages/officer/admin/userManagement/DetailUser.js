@@ -13,9 +13,9 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 
-import ContentContainer from "../../../components/ContentContainer";
-import ColorsTheme from "../../../assets/colors";
-import FontsTheme from "../../../assets/fonts";
+import ContentContainer from "../../../../components/ContentContainer";
+import ColorsTheme from "../../../../assets/colors";
+import FontsTheme from "../../../../assets/fonts";
 import { Link } from "react-router-dom";
 
 

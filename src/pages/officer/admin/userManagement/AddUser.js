@@ -25,9 +25,9 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 //Links
-import ContentContainer from "../../../components/ContentContainer";
-import UserService from "../../../services/user.service";
-import branchService from "../../../services/branch.service";
+import ContentContainer from "../../../../components/ContentContainer";
+import UserService from "../../../../services/user.service";
+import branchService from "../../../../services/branch.service";
 
 //PAGE STYLE
 const useMyStyles = makeStyles((theme) => ({
