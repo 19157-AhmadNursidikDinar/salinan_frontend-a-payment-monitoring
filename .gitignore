@@ -8,6 +8,10 @@
 # testing
 /coverage
 /cypress/videos
+/src/pages/customer/__snapshots__
+/src/pages/officer/__snapshots__
+/src/pages/officer/admin/branchManagement/__snapshots__
+/src/pages/officer/admin/userManagement/__snapshots__
 
 # production
 /build
