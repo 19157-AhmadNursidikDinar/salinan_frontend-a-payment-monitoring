@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import Button from "@material-ui/core/Button";
 import HealthCheck from "../../../services/healthcheck.service";
 
@@ -9,7 +9,7 @@ export default function HeatlCheck() {
     setResult(JSON.stringify(respond, null, 2));
   };
   return (
-    <>
+    <Fragment>
       <Button
         onClick={handleExec}
         fullWidth
@@ -23,6 +23,6 @@ export default function HeatlCheck() {
           <pre>{result}</pre>
         </div>
       )}
-    </>
+    </Fragment>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import Alert from "@material-ui/lab/Alert";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -43,9 +43,9 @@ const ExpansionPanel = () => {
 export default function Backdoor() {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <>
+    <Fragment>
       {!isOpen && <Honeypot handleOpen={() => setIsOpen(true)} />}
       {isOpen && <ExpansionPanel />}
-    </>
+    </Fragment>
   );
 }

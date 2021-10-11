@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 // Material ui core
 import {
     FormControl,
@@ -30,7 +30,7 @@ function PaymentStatusSelector({ formik }) {
     const classes = useStyles();
 
     return (
-        <>
+        <Fragment>
             <TableRow>
                 <TableCell>
                     Update Status Request
@@ -85,7 +85,7 @@ function PaymentStatusSelector({ formik }) {
             ) : (
                 <TableCell> </TableCell>
             )}
-        </>
+        </Fragment>
     )
 }
 

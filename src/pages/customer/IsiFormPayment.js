@@ -78,7 +78,7 @@ const DisabledTextFieldComponent = (props) => {
   return <TextField {...props} inputProps={{ readOnly: true }} />;
 };
 
-function FormRequest({ formValues, handleSubmit }) {
+export function FormRequest({ formValues, handleSubmit }) {
   const classes = useStyles();
 
   const [errorMsg, setErrorMsg] = useState();

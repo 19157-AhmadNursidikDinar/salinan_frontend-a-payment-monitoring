@@ -1,4 +1,4 @@
-describe("Optimistic Officer Login", () => {
+describe("Optimistic case Officer Login", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/login-officer");
   });
@@ -62,7 +62,7 @@ describe("Optimistic Officer Login", () => {
   });
 });
 
-describe("Pesimistic Officer Login", () => {
+describe("Pesimistic case Officer Login", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/login-officer");
   });
