@@ -63,6 +63,40 @@ class PaymentService {
       return { error };
     }
   }
+  
+  async getDetailPayment(id) {
+    try {
+      const response = await axios.get(apiUrl + "/detail/" + id, {
+        headers: authHeader(),
+      });
+      if (Boolean(response.data)) {
+        return response.data
+      }
+    }
+    catch (error) {
+      return { error };
+    }
+  }
+  
+  async updatePaymentRequestStage(data) {
+    const { idPayment, stagePayment, reason } = data;
+    try {
+      const response = await axios.put(apiUrl, {
+        id: idPayment,
+        stage: stagePayment,
+        reason
+      }, {
+        headers: authHeader(),
+      });
+
+      if (Boolean(response.data)) {
+        return response.data
+      }
+    }
+    catch (error) {
+      return { error };
+    }
+  }
 }
 
 export default new PaymentService();
