@@ -14,6 +14,17 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(2),
     },
+    RequestDetail: {
+        marginTop: 21,
+    },
+    ResultAlert: {
+        margin: '0 1.5em 1.5em 1.5em',
+    },
+    DisabledField: {
+        "& .MuiInputBase-root.Mui-disabled": {
+            color: ColorsTheme.black
+        }
+    }
 }));
 
 export default useStyles;

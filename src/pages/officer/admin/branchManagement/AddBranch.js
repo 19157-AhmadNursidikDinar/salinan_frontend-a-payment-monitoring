@@ -15,14 +15,14 @@ import ArrowBackIosRounded from "@material-ui/icons/ArrowBackIosRounded";
 
 //links
 import { Link } from "react-router-dom";
-import ContentContainer from "../../../components/ContentContainer";
-import ColorsTheme from "../../../assets/colors";
+import ContentContainer from "../../../../components/ContentContainer";
+import ColorsTheme from "../../../../assets/colors";
 //use formik
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 //import api service
-import BranchService from "../../../services/branch.service"
+import BranchService from "../../../../services/branch.service"
 
 //Styling Page
 const useTheStyle = makeStyles((theme) => ({
@@ -50,7 +50,7 @@ const useTheStyle = makeStyles((theme) => ({
     },
 }));
 
-function FormAddBranch(props) {
+export function FormAddBranch(props) {
 
     const classes = useTheStyle();
 
@@ -79,6 +79,7 @@ function FormAddBranch(props) {
             <form onSubmit={formik.handleSubmit}>
                 <Container maxWidth="md">
                     <Grid
+                        container
                         spacing={3}
                         direction="row"
                         alignItems="center"
@@ -118,6 +119,7 @@ function FormAddBranch(props) {
                         <Button size="small"
                             variant="contained"
                             color="primary"
+                            disabled={formik.isSubmitting}
                             className={classes.BtnSave}
                             endIcon={<SaveRoundedIcon />}
                             type="submit"

@@ -6,21 +6,22 @@ import HasilFormPayment from "./pages/customer/HasilFormPayment";
 import LoginOfficer from "./pages/officer/LoginOfficer";
 import CustomerHome from "./pages/customer/Home";
 import AccountingHome from "./pages/officer/accounting/Home";
-import AdminHome from "./pages/officer/admin/Home";
-import AdminAddUser from "./pages/officer/admin/AddUser";
-import AdminDetailUser from "./pages/officer/admin/DetailUser";
-import AdminAddBranch from "./pages/officer/admin/AddBranch";
-import AdminUpdateUser from "./pages/officer/admin/UpdateUser";
+import AdminHome from "./pages/officer/admin/userManagement/Home";
+import AdminAddUser from "./pages/officer/admin/userManagement/AddUser";
+import AdminDetailUser from "./pages/officer/admin/userManagement/DetailUser";
+import AdminAddBranch from "./pages/officer/admin/branchManagement/AddBranch";
+import AdminUpdateUser from "./pages/officer/admin/userManagement/UpdateUser";
 import GeneralSupportHome from "./pages/officer/generalSupport/Home";
 import ServiceLevelAgreement from "./pages/officer/admin/ServiceLevelAgreement";
 import PaymentRequestDetailGeneralSupport from "./pages/officer/generalSupport/PaymentRequestDetail";
-import PaymentRequestDetailAcounting from "./pages/officer/accounting/PaymentRequestDetail";
+import PaymentRequestDetailAccounting from "./pages/officer/accounting/PaymentRequestDetail";
 import PaymentRequestDetailCustomer from "./pages/customer/HasilFormPayment";
-import BranchOfficeList from "./pages/officer/admin/BranchOfficeList";
+import BranchOfficeList from "./pages/officer/admin/branchManagement/BranchOfficeList";
 import PageNotFound from "./pages/errors/PageNotFound";
 import Backdoor from "./pages/backdoor/Backdoor";
 import PreloginRoutes from "./components/protectedRoutes/PreloginRoutes";
 import PostloginRoutes from "./components/protectedRoutes/PostloginRoutes";
+
 
 function App() {
   return (
@@ -109,7 +110,7 @@ function App() {
         <PostloginRoutes
           exact
           path="/accounting/payment-detail/:id"
-          component={PaymentRequestDetailAcounting}
+          component={PaymentRequestDetailAccounting}
           role="accounting"
         />
         <PostloginRoutes

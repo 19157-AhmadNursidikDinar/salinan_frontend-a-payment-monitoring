@@ -1,4 +1,4 @@
-describe("Optimistic Customer Login Test", () => {
+describe("Optimistic case Customer Login Test", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/");
   });
@@ -21,7 +21,7 @@ describe("Optimistic Customer Login Test", () => {
   });
 });
 
-describe("Pesimistic Customer Login", () => {
+describe("Pesimistic case Customer Login", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/");
   });
