@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import Button from "@material-ui/core/Button";
@@ -63,7 +63,7 @@ export default function GeneralSupport({ paymentData = [], role }) {
   };
 
   return (
-    <>
+    <Fragment>
       {Boolean(paymentData) && (
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="custom pagination table">
@@ -140,6 +140,6 @@ export default function GeneralSupport({ paymentData = [], role }) {
           </Table>
         </TableContainer>
       )}
-    </>
+    </Fragment>
   );
 }
