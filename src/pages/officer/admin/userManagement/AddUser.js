@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -24,8 +24,9 @@ import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
-//Links
+//Components
 import ContentContainer from "../../../../components/ContentContainer";
+import CreateUserResultContent from "../../../../components/CreateUserResultContent";
 import UserService from "../../../../services/user.service";
 import branchService from "../../../../services/branch.service";
 
@@ -54,7 +55,7 @@ const useMyStyles = makeStyles((theme) => ({
 
 const FormSkeleton = () => {
   return (
-    <>
+    <Fragment>
       <Typography variant="h4">
         <Skeleton />
       </Typography>
@@ -70,53 +71,49 @@ const FormSkeleton = () => {
       <Typography variant="h4">
         <Skeleton />
       </Typography>
-    </>
+    </Fragment>
   );
 };
 
-function FormAddUser() {
+const validationSchema = Yup.object().shape({
+  fullname: Yup.string().required("Input required"),
+  username: Yup.string()
+    .min(6, "Min 6 character required ")
+    .max(20, "Must be 20 characters or less")
+    .matches(/^\S+$/, "This field cannot contain any spaces")
+    .required("Input required"),
+  password: Yup.string()
+    .min(6, "Min 6 character required ")
+    .required("Input required"),
+  passwordConfirmation: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Input required"),
+  role_id: Yup.number().required("Input required"),
+  branch_id: Yup.number().when("role_id", {
+    is: 4,
+    then: Yup.number().required("Input required"),
+  }),
+});
+
+const initValues = {
+  fullname: "",
+  username: "",
+  password: "",
+  passwordConfirmation: "",
+  role_id: 1,
+  branch_id: "",
+};
+
+function FormAddUser({ dataBranch, formValues, handlePostSubmit }) {
   const router = useHistory();
   const classes = useMyStyles();
-  const [dataBranch, setDataBranch] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   //STATE "Show/Hide Password"
   const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    GetBranchID();
-  }, []);
-
-  const validationSchema = Yup.object().shape({
-    fullname: Yup.string().required("Input required"),
-    username: Yup.string()
-      .min(6, "Min 6 character required ")
-      .max(20, "Must be 20 characters or less")
-      .matches(/^\S+$/, "This field cannot contain any spaces")
-      .required("Input required"),
-    password: Yup.string()
-      .min(6, "Min 6 character required ")
-      .required("Input required"),
-    passwordConfirmation: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Input required"),
-    role_id: Yup.number().required("Input required"),
-    branch_id: Yup.number().when("role_id", {
-      is: 4,
-      then: Yup.number().required("Input required"),
-    }),
-  });
-
   const formik = useFormik({
-    initialValues: {
-      fullname: "",
-      username: "",
-      password: "",
-      passwordConfirmation: "",
-      role_id: 1,
-      branch_id: "",
-    },
+    initialValues: formValues,
     validationSchema: validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
@@ -133,9 +130,8 @@ function FormAddUser() {
       // console.log({ result });
       if (!Boolean(result.error)) {
         setErrorMsg("");
-        router.push("/admin");
+        handlePostSubmit(dataUser);
       } else {
-        setDataBranch([]);
         setErrorMsg(result.error.response.data.msg);
       }
     },
@@ -144,6 +140,256 @@ function FormAddUser() {
   const handleClickShowPassword = (event) => {
     event.preventDefault();
     setShowPassword(!showPassword);
+  };
+
+  //PAGE ADD USER
+  return (
+    <Paper className={classes.PaperSize} elevation={4}>
+      <Fragment>
+        {Boolean(errorMsg) && (
+          <Alert severity="error" style={{ margin: "1em 0" }}>
+            {errorMsg}
+          </Alert>
+        )}
+        <form onSubmit={formik.handleSubmit}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                id="AccountName"
+                name="fullname"
+                label="Nama"
+                variant="outlined"
+                fullWidth
+                value={formik.values.fullname}
+                disabled={formik.isSubmitting}
+                onChange={formik.handleChange}
+                error={
+                  Boolean(formik.errors.fullname) && formik.touched.fullname
+                }
+                helperText={formik.errors.fullname}
+                data-test="txt-fullname"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl
+                variant="outlined"
+                fullWidth
+                error={Boolean(formik.errors.role_id) && formik.touched.role_id}
+                className={classes.FormControl}
+              >
+                <InputLabel htmlFor="user-roles">Role</InputLabel>
+                <Select
+                  labelId="user-roles"
+                  label="Role"
+                  id="UserRole"
+                  name="role_id"
+                  value={formik.values.role_id}
+                  onChange={formik.handleChange}
+                  disabled={formik.isSubmitting}
+                  data-test="select-role"
+                >
+                  <MenuItem value={1}>Admin</MenuItem>
+                  <MenuItem value={2}>General Support</MenuItem>
+                  <MenuItem value={3}>Accounting</MenuItem>
+                  <MenuItem value={4}>User</MenuItem>
+                </Select>
+                {Boolean(formik.errors.role_id) && formik.touched.role_id && (
+                  <FormHelperText>{formik.errors.role_id}</FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              style={{
+                display: formik.values.role_id === 4 ? "block" : "none",
+              }}
+            >
+              <FormControl
+                variant="outlined"
+                fullWidth
+                error={
+                  Boolean(formik.errors.branch_id) && formik.touched.branch_id
+                }
+                className={classes.FormControl}
+              >
+                <InputLabel htmlFor="user-roles">Branch</InputLabel>
+                <Select
+                  label="Branch"
+                  id="branchAgent"
+                  name="branch_id"
+                  value={formik.values.branch_id}
+                  onChange={formik.handleChange}
+                  disabled={formik.isSubmitting}
+                  data-test="select-branch"
+                >
+                  <MenuItem value="">none</MenuItem>
+                  {dataBranch.map(
+                    (e, i) =>
+                      e.id !== 1 && (
+                        <MenuItem value={e.id} key={i}>
+                          {e.branch_name}
+                        </MenuItem>
+                      )
+                  )}
+                </Select>
+                {Boolean(formik.errors.branch_id) &&
+                  formik.touched.branch_id && (
+                    <FormHelperText>{formik.errors.branch_id}</FormHelperText>
+                  )}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                name="username"
+                label="Username"
+                variant="outlined"
+                fullWidth
+                disabled={formik.isSubmitting}
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                helperText={formik.errors.username}
+                error={
+                  Boolean(formik.errors.username) && formik.touched.username
+                }
+                data-test="txt-username"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                name="password"
+                label="Password"
+                variant="outlined"
+                fullWidth
+                value={formik.values.password}
+                type={showPassword ? "text" : "password"}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={formik.handleChange}
+                helperText={formik.errors.password}
+                disabled={formik.isSubmitting}
+                error={
+                  Boolean(formik.errors.password) && formik.touched.password
+                }
+                data-test="txt-password"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                name="passwordConfirmation"
+                label="Confirm Password"
+                variant="outlined"
+                fullWidth
+                value={formik.values.passwordConfirmation}
+                type={showPassword ? "text" : "password"}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={formik.handleChange}
+                helperText={formik.errors.passwordConfirmation}
+                disabled={formik.isSubmitting}
+                error={
+                  Boolean(formik.errors.passwordConfirmation) &&
+                  formik.touched.passwordConfirmation
+                }
+                data-test="txt-passwordConfirmation"
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.BtnBack}
+                startIcon={<ArrowBackIosRoundedIcon />}
+                onClick={() => router.goBack()}
+              >
+                Back
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                className={classes.BtnSave}
+                endIcon={<SaveRoundedIcon />}
+                disabled={formik.isSubmitting}
+                data-test="btn-submit"
+              >
+                {formik.isSubmitting ? "Loading..." : "Save"}
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Fragment>
+    </Paper>
+  );
+}
+
+export default function AddUser() {
+  const [formValues, setFormValues] = useState(initValues);
+  const [isSubmited, setIsSubmited] = useState(false);
+  const [dataBranch, setDataBranch] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  useEffect(() => {
+    GetBranchID();
+  }, []);
+
+  const handleResetFormValues = () => {
+    setIsSubmited(false);
+    setFormValues(initValues);
+  };
+
+  const handlePostSubmit = (values) => {
+    setIsSubmited(true);
+    setFormValues(values);
+  };
+
+  const roleAdapter = (role_id) => {
+    switch (role_id) {
+      case 1:
+        return "Admin";
+      case 2:
+        return "General Support";
+      case 3:
+        return "Accounting";
+      case 4:
+        return "User";
+      default:
+        return undefined;
+    }
+  };
+
+  const branchAdapter = (branch_id) => {
+    let result = "";
+    const selectedBranch = dataBranch.find((branch) => branch.id === branch_id);
+    if (selectedBranch) {
+      result = selectedBranch.branch_name;
+    }
+    return result;
   };
 
   async function GetBranchID() {
@@ -163,218 +409,14 @@ function FormAddUser() {
     }
   }
 
-  //PAGE ADD USER
-  return (
-    <Paper className={classes.PaperSize} elevation={4}>
-      {isLoading ? (
-        <FormSkeleton />
-      ) : (
-        <>
-          {Boolean(errorMsg) && (
-            <Alert severity="error" style={{ margin: "1em 0" }}>
-              {errorMsg}
-            </Alert>
-          )}
-          <form onSubmit={formik.handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField
-                  id="AccountName"
-                  name="fullname"
-                  label="Nama"
-                  variant="outlined"
-                  fullWidth
-                  value={formik.values.fullname}
-                  disabled={formik.isSubmitting}
-                  onChange={formik.handleChange}
-                  error={
-                    Boolean(formik.errors.fullname) && formik.touched.fullname
-                  }
-                  helperText={formik.errors.fullname}
-                  data-test="txt-fullname"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl
-                  variant="outlined"
-                  fullWidth
-                  error={
-                    Boolean(formik.errors.role_id) && formik.touched.role_id
-                  }
-                  className={classes.FormControl}
-                >
-                  <InputLabel htmlFor="user-roles">Role</InputLabel>
-                  <Select
-                    labelId="user-roles"
-                    label="Role"
-                    id="UserRole"
-                    name="role_id"
-                    value={formik.values.role_id}
-                    onChange={formik.handleChange}
-                    disabled={formik.isSubmitting}
-                    data-test="select-role"
-                  >
-                    <MenuItem value={1}>Admin</MenuItem>
-                    <MenuItem value={2}>General Support</MenuItem>
-                    <MenuItem value={3}>Accounting</MenuItem>
-                    <MenuItem value={4}>User</MenuItem>
-                  </Select>
-                  {Boolean(formik.errors.role_id) && formik.touched.role_id && (
-                    <FormHelperText>{formik.errors.role_id}</FormHelperText>
-                  )}
-                </FormControl>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                style={{
-                  display: formik.values.role_id === 4 ? "block" : "none",
-                }}
-              >
-                <FormControl
-                  variant="outlined"
-                  fullWidth
-                  error={
-                    Boolean(formik.errors.branch_id) && formik.touched.branch_id
-                  }
-                  className={classes.FormControl}
-                >
-                  <InputLabel htmlFor="user-roles">Branch</InputLabel>
-                  <Select
-                    label="Branch"
-                    id="branchAgent"
-                    name="branch_id"
-                    value={formik.values.branch_id}
-                    onChange={formik.handleChange}
-                    disabled={formik.isSubmitting}
-                    data-test="select-branch"
-                  >
-                    <MenuItem value="">none</MenuItem>
-                    {dataBranch.map(
-                      (e, i) =>
-                        e.id !== 1 && (
-                          <MenuItem value={e.id} key={i}>
-                            {e.branch_name}
-                          </MenuItem>
-                        )
-                    )}
-                  </Select>
-                  {Boolean(formik.errors.branch_id) &&
-                    formik.touched.branch_id && (
-                      <FormHelperText>{formik.errors.branch_id}</FormHelperText>
-                    )}
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="username"
-                  label="Username"
-                  variant="outlined"
-                  fullWidth
-                  disabled={formik.isSubmitting}
-                  value={formik.values.username}
-                  onChange={formik.handleChange}
-                  helperText={formik.errors.username}
-                  error={
-                    Boolean(formik.errors.username) && formik.touched.username
-                  }
-                  data-test="txt-username"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="password"
-                  label="Password"
-                  variant="outlined"
-                  fullWidth
-                  value={formik.values.password}
-                  type={showPassword ? "text" : "password"}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={formik.handleChange}
-                  helperText={formik.errors.password}
-                  disabled={formik.isSubmitting}
-                  error={
-                    Boolean(formik.errors.password) && formik.touched.password
-                  }
-                  data-test="txt-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="passwordConfirmation"
-                  label="Confirm Password"
-                  variant="outlined"
-                  fullWidth
-                  value={formik.values.passwordConfirmation}
-                  type={showPassword ? "text" : "password"}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={formik.handleChange}
-                  helperText={formik.errors.passwordConfirmation}
-                  disabled={formik.isSubmitting}
-                  error={
-                    Boolean(formik.errors.passwordConfirmation) &&
-                    formik.touched.passwordConfirmation
-                  }
-                  data-test="txt-passwordConfirmation"
-                />
-              </Grid>
-            </Grid>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.BtnBack}
-                  startIcon={<ArrowBackIosRoundedIcon />}
-                  onClick={() => router.goBack()}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  className={classes.BtnSave}
-                  endIcon={<SaveRoundedIcon />}
-                  disabled={formik.isSubmitting}
-                  data-test="btn-submit"
-                >
-                  {formik.isSubmitting ? "Loading..." : "Save"}
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        </>
-      )}
-    </Paper>
-  );
-}
+  const convertUserData = (formValues) => {
+    let result = formValues;
+    const role_name = roleAdapter(formValues.role_id);
+    const branch_name = branchAdapter(formValues.branch_id);
+    result = { ...result, role_name, branch_name };
+    return result;
+  };
 
-export default function AddUser() {
   return (
     <ContentContainer role="admin" selectedMenu="Beranda">
       <div
@@ -387,7 +429,25 @@ export default function AddUser() {
       >
         <Typography variant="h4">New User Account</Typography>
       </div>
-      <FormAddUser />
+      {Boolean(errorMsg) && (
+        <Alert severity="error" style={{ margin: "1em 0" }}>
+          {errorMsg}
+        </Alert>
+      )}
+      {isLoading ? (
+        <FormSkeleton />
+      ) : isSubmited ? (
+        <CreateUserResultContent
+          newUserData={convertUserData(formValues)}
+          handleResetFormValues={handleResetFormValues}
+        />
+      ) : (
+        <FormAddUser
+          handlePostSubmit={handlePostSubmit}
+          formValues={formValues}
+          dataBranch={dataBranch}
+        />
+      )}
     </ContentContainer>
   );
 }
