@@ -50,7 +50,7 @@ const useTheStyle = makeStyles((theme) => ({
     },
 }));
 
-function FormAddBranch(props) {
+export function FormAddBranch(props) {
 
     const classes = useTheStyle();
 
@@ -79,6 +79,7 @@ function FormAddBranch(props) {
             <form onSubmit={formik.handleSubmit}>
                 <Container maxWidth="md">
                     <Grid
+                        container
                         spacing={3}
                         direction="row"
                         alignItems="center"
