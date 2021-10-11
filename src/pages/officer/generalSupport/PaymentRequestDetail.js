@@ -115,8 +115,8 @@ function PaymentRequestDetailGeneralSupport(props) {
             <form onSubmit={formik.handleSubmit}>
               <Container fixed>
                 <CardContent>
-                    <DetailPayment paymentDetail={paymentDetail}>
-                      {!Boolean(paymentDetail.reason) && <PaymentStatusSelector formik={formik} />}
+                  <DetailPayment paymentDetail={paymentDetail}>
+                    {paymentDetail.stage !== 'Rejected By General Support' && <PaymentStatusSelector formik={formik} />}
                   </DetailPayment>
                 </CardContent>
               </Container>
@@ -130,7 +130,7 @@ function PaymentRequestDetailGeneralSupport(props) {
                 >
                   Back
               </Button>
-                <Button size="small"
+                {paymentDetail.stage !== 'Rejected By General Support' && <Button size="small"
                   variant="contained"
                   color="primary"
                   type="submit"
@@ -138,7 +138,7 @@ function PaymentRequestDetailGeneralSupport(props) {
                   endIcon={<SaveRoundedIcon />}
                 >
                   {formik.isSubmitting ? "Updating..." : "Update"}
-                </Button>
+                </Button>}
               </CardActions>
             </form>
           </Card>
