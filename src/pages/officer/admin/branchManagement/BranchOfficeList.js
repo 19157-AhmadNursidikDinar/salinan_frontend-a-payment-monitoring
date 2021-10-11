@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 //Re-using component
-import ContentContainer from "../../../components/ContentContainer";
-import TablePaginationActions from "../../../components/table/payment/TablePagination";
+import ContentContainer from "../../../../components/ContentContainer";
+import TablePaginationActions from "../../../../components/table/payment/TablePagination";
 //import from @material-ui/icons
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 //import from @material-ui/core
@@ -28,12 +27,13 @@ import {
 import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import ColorsTheme from "../../../assets/colors";
+import ColorsTheme from "../../../../assets/colors";
+import TableSkeleton from "../../../../components/table/payment/TableSkeleton";
 
 import Grid from "@material-ui/core/Grid";
 
 //import api service
-import BranchService from "../../../services/branch.service"
+import BranchService from "../../../../services/branch.service"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -94,7 +94,8 @@ export default function BranchOfficeList(props) {
     const [pages, setPages] = useState(0);
     const [flashMessage, setFlashMessage] = useState({ success: false, message: '' });
     const [branchs, setBranchs] = useState([]);
-    const [errorMsg, setErrorMsg] = useState("Loading...");
+    const [isLoading, setIsLoading] = useState(true);
+    const [errorMsg, setErrorMsg] = useState();
     const rowsPage = 10;
 
     //event handling change page
@@ -104,10 +105,18 @@ export default function BranchOfficeList(props) {
 
     // get api data all branch office
     const fetchData = async () => {
+
+        setIsLoading(true);
         const result = await BranchService.getAllBranch()
+
+        setIsLoading(false);
         if (!Boolean(result.error)) {
             setBranchs(result.data)
-            setErrorMsg("")
+            if (Boolean(result.data)) {
+                setErrorMsg("");
+            } else {
+                setErrorMsg("data not found");
+            }
         } else {
             setBranchs([])
             setErrorMsg(result.error.response.data.msg)
@@ -121,25 +130,16 @@ export default function BranchOfficeList(props) {
         }
     }, [props.location.state])
 
+    useEffect(() => {
+        window.history.replaceState(null, '')
+    }, [])
 
     useEffect(() => {
         fetchData()
     }, [])
 
-    return (
-        <ContentContainer role="admin" selectedMenu="Daftar Kantor Cabang">
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                    paddingBottom: "2em",
-                }}>
-                <Typography variant="h4">
-                    Daftar Kantor Cabang
-                </Typography>
-            </div>
-
+    function PaperListBranch(props) {
+        return (
             <Paper className={classes.PaperSize} elevation={4}>
 
                 <Grid
@@ -170,25 +170,7 @@ export default function BranchOfficeList(props) {
                     />
                 </Grid>
 
-                <Collapse in={flashMessage.success} >
-                    <Alert
-                        className={classes.alert}
-                        action={
-                            <IconButton
-                                aria-label="close"
-                                color="inherit"
-                                size="small"
-                                onClick={() => {
-                                    setFlashMessage({ success: false, message: '' });
-                                }}
-                            >
-                                <CloseIcon fontSize="inherit" />
-                            </IconButton>
-                        }
-                    >
-                        {flashMessage.message}
-                    </Alert>
-                </Collapse>
+
 
                 <div className={classes.messageError}>
                     <h2 style={{ display: errorMsg ? 'block' : 'none' }}>{errorMsg}</h2>
@@ -199,7 +181,6 @@ export default function BranchOfficeList(props) {
                             <TableRow>
                                 <StylingTableCell>no</StylingTableCell>
                                 <StylingTableCell>Nama Kantor Cabang</StylingTableCell>
-                                <StylingTableCell align="center">Action</StylingTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -213,17 +194,6 @@ export default function BranchOfficeList(props) {
                                 <StylingTableRow key={index + 1}>
                                     <StylingTableCell width="10%">{pages * rowsPage + index + 1}</StylingTableCell>
                                     <StylingTableCell>{branch.id === 1 ? "pusat" : branch.branch_name}</StylingTableCell>
-                                    <StylingTableCell width="25%" align="center">
-                                        <Link to="/detail-branch" className={classes.buttonMargin}>
-                                            <Button
-                                                variant="contained"
-                                                color="info"
-                                                size="small"
-                                                startIcon={<VisibilityIcon />}>
-                                                Detail
-                                            </Button>
-                                        </Link>
-                                    </StylingTableCell>
                                 </StylingTableRow>
                             ))}
                         </TableBody>
@@ -247,6 +217,48 @@ export default function BranchOfficeList(props) {
                     </Table>
                 </TableContainer>
             </Paper>
+
+        );
+    }
+
+    return (
+        <ContentContainer role="admin" selectedMenu="Daftar Kantor Cabang">
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                    paddingBottom: "2em",
+                }}>
+                <Typography variant="h4">
+                    Daftar Kantor Cabang
+                </Typography>
+            </div>
+            <Collapse in={flashMessage.success} >
+                <Alert
+                    className={classes.alert}
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setFlashMessage({ success: false, message: '' });
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                >
+                    {flashMessage.message}
+                </Alert>
+            </Collapse>
+            {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
+            {isLoading ? (
+                <TableSkeleton />
+            ) : (
+                <PaperListBranch />
+            )}
         </ContentContainer>
     );
 }

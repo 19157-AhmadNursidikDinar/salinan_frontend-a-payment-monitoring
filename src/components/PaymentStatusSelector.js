@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-
+import React, {Fragment} from "react";
 // Material ui core
 import {
     FormControl,
     MenuItem,
     Select,
     TextField,
-    TableRow
+    TableRow,
+    FormHelperText
 } from "@material-ui/core";
+
 import MuiTableCell from "@material-ui/core/TableCell";
 import { withStyles } from "@material-ui/core/styles";
 import useStyles from "../styles/customer/HasilFormPayment";
@@ -25,71 +26,68 @@ const TableCell = withStyles((theme) => ({
     },
 }))(MuiTableCell);
 
-const createData = (description, value) => {
-    return { description, value };
-};
-
-const rows = [
-    createData("Diminta Oleh", "Asep Sunandar"),
-    createData("Keperluan Payment", "SPP Juli 2020"),
-    createData("Tanggal Pembayaran", "Sabtu, 10 Juli 2020"),
-    createData("Jumlah Payment", "Rp. 1.000.000"),
-    createData("Terbilang", "Satu juta rupiah"),
-    createData("Nama Rek. / Penerima", "MD. Mubarokul Huda"),
-    createData("No. Rekening Penerima", "15000757050"),
-    createData("Request Terkirim", "Jum’at, 9 Juli 2021 (09.00 PM)"),
-    createData("Status Request", "null"),
-];
-
-function PaymentStatusSelector() {
+function PaymentStatusSelector({ formik }) {
     const classes = useStyles();
-    const [status, setStatus] = useState('null');
 
     return (
-        <>
-            {rows.map((row) => (
-                <TableRow key={row.name}>
-                    <TableCell>{row.description}</TableCell>
-                    <TableCell>:</TableCell>
-                    {row.value === "null" ? (
-                        <TableCell>
-                            <FormControl variant="outlined" className={classes.formControl} fullWidth size="small">
-                                <Select
-                                    value={status}
-                                    onChange={(e) => setStatus(e.target.value)}
-
-                                >
-                                    <MenuItem value="null">-Ubah Status-</MenuItem>
-                                    <MenuItem value="accept">Accept</MenuItem>
-                                    <MenuItem value="reject">Reject</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </TableCell>
-                    ) : (
-                        <TableCell>{row.value}</TableCell>
-                    )}
-                </TableRow>
-            ))}
-            {status === "reject" ? (
+        <Fragment>
+            <TableRow>
+                <TableCell>
+                    Update Status Request
+                </TableCell>
+                <TableCell align="center">:</TableCell>
+                <TableCell>
+                    <FormControl
+                        variant="outlined"
+                        fullWidth size="small"
+                        className={classes.formControl}
+                        error={
+                            Boolean(formik.errors.stage) && formik.touched.stage
+                        }>
+                        <Select
+                            name="stage"
+                            value={formik.values.stage}
+                            onChange={formik.handleChange}
+                            disabled={formik.isSubmitting}
+                        >
+                            <MenuItem value="null">-Ubah Status-</MenuItem>
+                            <MenuItem value="accept">Accept</MenuItem>
+                            <MenuItem value="reject">Reject</MenuItem>
+                        </Select>
+                        {Boolean(formik.errors.stage) && formik.touched.stage && (
+                            <FormHelperText>{formik.errors.stage}</FormHelperText>
+                        )}
+                    </FormControl>
+                </TableCell>
+            </TableRow>
+            {formik.values.stage === "reject" ? (
                 <TableRow>
                     <TableCell>Alasan</TableCell>
-                    <TableCell>:</TableCell>
+                    <TableCell align="center">:</TableCell>
                     <TableCell>
                         <TextField
+                            name="reason"
                             multiline
                             maxRows={6}
                             minRows={4}
                             variant="outlined"
                             fullWidth
-                            size="small" />
+                            size="small"
+                            value={formik.values.reason}
+                            disabled={formik.isSubmitting}
+                            onChange={formik.handleChange}
+                            error={
+                                Boolean(formik.errors.reason) && formik.touched.reason
+                            }
+                            helperText={formik.errors.reason} />
                     </TableCell>
                 </TableRow>
             ) : (
                 <TableCell> </TableCell>
             )}
-
-        </>
-
+        </Fragment>
     )
 }
+
+
 export default PaymentStatusSelector

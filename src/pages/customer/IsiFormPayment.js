@@ -42,17 +42,6 @@ function NumberFormatIDR(props) {
 export function FormRequest(props) {
   const classes = useStyles();
 
-  //Value Default Nominal
-  // const [values, setValues] = React.useState({
-  //     numberformat: '0',
-  // })
-  // const handleChange = (event) => {
-  //     setValues({
-  //         ...values,
-  //         [event.target.name]: event.target.value,
-  //     });
-  // };
-
   //Value Default Tanggal
   const [currentDate, setSelectedDate] = React.useState(new Date());
 
