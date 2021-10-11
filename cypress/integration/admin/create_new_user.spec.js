@@ -1,8 +1,7 @@
 describe("Optimistic case create new user", () => {
   const date = new Date();
   const userData = {
-    fullname: "Test User " + date.getTime(),
-    username: "usr" + date.getTime(),
+    userCode: date.getTime(),
     password: "123456",
   };
 
@@ -31,13 +30,61 @@ describe("Optimistic case create new user", () => {
     cy.get("[data-test='btn-submit']").should("be.visible");
   });
 
-  it("admin can add new user", () => {
-    cy.get("[data-test='txt-fullname']").type(userData.fullname);
-    cy.get("[data-test='txt-username']").type(userData.username);
+  it("admin can add new Admin", () => {
+    cy.get("[data-test='txt-fullname']").type("Test Admin" + userData.userCode);
+    cy.get("[data-test='select-role']")
+      .click()
+      .get("[data-test='opt-role-admin']")
+      .click();
+    cy.get("[data-test='txt-username']").type("adm" + userData.userCode);
     cy.get("[data-test='txt-password']").type(userData.password);
     cy.get("[data-test='txt-passwordConfirmation']").type(userData.password);
     cy.get("[data-test='btn-submit']").click();
-    cy.findByRole("heading", { name: /beranda admin/i }).should("be.visible");
+    cy.findByText(/akun berhasil dibuat!/i).should("be.visible");
+    cy.findByRole("button", { name: /create new user/i }).click();
+  });
+
+  it("admin can add new General Support", () => {
+    cy.get("[data-test='txt-fullname']").type("Test GS" + userData.userCode);
+    cy.get("[data-test='select-role']")
+      .click()
+      .get("[data-test='opt-role-gs']")
+      .click();
+    cy.get("[data-test='txt-username']").type("gs" + userData.userCode);
+    cy.get("[data-test='txt-password']").type(userData.password);
+    cy.get("[data-test='txt-passwordConfirmation']").type(userData.password);
+    cy.get("[data-test='btn-submit']").click();
+    cy.findByText(/akun berhasil dibuat!/i).should("be.visible");
+    cy.findByRole("button", { name: /create new user/i }).click();
+  });
+
+  it("admin can add new Accounting", () => {
+    cy.get("[data-test='txt-fullname']").type("Test Acn" + userData.userCode);
+    cy.get("[data-test='select-role']")
+      .click()
+      .get("[data-test='opt-role-accounting']")
+      .click();
+    cy.get("[data-test='txt-username']").type("Acn" + userData.userCode);
+    cy.get("[data-test='txt-password']").type(userData.password);
+    cy.get("[data-test='txt-passwordConfirmation']").type(userData.password);
+    cy.get("[data-test='btn-submit']").click();
+    cy.findByText(/akun berhasil dibuat!/i).should("be.visible");
+    cy.findByRole("button", { name: /create new user/i }).click();
+  });
+
+  it("admin can add new User", () => {
+    cy.get("[data-test='txt-fullname']").type("Test User" + userData.userCode);
+    cy.get("[data-test='select-role']")
+      .click()
+      .get("[data-test='opt-role-user']")
+      .click();
+    cy.get("[data-test='select-branch']").click().get("[id=2]").click();
+    cy.get("[data-test='txt-username']").type("usr" + userData.userCode);
+    cy.get("[data-test='txt-password']").type(userData.password);
+    cy.get("[data-test='txt-passwordConfirmation']").type(userData.password);
+    cy.get("[data-test='btn-submit']").click();
+    cy.findByText(/akun berhasil dibuat!/i).should("be.visible");
+    cy.findByRole("button", { name: /create new user/i }).click();
   });
 
   after(() => {

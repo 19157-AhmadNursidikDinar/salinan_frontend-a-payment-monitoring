@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 //Re-using component
-import ContentContainer from "../../../components/ContentContainer";
-import TablePaginationActions from "../../../components/table/payment/TablePagination";
+import ContentContainer from "../../../../components/ContentContainer";
+import TablePaginationActions from "../../../../components/table/payment/TablePagination";
 //import from @material-ui/icons
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import CloseIcon from '@material-ui/icons/Close';
@@ -27,13 +27,13 @@ import {
 import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import ColorsTheme from "../../../assets/colors";
-import TableSkeleton from "../../../components/table/payment/TableSkeleton";
+import ColorsTheme from "../../../../assets/colors";
+import TableSkeleton from "../../../../components/table/payment/TableSkeleton";
 
 import Grid from "@material-ui/core/Grid";
 
 //import api service
-import BranchService from "../../../services/branch.service"
+import BranchService from "../../../../services/branch.service"
 
 
 const useStyles = makeStyles((theme) => ({
