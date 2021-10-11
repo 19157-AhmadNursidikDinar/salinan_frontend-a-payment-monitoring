@@ -130,6 +130,9 @@ export default function BranchOfficeList(props) {
         }
     }, [props.location.state])
 
+    useEffect(() => {
+        window.history.replaceState(null, '')
+    }, [])
 
     useEffect(() => {
         fetchData()

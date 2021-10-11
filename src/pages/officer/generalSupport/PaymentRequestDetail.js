@@ -130,15 +130,17 @@ function PaymentRequestDetailGeneralSupport(props) {
                 >
                   Back
               </Button>
-                {paymentDetail.stage !== 'Rejected By General Support' && <Button size="small"
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  className={classes.buttonAction}
-                  endIcon={<SaveRoundedIcon />}
-                >
-                  {formik.isSubmitting ? "Updating..." : "Update"}
-                </Button>}
+                {paymentDetail.stage !== 'Rejected By General Support' &&
+                  <Button size="small"
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={formik.isSubmitting}
+                    className={classes.buttonAction}
+                    endIcon={<SaveRoundedIcon />}
+                  >
+                    {formik.isSubmitting ? "Updating..." : "Update"}
+                  </Button>}
               </CardActions>
             </form>
           </Card>

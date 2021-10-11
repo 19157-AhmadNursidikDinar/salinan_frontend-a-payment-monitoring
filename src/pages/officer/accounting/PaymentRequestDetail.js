@@ -115,7 +115,7 @@ function PaymentRequestDetailAccounting(props) {
               <Container fixed>
                 <CardContent>
                   <DetailPayment paymentDetail={paymentDetail}>
-                      {!Boolean(paymentDetail.reason) && <PaymentStatusSelector formik={formik} />}
+                      {paymentDetail.stage !== 'Rejected By Accounting' && <PaymentStatusSelector formik={formik} />}
                   </DetailPayment>
                 </CardContent>
               </Container>
@@ -129,15 +129,17 @@ function PaymentRequestDetailAccounting(props) {
                 >
                   Back
                 </Button>
-                <Button size="small"
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  className={classes.buttonAction}
-                  endIcon={<SaveRoundedIcon />}
-                >
-                  {formik.isSubmitting ? "Updating..." : "Update"}
-                </Button>
+                  {paymentDetail.stage !== 'Rejected By Accounting' &&
+                    <Button size="small"
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      disabled={formik.isSubmitting}
+                      className={classes.buttonAction}
+                      endIcon={<SaveRoundedIcon />}
+                    >
+                      {formik.isSubmitting ? "Updating..." : "Update"}
+                    </Button>}
               </CardActions>
             </form>
           </Card>

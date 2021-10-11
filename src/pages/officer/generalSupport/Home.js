@@ -31,6 +31,10 @@ export default function GeneralSupport(props) {
   }, [props.location.state])
 
   useEffect(() => {
+    window.history.replaceState(null, '')
+  },[])
+
+  useEffect(() => {
     fetchPaymentData();
   }, []);
 

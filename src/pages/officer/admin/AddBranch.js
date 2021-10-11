@@ -118,6 +118,7 @@ function FormAddBranch(props) {
                         <Button size="small"
                             variant="contained"
                             color="primary"
+                            disabled={formik.isSubmitting}
                             className={classes.BtnSave}
                             endIcon={<SaveRoundedIcon />}
                             type="submit"
