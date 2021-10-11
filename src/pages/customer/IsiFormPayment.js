@@ -39,7 +39,7 @@ function NumberFormatIDR(props) {
   );
 }
 
-function FormRequest(props) {
+export function FormRequest(props) {
   const classes = useStyles();
 
   //Value Default Nominal
