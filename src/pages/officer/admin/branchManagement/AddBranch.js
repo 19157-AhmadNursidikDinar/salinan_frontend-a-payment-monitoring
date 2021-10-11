@@ -122,7 +122,6 @@ export function FormAddBranch(props) {
                             disabled={formik.isSubmitting}
                             className={classes.BtnSave}
                             endIcon={<SaveRoundedIcon />}
-                            disabled={formik.isSubmitting}
                             type="submit"
                         >
                             {formik.isSubmitting ? "Saving..." : "Save"}

@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import authHeader from "../utils/auth-header";
 import AuthService from "./auth.service";
 AuthService.setupInterceptor();
@@ -32,6 +33,37 @@ class PaymentService {
     }
   }
 
+  async insertPayment({
+    customer_name,
+    request,
+    amount,
+    amount_counted,
+    account_number,
+    account_name,
+    payment_date,
+  }) {
+    try {
+      const dataPayment = {
+        customer_name: customer_name,
+        request: request,
+        amount: parseInt(amount),
+        amount_counted: amount_counted,
+        account_number: account_number,
+        account_name: account_name,
+        payment_date: moment(payment_date).format("YYYY-MM-DD"),
+      };
+
+      const response = await axios.post(apiUrl + "/create", dataPayment, {
+        headers: authHeader(),
+      });
+      if (response.data) {
+        return response.data;
+      }
+    } catch (error) {
+      return { error };
+    }
+  }
+  
   async getDetailPayment(id) {
     try {
       const response = await axios.get(apiUrl + "/detail/" + id, {
@@ -45,6 +77,7 @@ class PaymentService {
       return { error };
     }
   }
+  
   async updatePaymentRequestStage(data) {
     const { idPayment, stagePayment, reason } = data;
     try {
