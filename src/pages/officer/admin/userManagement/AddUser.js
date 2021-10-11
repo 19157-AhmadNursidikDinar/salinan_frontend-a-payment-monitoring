@@ -188,10 +188,18 @@ function FormAddUser({ dataBranch, formValues, handlePostSubmit }) {
                   disabled={formik.isSubmitting}
                   data-test="select-role"
                 >
-                  <MenuItem value={1}>Admin</MenuItem>
-                  <MenuItem value={2}>General Support</MenuItem>
-                  <MenuItem value={3}>Accounting</MenuItem>
-                  <MenuItem value={4}>User</MenuItem>
+                  <MenuItem value={1} data-test="opt-role-admin">
+                    Admin
+                  </MenuItem>
+                  <MenuItem value={2} data-test="opt-role-gs">
+                    General Support
+                  </MenuItem>
+                  <MenuItem value={3} data-test="opt-role-accounting">
+                    Accounting
+                  </MenuItem>
+                  <MenuItem value={4} data-test="opt-role-user">
+                    User
+                  </MenuItem>
                 </Select>
                 {Boolean(formik.errors.role_id) && formik.touched.role_id && (
                   <FormHelperText>{formik.errors.role_id}</FormHelperText>
@@ -227,7 +235,7 @@ function FormAddUser({ dataBranch, formValues, handlePostSubmit }) {
                   {dataBranch.map(
                     (e, i) =>
                       e.id !== 1 && (
-                        <MenuItem value={e.id} key={i}>
+                        <MenuItem value={e.id} key={i} id={e.id}>
                           {e.branch_name}
                         </MenuItem>
                       )
