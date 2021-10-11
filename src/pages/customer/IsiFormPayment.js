@@ -78,14 +78,9 @@ const DisabledTextFieldComponent = (props) => {
   return <TextField {...props} inputProps={{ readOnly: true }} />;
 };
 
-function FormRequest(props) {
-  const classes = useStyles();
-
-  //Value Default Tanggal
-  const [currentDate, setSelectedDate] = React.useState(new Date());
-
 function FormRequest({ formValues, handleSubmit }) {
   const classes = useStyles();
+
   const [errorMsg, setErrorMsg] = useState();
 
   function CapitalizeWords(str) {
