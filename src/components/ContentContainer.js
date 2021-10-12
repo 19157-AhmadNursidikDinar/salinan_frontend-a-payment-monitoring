@@ -124,7 +124,7 @@ export default function MiniDrawer({
                 >
                   <MenuIcon />
                 </IconButton>
-                <div style={{ display: "flex" }}>
+                <div style={{ display: "flex", alignItems:'center' }}>
                   <Typography variant="h6" className={classes.profile} style={{ display: matches && open ? "none" : "block" }}>{username}</Typography>
                   <Avatar className={classes.colorProfile}>
                     {charUsername}
