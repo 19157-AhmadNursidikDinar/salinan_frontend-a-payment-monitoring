@@ -27,15 +27,6 @@ class AuthToken {
     return item.value;
   }
 
-  getUserName() {
-    const itemStr = session.getItem("token") || localStorage.getItem("token");
-    if (!itemStr) {
-      return null;
-    }
-    const item = JSON.parse(itemStr);
-    return item.username;
-  }
-
   removeToken() {
     const sessionToken = localStorage.getItem("token");
     if (sessionToken) {
