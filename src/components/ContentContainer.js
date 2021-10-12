@@ -10,7 +10,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import PersonIcon from "@material-ui/icons/Person";
+import Typography from "@material-ui/core/Typography";
 import BusinessIcon from "@material-ui/icons/Business";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -29,6 +29,8 @@ import { useHistory } from "react-router-dom";
 
 import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import AuthToken from '../utils/auth-token';
+import jwt_decode from 'jwt-decode';
 
 const menuItems = {
   customer: [
@@ -66,6 +68,8 @@ export default function MiniDrawer({
   const getTheme = useTheme();
   const matches = useMediaQuery(getTheme.breakpoints.down('sm'));
   const theme = createTheme();
+  const [username, setUsername] = React.useState(null);
+  const [charUsername, setcharUsername] = React.useState(null);
 
   const classes = useStyles();
   const history = useHistory();
@@ -79,6 +83,14 @@ export default function MiniDrawer({
   };
 
   useEffect(() => {
+    const token = AuthToken.getToken();
+    const { username } = jwt_decode(token);
+    setUsername(username);
+    setcharUsername(username.charAt(0).toUpperCase())
+  }, [])
+
+  useEffect(() => {
+
     if (matches) {
       setOpen(false);
     }
@@ -112,9 +124,12 @@ export default function MiniDrawer({
                 >
                   <MenuIcon />
                 </IconButton>
-                <Avatar>
-                  <PersonIcon />
-                </Avatar>
+                <div style={{ display: "flex", alignItems:'center' }}>
+                  <Typography variant="h6" className={classes.profile} style={{ display: matches && open ? "none" : "block" }}>{username}</Typography>
+                  <Avatar className={classes.colorProfile}>
+                    {charUsername}
+                  </Avatar>
+                </div>
               </Grid>
             </Toolbar>
           </AppBar>

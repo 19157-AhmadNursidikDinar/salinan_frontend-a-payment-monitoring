@@ -115,6 +115,13 @@ const useStyles = makeStyles((theme) => ({
   titleSectionSpan: {
     color: ColorsTheme.pacificBlue,
   },
+  colorProfile: {
+    backgroundColor: ColorsTheme.pacificBlue,
+  },
+  profile: {
+    color: "black",
+    marginRight: theme.spacing(1)
+  }
 }));
 
 export default useStyles;
