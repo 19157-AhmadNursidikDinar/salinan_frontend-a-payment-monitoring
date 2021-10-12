@@ -18,6 +18,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useStyles from "../styles/customer/HasilFormPayment";
 import Chip from "./ActionChip";
 import moment from "moment";
+import NumberFormat from "react-number-format";
 
 const TableCell = withStyles((theme) => ({
   root: {
@@ -63,6 +64,18 @@ function HasilFormPayment({ formValues, resetFormValues }) {
   const handleClickNewPayment = () => {
     resetFormValues();
   };
+  const CurrencyFormat = () => {
+    return (
+      <NumberFormat
+        value={formValues?.amount}
+        prefix="Rp "
+        suffix=",00"
+        thousandSeparator="."
+        decimalSeparator=","
+        displayType="text"
+        allowNegative={true} />
+    )
+  }
 
   return (
     <>
@@ -103,7 +116,7 @@ function HasilFormPayment({ formValues, resetFormValues }) {
                   />
                   <MTableRow
                     label="Jumlah Payment"
-                    value={formValues?.amount}
+                    value={CurrencyFormat(formValues?.amount)}
                   />
                   <MTableRow
                     label="Terbilang"
