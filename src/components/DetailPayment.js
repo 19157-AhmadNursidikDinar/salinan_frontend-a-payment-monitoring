@@ -44,10 +44,11 @@ export default function DetailPayment({ paymentDetail, children }) {
         return (
             <NumberFormat
                 value={paymentDetail.amount}
-                prefix="Rp."
-                decimalSeparator="."
+                prefix="Rp "
+                suffix=",00"
+                thousandSeparator="."
+                decimalSeparator=","
                 displayType="text"
-                thousandSeparator={true}
                 allowNegative={true} />
         )
     }
@@ -89,7 +90,7 @@ export default function DetailPayment({ paymentDetail, children }) {
                         value={
                             <Chip
                                 label={paymentDetail.stage}
-                                color={convertActionToChipColor(paymentDetail.stage||"")}
+                                color={convertActionToChipColor(paymentDetail.stage || "")}
                             />
                         }
                     />
