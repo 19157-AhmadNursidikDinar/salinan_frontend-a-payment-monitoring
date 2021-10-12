@@ -58,9 +58,11 @@ function NumberFormatIDR(props) {
           },
         });
       }}
-      thousandSeparator
+      thousandSeparator="."
+      decimalSeparator=","
       isNumericString
-      prefix="Rp."
+      prefix="Rp "
+      suffix=",00"
     />
   );
 }
@@ -278,8 +280,8 @@ export function FormRequest({ formValues, handleSubmit }) {
                 value={
                   Boolean(formik.values.amount)
                     ? CapitalizeWords(
-                        CountedText(formik.values.amount) + " rupiah"
-                      )
+                      CountedText(formik.values.amount) + " rupiah"
+                    )
                     : ""
                 }
                 onChange={formik.handleChange}
