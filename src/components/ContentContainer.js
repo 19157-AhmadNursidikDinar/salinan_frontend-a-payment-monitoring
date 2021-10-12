@@ -30,6 +30,7 @@ import { useHistory } from "react-router-dom";
 import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AuthToken from '../utils/auth-token';
+import jwt_decode from 'jwt-decode';
 
 const menuItems = {
   customer: [
@@ -67,6 +68,8 @@ export default function MiniDrawer({
   const getTheme = useTheme();
   const matches = useMediaQuery(getTheme.breakpoints.down('sm'));
   const theme = createTheme();
+  const [username, setUsername] = React.useState(null);
+  const [charUsername, setcharUsername] = React.useState(null);
 
   const classes = useStyles();
   const history = useHistory();
@@ -80,6 +83,14 @@ export default function MiniDrawer({
   };
 
   useEffect(() => {
+    const token = AuthToken.getToken();
+    const { username } = jwt_decode(token);
+    setUsername(username);
+    setcharUsername(username.charAt(0).toUpperCase())
+  }, [])
+
+  useEffect(() => {
+
     if (matches) {
       setOpen(false);
     }
@@ -114,12 +125,11 @@ export default function MiniDrawer({
                   <MenuIcon />
                 </IconButton>
                 <div style={{ display: "flex" }}>
-                  <Typography variant="h6" style={{ color: "black", marginRight: 12, display: matches && open ? "none" : "block" }}>{AuthToken.getUserName()}</Typography>
+                  <Typography variant="h6" className={classes.profile} style={{ display: matches && open ? "none" : "block" }}>{username}</Typography>
                   <Avatar className={classes.colorProfile}>
-                    {AuthToken.getUserName().charAt(0).toUpperCase()}
+                    {charUsername}
                   </Avatar>
                 </div>
-
               </Grid>
             </Toolbar>
           </AppBar>

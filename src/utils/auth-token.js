@@ -1,10 +1,9 @@
 const session = window.sessionStorage;
 
 class AuthToken {
-  setToken(value, username, expiry, isPresist = false) {
+  setToken(value, expiry, isPresist = false) {
     const item = {
       value,
-      username,
       expiry,
     };
     if (isPresist) {

@@ -117,6 +117,10 @@ const useStyles = makeStyles((theme) => ({
   },
   colorProfile: {
     backgroundColor: ColorsTheme.pacificBlue,
+  },
+  profile: {
+    color: "black",
+    marginRight: theme.spacing(1)
   }
 }));
 
