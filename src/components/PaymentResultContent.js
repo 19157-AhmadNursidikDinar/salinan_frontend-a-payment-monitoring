@@ -17,7 +17,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useStyles from "../styles/customer/HasilFormPayment";
 import Chip from "./ActionChip";
-import moment from "moment";
+import { dateOnly } from "../utils/date-format";
 import NumberFormat from "react-number-format";
 
 const TableCell = withStyles((theme) => ({
@@ -59,8 +59,6 @@ function HasilFormPayment({ formValues, resetFormValues }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
-  let dt = moment(formValues.payment_date);
-  let formattedDate = dt.format('DD MMMM YYYY')
   const handleClickNewPayment = () => {
     resetFormValues();
   };
@@ -75,6 +73,14 @@ function HasilFormPayment({ formValues, resetFormValues }) {
         displayType="text"
         allowNegative={true} />
     )
+  }
+  const RequestOptions = () => {
+    return formValues?.request === "daily-needs" ? "Kebutuhan Sehari-Hari"
+      : formValues?.request === "loan-repayment" ? "Membayar Cicilan"
+        : formValues?.request === "education-fund" ? "Keperluan Pendidikan"
+          : formValues?.request === "travel-fund" ? "Keperluan Wisata"
+            : formValues?.request === "bill-payment" ? "Pembayaran Tagihan"
+              : formValues?.request
   }
 
   return (
@@ -108,11 +114,11 @@ function HasilFormPayment({ formValues, resetFormValues }) {
                   />
                   <MTableRow
                     label="Keperluan Payment"
-                    value={formValues?.request || ""}
+                    value={RequestOptions(formValues?.request)}
                   />
                   <MTableRow
                     label="Tanggal Pembayaran"
-                    value={formattedDate || ""}
+                    value={dateOnly(formValues.payment_date) || ""}
                   />
                   <MTableRow
                     label="Jumlah Payment"

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import NumberFormat from "react-number-format";
 //import material-ui components
 import Button from "@material-ui/core/Button";
-//import Collapse from '@material-ui/core/Collapse';
+// import Collapse from '@material-ui/core/Collapse';
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -36,7 +36,7 @@ const initValue = {
   customer_name: "",
   payment_date: new Date(),
   request: "daily-needs",
-  // detail_request: "",
+  detail_request: "",
   amount: "",
   amount_counted: "",
   account_name: "",
@@ -195,12 +195,12 @@ export function FormRequest({ formValues, handleSubmit }) {
                   onChange={formik.handleChange}
                   data-test="select-request"
                 >
-                  <option value="daily-needs">daily-needs</option>
-                  <option value="loan-repayment">loan-repayment</option>
-                  <option value="education-fund">education-fund</option>
-                  <option value="travel-fund">travel-fund</option>
-                  <option value="bill-payment">bill-payment</option>
-                  <option value="others">others</option>
+                  <option value="daily-needs">Kebutuhan Sehari-Hari</option>
+                  <option value="loan-repayment">Membayar Cicilan</option>
+                  <option value="education-fund">Keperluan Pendidikan</option>
+                  <option value="travel-fund">Keperluan Wisata</option>
+                  <option value="bill-payment">Pembayaran Tagihan</option>
+                  <option value="others">Keperluan Lainnya</option>
                 </Select>
                 {/* !Field Detail_Request */}
                 {/* <Grid item xs={12}>
@@ -264,6 +264,7 @@ export function FormRequest({ formValues, handleSubmit }) {
                 disabled={formik.isSubmitting}
                 error={Boolean(formik.errors.amount) && formik.touched.amount}
                 helperText={formik.errors.amount}
+                autoComplete="off"
                 data-test="txt-amount"
               />
             </Grid>

@@ -3,9 +3,9 @@ import "moment/locale/id";
 moment.locale("id");
 
 export const dateOnly = (date) => {
-  return moment(date).tz("Asia/Jakarta").format("DD-MMMM-yyyy");
+  return moment(date).tz("Asia/Jakarta").format("DD MMMM yyyy");
 };
 
 export const dateAndTime = (date) => {
-  return moment(date).tz("Asia/Jakarta").format("DD-MMMM-yyyy HH:mm") + " WIB";
+  return moment(date).tz("Asia/Jakarta").format("DD MMMM yyyy / HH:mm") + " WIB";
 };
