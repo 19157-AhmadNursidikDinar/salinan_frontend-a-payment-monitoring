@@ -1,4 +1,4 @@
-describe("Optimistic case Customer Login Test", () => {
+describe("Positive case Customer Login Test", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/");
   });
@@ -10,18 +10,12 @@ describe("Optimistic case Customer Login Test", () => {
   });
 
   it("customer can login", () => {
-    cy.get("[data-test='txt-username']").type("mycustomer3");
-    cy.get("[data-test='txt-password']").type("123456");
-    cy.get("[data-test='btn-submit']").click();
-    cy.findByRole("heading", { name: /daftar payment request/i }).should(
-      "be.visible"
-    );
-    cy.get("[data-test='btn-signout']").click();
-    cy.get("[data-test='btn-confirm-signout']").click();
+    cy.loginAsCustomer();
+    cy.logOut();
   });
 });
 
-describe("Pesimistic case Customer Login", () => {
+describe("Negative case Customer Login", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/");
   });

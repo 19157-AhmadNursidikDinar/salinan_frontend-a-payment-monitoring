@@ -1,15 +1,10 @@
-describe("Optimistic case payment request", () => {
+describe("Positive case payment request", () => {
   before(() => {
     cy.visit("http://localhost:3000/");
   });
 
   it("customer can login", () => {
-    cy.get("[data-test='txt-username']").type("mycustomer3");
-    cy.get("[data-test='txt-password']").type("123456");
-    cy.get("[data-test='btn-submit']").click();
-    cy.findByRole("heading", { name: /daftar payment request/i }).should(
-      "be.visible"
-    );
+    cy.loginAsCustomer();
   });
 
   it("customer can see payment request form", () => {
@@ -38,18 +33,13 @@ describe("Optimistic case payment request", () => {
   });
 });
 
-describe("Pesimistic case payment request", () => {
+describe("Negative case payment request", () => {
   before(() => {
     cy.visit("http://localhost:3000/");
   });
 
   it("customer can login", () => {
-    cy.get("[data-test='txt-username']").type("mycustomer3");
-    cy.get("[data-test='txt-password']").type("123456");
-    cy.get("[data-test='btn-submit']").click();
-    cy.findByRole("heading", { name: /daftar payment request/i }).should(
-      "be.visible"
-    );
+    cy.loginAsCustomer();
     cy.findByRole("button", { name: /payment request/i }).click();
   });
 
