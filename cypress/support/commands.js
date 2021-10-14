@@ -30,7 +30,6 @@ Cypress.Commands.add("loginAsAdmin", () => {
     .click();
   cy.get("[data-test='btn-submit']").click();
   cy.findByRole("heading", { name: /beranda admin/i }).should("be.visible");
-  cy.findByRole("button", { name: /add account/i }).click();
 });
 
 Cypress.Commands.add("loginAsGS", () => {
