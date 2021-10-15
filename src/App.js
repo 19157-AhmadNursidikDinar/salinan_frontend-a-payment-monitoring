@@ -21,6 +21,9 @@ import PageNotFound from "./pages/errors/PageNotFound";
 import Backdoor from "./pages/backdoor/Backdoor";
 import PreloginRoutes from "./components/protectedRoutes/PreloginRoutes";
 import PostloginRoutes from "./components/protectedRoutes/PostloginRoutes";
+import ServiceLevelAgreementCustomer from './pages/customer/ServiceLevelAgreement';
+import ServiceLevelAgreementAccounting from './pages/officer/accounting/ServiceLevelAgreement';
+import ServiceLevelAgreementGeneralSupport from './pages/officer/generalSupport/ServiceLevelAgreement';
 
 
 function App() {
@@ -100,6 +103,24 @@ function App() {
           path="/service-level-agreement"
           component={ServiceLevelAgreement}
           role="admin"
+        />
+        <PostloginRoutes
+          exact
+          path="/service-level-agreement-customer"
+          component={ServiceLevelAgreementCustomer}
+          role="customer"
+        />
+        <PostloginRoutes
+          exact
+          path="/service-level-agreement-gs"
+          component={ServiceLevelAgreementGeneralSupport}
+          role="general-support"
+        />
+        <PostloginRoutes
+          exact
+          path="/service-level-agreement-accounting"
+          component={ServiceLevelAgreementAccounting}
+          role="accounting"
         />
         <PostloginRoutes
           exact
