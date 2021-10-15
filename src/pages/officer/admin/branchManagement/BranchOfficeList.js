@@ -170,8 +170,6 @@ export default function BranchOfficeList(props) {
                     />
                 </Grid>
 
-
-
                 <div className={classes.messageError}>
                     <h2 style={{ display: errorMsg ? 'block' : 'none' }}>{errorMsg}</h2>
                 </div>
