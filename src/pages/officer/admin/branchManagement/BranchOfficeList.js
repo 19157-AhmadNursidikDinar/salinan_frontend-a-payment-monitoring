@@ -6,31 +6,30 @@ import TablePaginationActions from "../../../../components/table/payment/TablePa
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
+
 //import from @material-ui/core
-import {
-    Button,
-    InputAdornment,
-    Paper,
-    Table,
-    TableContainer,
-    TableHead,
-    TableBody,
-    TableCell,
-    TableRow,
-    TableFooter,
-    TablePagination,
-    TextField,
-    Typography,
-    Collapse,
-    IconButton
-} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
+import TableFooter from "@material-ui/core/TableFooter";
+import TablePagination from "@material-ui/core/TablePagination";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import Grid from "@material-ui/core/Grid";
+
 import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ColorsTheme from "../../../../assets/colors";
 import TableSkeleton from "../../../../components/table/payment/TableSkeleton";
-
-import Grid from "@material-ui/core/Grid";
 
 //import api service
 import BranchService from "../../../../services/branch.service"
