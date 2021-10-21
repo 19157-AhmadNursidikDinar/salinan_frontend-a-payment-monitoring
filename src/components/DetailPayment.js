@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 import { withStyles } from "@material-ui/core/styles";
 import useStyles from "../styles/HasilFormPayement";
-import { dateOnly } from "../utils/date-format";
+import { dateOnly, dateAndTime } from "../utils/date-format";
 import { convertActionToChipColor } from "../utils/chip-utils";
 
 import Chip from "./ActionChip";
@@ -53,6 +53,16 @@ export default function DetailPayment({ paymentDetail, children }) {
         )
     }
 
+    const PhoneOptions = () => {
+        return paymentDetail.phone === "" ? "-"
+            : "+" + paymentDetail.phone
+    }
+
+    const PaymentDateStatus = () => {
+        return paymentDetail.payment_date === "" ? "-"
+            : dateOnly(paymentDetail.payment_date)
+    }
+
     return (
         <TableContainer className={classes.table}>
             <Table className={classes.table} aria-label="simple table" size='small'>
@@ -62,12 +72,16 @@ export default function DetailPayment({ paymentDetail, children }) {
                         value={paymentDetail.customer_name || ""}
                     />
                     <MTableRow
+                        label="No. Telepon"
+                        value={PhoneOptions(paymentDetail.phone)}
+                    />
+                    <MTableRow
                         label="Keperluan Payment"
                         value={paymentDetail.request || ""}
                     />
                     <MTableRow
                         label="Tanggal Pembayaran"
-                        value={dateOnly(paymentDetail.payment_date || "")}
+                        value={PaymentDateStatus(paymentDetail.payment_date)}
                     />
                     <MTableRow
                         label="Jumlah Payment"
@@ -84,6 +98,10 @@ export default function DetailPayment({ paymentDetail, children }) {
                     <MTableRow
                         label="No. Rekening Penerima"
                         value={paymentDetail.account_number || ""}
+                    />
+                    <MTableRow
+                        label="Request Terkirim"
+                        value={dateAndTime(paymentDetail.request_date) || ""}
                     />
                     <MTableRow
                         label="Status Request"

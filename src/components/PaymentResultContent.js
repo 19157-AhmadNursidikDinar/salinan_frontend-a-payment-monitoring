@@ -17,7 +17,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useStyles from "../styles/customer/HasilFormPayment";
 import Chip from "./ActionChip";
-import { dateOnly } from "../utils/date-format";
+import { dateAndTime } from "../utils/date-format";
 import NumberFormat from "react-number-format";
 
 const TableCell = withStyles((theme) => ({
@@ -80,7 +80,11 @@ function HasilFormPayment({ formValues, resetFormValues }) {
         : formValues?.request === "education-fund" ? "Keperluan Pendidikan"
           : formValues?.request === "travel-fund" ? "Keperluan Wisata"
             : formValues?.request === "bill-payment" ? "Pembayaran Tagihan"
-              : formValues?.request
+              : formValues?.request_other
+  }
+  const PhoneOptions = () => {
+    return formValues?.customer_phone === "" ? "-"
+      : "+" + formValues?.customer_phone
   }
 
   return (
@@ -113,12 +117,12 @@ function HasilFormPayment({ formValues, resetFormValues }) {
                     value={formValues?.customer_name || ""}
                   />
                   <MTableRow
-                    label="Keperluan Payment"
-                    value={RequestOptions(formValues?.request)}
+                    label="No. Telepon"
+                    value={PhoneOptions(formValues?.customer_phone)}
                   />
                   <MTableRow
-                    label="Tanggal Pembayaran"
-                    value={dateOnly(formValues.payment_date) || ""}
+                    label="Keperluan Payment"
+                    value={RequestOptions(formValues?.request)}
                   />
                   <MTableRow
                     label="Jumlah Payment"
@@ -135,6 +139,10 @@ function HasilFormPayment({ formValues, resetFormValues }) {
                   <MTableRow
                     label="No. Rekening Penerima"
                     value={formValues?.account_number || ""}
+                  />
+                  <MTableRow
+                    label="Request Terkirim"
+                    value={dateAndTime(formValues.request_date) || ""}
                   />
                   <TableRow>
                     <TableCell>Status Request</TableCell>
