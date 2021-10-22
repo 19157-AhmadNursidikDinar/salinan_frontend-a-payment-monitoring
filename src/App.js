@@ -22,7 +22,6 @@ import Backdoor from "./pages/backdoor/Backdoor";
 import PreloginRoutes from "./components/protectedRoutes/PreloginRoutes";
 import PostloginRoutes from "./components/protectedRoutes/PostloginRoutes";
 
-
 function App() {
   return (
     <Router>
@@ -49,7 +48,7 @@ function App() {
         />
         <PostloginRoutes
           exact
-          path="/update-user"
+          path="/update-user/:id"
           component={AdminUpdateUser}
           role="admin"
         />
@@ -67,7 +66,7 @@ function App() {
         />
         <PostloginRoutes
           exact
-          path="/detail-user"
+          path="/detail-user/:id"
           component={AdminDetailUser}
           role="admin"
         />
