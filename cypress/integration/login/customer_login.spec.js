@@ -33,13 +33,13 @@ describe("Negative case Customer Login", () => {
   });
 
   it("show error when password input empty", () => {
-    cy.get("[data-test='txt-username']").type("mycustomer3");
+    cy.get("[data-test='txt-username']").type("myuser");
     cy.get("[data-test='btn-submit']").click();
     cy.findByText(/insert password/i);
   });
 
   it("show error when username and password wrong", () => {
-    cy.get("[data-test='txt-username']").type("mycustomer3");
+    cy.get("[data-test='txt-username']").type("myuser");
     cy.get("[data-test='txt-password']").type("1234567");
     cy.get("[data-test='btn-submit']").click();
     cy.findByText(/password\/username is incorrect/i);

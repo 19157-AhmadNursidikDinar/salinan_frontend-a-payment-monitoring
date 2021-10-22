@@ -33,7 +33,7 @@ Cypress.Commands.add("loginAsAdmin", () => {
 });
 
 Cypress.Commands.add("loginAsGS", () => {
-  cy.get("[data-test='txt-username']").type("mygeneralsupport");
+  cy.get("[data-test='txt-username']").type("mygeneral");
   cy.get("[data-test='txt-password']").type("123456");
   cy.get("[data-test='select-role']")
     .click()
@@ -59,7 +59,7 @@ Cypress.Commands.add("loginAsAccounting", () => {
 });
 
 Cypress.Commands.add("loginAsCustomer", () => {
-  cy.get("[data-test='txt-username']").type("mycustomer3");
+  cy.get("[data-test='txt-username']").type("myuser");
   cy.get("[data-test='txt-password']").type("123456");
   cy.get("[data-test='btn-submit']").click();
   cy.findByRole("heading", { name: /daftar payment request/i }).should(
