@@ -85,7 +85,9 @@ export default function GeneralSupport({ paymentData = [], role }) {
                     {dateAndTime(row.tanggal_request)}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {dateOnly(row.tanggal_pembayaran)}
+                    {Boolean(row.tanggal_pembayaran)
+                      ? dateOnly(row.tanggal_pembayaran)
+                      : dateOnly(row.tanggal_request)}
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <Chip
