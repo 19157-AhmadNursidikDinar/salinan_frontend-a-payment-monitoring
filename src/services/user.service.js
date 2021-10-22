@@ -29,16 +29,16 @@ class UserService {
     }
   }
 
-    async getAllUser() {
+  async getAllUser(page = 1) {
     try {
-      const response = await axios.get(apiUrl, {
-        headers: authHeader()
+      const response = await axios.get(apiUrl + `?page=${page}&size=10`, {
+        headers: authHeader(),
       });
       if (response.data && response.data.data.length > 0) {
-        return response.data
+        return response.data;
       }
     } catch (error) {
-      return { error }
+      return { error };
     }
   }
 }

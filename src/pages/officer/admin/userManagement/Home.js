@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import TextField from "@material-ui/core/TextField";
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from "@material-ui/icons/Add";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import ContentContainer from "../../../../components/ContentContainer";
 import Table from "@material-ui/core/Table";
@@ -17,16 +17,16 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableSkeleton from "../../../../components/table/payment/TableSkeleton";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from "@material-ui/icons/Close";
 import TablePaginationActions from "../../../../components/table/payment/TablePagination";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ColorsTheme from "../../../../assets/colors";
 import Grid from "@material-ui/core/Grid";
-import Alert from '@material-ui/lab/Alert';
+import Alert from "@material-ui/lab/Alert";
 
-import UserService from '../../../../services/user.service'
+import UserService from "../../../../services/user.service";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(4),
   },
   buttonMargin: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   button: {
     backgroundColor: ColorsTheme.dodgerBlue,
@@ -51,12 +51,12 @@ const useStyles = makeStyles((theme) => ({
   },
   messageError: {
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   actionComponent: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-  }
+  },
 }));
 
 const StylingTableCell = withStyles(() => ({
@@ -81,7 +81,11 @@ const StylingTableRow = withStyles((theme) => ({
 export default function Home(props) {
   const classes = useStyles();
   const [paging, setPaging] = useState(0);
-  const [flashMessage, setFlashMessage] = useState({ success: false, message: '' });
+  const [totalData, setTotalData] = useState(0);
+  const [flashMessage, setFlashMessage] = useState({
+    success: false,
+    message: "",
+  });
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState();
@@ -89,34 +93,36 @@ export default function Home(props) {
 
   const handleChangePage = (event, newPaging) => {
     setPaging(newPaging);
+    fetchData(newPaging + 1);
   };
 
-  const fetchData = async () => {
+  const fetchData = async (page = 1) => {
     setIsLoading(true);
-    const result = await UserService.getAllUser()
+    const result = await UserService.getAllUser(page);
     setIsLoading(false);
     if (!Boolean(result.error)) {
-      setUsers(result.data)
+      setUsers(result.data);
+      setTotalData(result.totalData);
       if (Boolean(result.data)) {
         setErrorMsg("");
       } else {
         setErrorMsg("data not found");
       }
     } else {
-      setUsers([])
-      setErrorMsg(result.error.response.data.msg)
+      setUsers([]);
+      setErrorMsg(result.error.response.data.msg);
     }
-  }
+  };
 
   useEffect(() => {
     if (props.location.state) {
-      setFlashMessage(props.location.state)
+      setFlashMessage(props.location.state);
     }
-  }, [props.location.state])
+  }, [props.location.state]);
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   function PaperListUser(props) {
     return (
@@ -127,10 +133,14 @@ export default function Home(props) {
           justifyContent="space-between"
           alignItems="center"
         >
-
-          <Link to="/add-user"
-            className={classes.actionComponent}>
-            <Button fullWidth className={classes.button} variant="contained" color="primary" startIcon={<AddIcon />}>
+          <Link to="/add-user" className={classes.actionComponent}>
+            <Button
+              fullWidth
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+            >
               Add Account
             </Button>
           </Link>
@@ -151,7 +161,7 @@ export default function Home(props) {
           />
         </Grid>
 
-        <Collapse in={flashMessage.success} >
+        <Collapse in={flashMessage.success}>
           <Alert
             className={classes.alert}
             action={
@@ -160,7 +170,7 @@ export default function Home(props) {
                 color="inherit"
                 size="small"
                 onClick={() => {
-                  setFlashMessage({ success: false, message: '' });
+                  setFlashMessage({ success: false, message: "" });
                 }}
               >
                 <CloseIcon fontSize="inherit" />
@@ -170,7 +180,7 @@ export default function Home(props) {
             {flashMessage.message}
           </Alert>
         </Collapse>
-        <TableContainer component={Paper} >
+        <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="custom pagination table">
             <TableHead>
               <TableRow>
@@ -182,15 +192,11 @@ export default function Home(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? users.slice(
-                  paging * rowsPerPage,
-                  paging * rowsPerPage + rowsPerPage
-                )
-                : users
-              ).map((user, index) => (
+              {users.map((user, index) => (
                 <StylingTableRow key={index + 1}>
-                  <StylingTableCell width="10%">{paging * rowsPerPage + index + 1}</StylingTableCell>
+                  <StylingTableCell width="10%">
+                    {paging * rowsPerPage + index + 1}
+                  </StylingTableCell>
                   <StylingTableCell>{user.fullname}</StylingTableCell>
                   <StylingTableCell>{user.username}</StylingTableCell>
                   <StylingTableCell>{user.role_name}</StylingTableCell>
@@ -203,7 +209,7 @@ export default function Home(props) {
                 <TablePagination
                   rowsPerPageOptions={[]}
                   colSpan={5}
-                  count={users.length}
+                  count={totalData}
                   rowsPerPage={rowsPerPage}
                   page={paging}
                   SelectProps={{
@@ -218,7 +224,6 @@ export default function Home(props) {
           </Table>
         </TableContainer>
       </Paper>
-
     );
   }
 
@@ -236,11 +241,12 @@ export default function Home(props) {
       </div>
 
       {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
-      {isLoading ? (
+      <div style={{ display: isLoading ? "block" : "none" }}>
         <TableSkeleton />
-      ) : (
+      </div>
+      <div style={{ display: isLoading ? "none" : "block" }}>
         <PaperListUser />
-      )}
+      </div>
     </ContentContainer>
   );
 }
