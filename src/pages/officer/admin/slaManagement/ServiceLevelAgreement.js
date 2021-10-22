@@ -102,7 +102,17 @@ export default function ServiceLevelAgreement(props) {
 
         setIsLoading(false);
         if (!Boolean(result.error)) {
-            setSla(result.data)
+
+            const filterSla = result.data.reduce((acc, current) => {
+                const x = acc.find(item => item.branch_name === current.branch_name);
+                if (!x) {
+                    return acc.concat([current]);
+                } else {
+                    return acc.filter((item) => item.capacity > 0);;
+                }
+            }, []);
+
+            setSla(filterSla)
             if (Boolean(result.data)) {
                 setErrorMsg("");
             } else {
