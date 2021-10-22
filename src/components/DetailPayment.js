@@ -68,6 +68,10 @@ export default function DetailPayment({ paymentDetail, children }) {
             <Table className={classes.table} aria-label="simple table" size='small'>
                 <TableBody>
                     <MTableRow
+                        label="Kode Booking"
+                        value={paymentDetail.kode_booking || ""}
+                    />
+                    <MTableRow
                         label="Diminta Oleh"
                         value={paymentDetail.customer_name || ""}
                     />
