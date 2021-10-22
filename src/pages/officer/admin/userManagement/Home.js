@@ -144,7 +144,7 @@ export default function Home(props) {
               Add Account
             </Button>
           </Link>
-          <TextField
+          {/* <TextField
             className={classes.actionComponent}
             id="txtSearch"
             type="text"
@@ -158,7 +158,7 @@ export default function Home(props) {
                 </InputAdornment>
               ),
             }}
-          />
+          /> */}
         </Grid>
 
         <Collapse in={flashMessage.success}>

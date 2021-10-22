@@ -152,7 +152,7 @@ export default function BranchOfficeList(props) {
                             Add Branch
                         </Button>
                     </Link>
-                    <TextField
+                    {/* <TextField
                         className={classes.actionComponent}
                         id="txtSearch"
                         type="text"
@@ -166,7 +166,7 @@ export default function BranchOfficeList(props) {
                                 </InputAdornment>
                             ),
                         }}
-                    />
+                    /> */}
                 </Grid>
 
 
