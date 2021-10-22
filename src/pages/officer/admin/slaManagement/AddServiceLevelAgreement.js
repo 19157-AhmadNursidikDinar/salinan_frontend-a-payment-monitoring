@@ -15,6 +15,10 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 import ArrowBackIosRounded from "@material-ui/icons/ArrowBackIosRounded";
+import Collapse from "@material-ui/core/Collapse";
+import CloseIcon from '@material-ui/icons/Close';
+import Alert from '@material-ui/lab/Alert';
+import IconButton from "@material-ui/core/IconButton";
 
 
 import { Link } from "react-router-dom";
@@ -49,12 +53,15 @@ const useTheStyle = makeStyles((theme) => ({
         marginTop: 30,
         marginLeft: theme.spacing(2),
         float: 'left',
+    }, 
+    alert: {
+        marginBottom: theme.spacing(2)
     },
 }));
 
 export function FormAddService(props) {
 
-    const { dataBranch } = props
+    const { dataBranch, setOpen } = props
     const classes = useTheStyle();
 
     const validationSchema = Yup.object().shape({
@@ -86,13 +93,14 @@ export function FormAddService(props) {
         const result = await SlaService.getRecomendSLA({ branch_id});
         console.log(branch_id)
         if (!Boolean(result.error)) {
-            console.log(result);
+            setOpen(false)
             formik.setValues({
                 branch_id: branch_id,
                 capacity: "",
                 recomendation: result.recomendation
             });
         } else {
+            setOpen(true)
             formik.setValues({
                 branch_id: branch_id,
                 capacity: "",
@@ -221,6 +229,8 @@ export function FormAddService(props) {
 export default function AddServiceLevelAgreement(props) {
 
     const [dataBranch, setDataBranch] = useState([]);
+    const classes = useTheStyle();
+    const [open, setOpen] = useState(false);
 
     async function GetBranchID() {
         const result = await branchService.getAllBranch();
@@ -247,7 +257,25 @@ export default function AddServiceLevelAgreement(props) {
             >
                 <Typography variant="h4">Tambah Service Level Agreement</Typography>
             </div>
-            <FormAddService history={props.history} dataBranch={dataBranch} />
+            <Collapse in={open} className={classes.alert}>
+                <Alert severity="error"
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setOpen(false);
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                >
+                    SLA cannot be created, because there are still incomplete user data!
+                </Alert>
+            </Collapse>
+            <FormAddService history={props.history} dataBranch={dataBranch} setOpen={setOpen} />
         </ContentContainer>
     )
 }
