@@ -20,7 +20,18 @@ class SlaService{
         }
     }
 
-    async 
+    async getSLAByBranch(){
+        try {
+            const response = await axios.get(apiUrl + "/branch", {
+                headers: authHeader()
+            })
+            if (response.data) {
+                return response.data
+            }
+        } catch (error) {
+            return { error }
+        }
+    }
 
     async createSLA({ branch_id, capacity}){
         try {

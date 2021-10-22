@@ -1,9 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import ContentContainer from "../../../components/ContentContainer";
-import BranchOffice from "../../../components/BranchOffice"
+import SlaBranchOffice from "../../../components/SlaBranchOffice";
+import Alert from '@material-ui/lab/Alert';
+import DetailSkeleton from "../../../components/DetailSkeleton";
+
+import SlaService from "../../../services/sla.service";
 
 export default function ServiceLevelAgreementGeneralSupport() {
+
+
+    const [sla, setSla] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [errorMsg, setErrorMsg] = useState();
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        const result = await SlaService.getSLAByBranch()
+
+        setIsLoading(false);
+        if (!Boolean(result.error)) {
+            setSla(result.data)
+            if (Boolean(result.data)) {
+                setErrorMsg("");
+            } else {
+                setErrorMsg("data not found");
+            }
+        } else {
+            setSla([])
+            setErrorMsg(result.error.response.data.msg)
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
     return (
         <div>
             <ContentContainer role="generalSupport" selectedMenu="Service Lvl Agreement">
@@ -17,8 +49,12 @@ export default function ServiceLevelAgreementGeneralSupport() {
                 >
                     <Typography variant="h4">Service Level Agreement</Typography>
                 </div>
-
-                <BranchOffice />
+                {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
+                {isLoading ? (
+                    <DetailSkeleton />
+                ) : (
+                    <SlaBranchOffice sla={sla} />
+                )}
             </ContentContainer>
         </div>
     )

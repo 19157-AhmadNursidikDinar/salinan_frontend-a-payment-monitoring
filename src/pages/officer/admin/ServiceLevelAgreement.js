@@ -13,11 +13,8 @@ import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
-import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
@@ -132,7 +129,7 @@ export default function ServiceLevelAgreement(props) {
         fetchData()
     }, [])
 
-    function PaperServiceLevelAgreement(props){
+    function PaperServiceLevelAgreement(props) {
         return (
             <Paper className={classes.PaperSize} elevation={4}>
 

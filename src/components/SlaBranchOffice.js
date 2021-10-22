@@ -23,7 +23,7 @@ const TableCell = withStyles((theme) => ({
     },
 }))(MuiTableCell);
 
-export default function BranchOffice() {
+export default function SlaBranchOffice({ sla }) {
     const classes = useStyles();
 
     return (
@@ -37,12 +37,17 @@ export default function BranchOffice() {
                                     <TableRow>
                                         <TableCell>Nama Kantor Cabang</TableCell>
                                         <TableCell>:</TableCell>
-                                        <TableCell>Kuningan</TableCell>
+                                        <TableCell>{sla.branch_name}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell>Jumlah Request Perhari</TableCell>
                                         <TableCell>:</TableCell>
-                                        <TableCell>100</TableCell>
+                                        <TableCell>{sla.capacity}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Rekomendasi Request Perhari</TableCell>
+                                        <TableCell>:</TableCell>
+                                        <TableCell>{sla.recomendation}</TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
