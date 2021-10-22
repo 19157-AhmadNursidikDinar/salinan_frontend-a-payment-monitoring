@@ -2,23 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Alert } from "@material-ui/lab";
+import Alert from "@material-ui/lab/Alert";
 import PaymentService from "../../../services/payment.service";
 import DetailSkeleton from "../../../components/DetailSkeleton";
+
 // Material ui core
-import {
-  Typography,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Container
-} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Container from "@material-ui/core/Container";
+
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import ContentContainer from "../../../components/ContentContainer";
 import useStyles from "../../../styles/customer/HasilFormPayment";
-
 
 import DetailPayment from "../../../components/DetailPayment";
 import PaymentStatusSelector from "../../../components/PaymentStatusSelector";
@@ -129,7 +128,7 @@ function PaymentRequestDetailGeneralSupport(props) {
                   startIcon={<ArrowBackIosRoundedIcon />}
                 >
                   Back
-              </Button>
+                </Button>
                 {paymentDetail.stage !== 'Rejected By General Support' &&
                   <Button size="small"
                     variant="contained"

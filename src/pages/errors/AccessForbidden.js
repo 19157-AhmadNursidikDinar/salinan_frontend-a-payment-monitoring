@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 
 //style
 import Logo from "../../assets/images/logoPM.png";
