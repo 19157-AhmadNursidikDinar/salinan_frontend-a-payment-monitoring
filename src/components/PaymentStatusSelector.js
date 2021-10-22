@@ -1,13 +1,11 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 // Material ui core
-import {
-    FormControl,
-    MenuItem,
-    Select,
-    TextField,
-    TableRow,
-    FormHelperText
-} from "@material-ui/core";
+import FormControl from "@material-ui/core/FormControl";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
+import TableRow from "@material-ui/core/TableRow";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 import MuiTableCell from "@material-ui/core/TableCell";
 import { withStyles } from "@material-ui/core/styles";

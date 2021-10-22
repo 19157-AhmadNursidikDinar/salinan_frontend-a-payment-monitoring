@@ -1,13 +1,13 @@
 import React from "react";
+
 //@material-ui/core
-import {
-    Container,
-    TextField,
-    Button,
-    Grid,
-    Typography,
-    Paper,
-} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+
 import { makeStyles } from '@material-ui/core/styles';
 //@material-ui/icons
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
