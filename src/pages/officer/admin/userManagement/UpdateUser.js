@@ -22,7 +22,6 @@ import { Alert } from "@material-ui/lab";
 import { Link, useParams } from "react-router-dom";
 import UserService from "../../../../services/user.service";
 import branchService from "../../../../services/branch.service";
-import { branchAdapter, roleAdapter } from "../../../../utils/user-mgmt";
 import DetailSkeleton from "../../../../components/DetailSkeleton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
