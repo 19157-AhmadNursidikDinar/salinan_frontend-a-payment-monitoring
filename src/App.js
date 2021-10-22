@@ -27,7 +27,6 @@ import ServiceLevelAgreementCustomer from './pages/customer/ServiceLevelAgreemen
 import ServiceLevelAgreementAccounting from './pages/officer/accounting/ServiceLevelAgreement';
 import ServiceLevelAgreementGeneralSupport from './pages/officer/generalSupport/ServiceLevelAgreement';
 
-
 function App() {
   return (
     <Router>
@@ -54,7 +53,7 @@ function App() {
         />
         <PostloginRoutes
           exact
-          path="/update-user"
+          path="/update-user/:id"
           component={AdminUpdateUser}
           role="admin"
         />
@@ -72,7 +71,7 @@ function App() {
         />
         <PostloginRoutes
           exact
-          path="/detail-user"
+          path="/detail-user/:id"
           component={AdminDetailUser}
           role="admin"
         />
