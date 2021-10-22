@@ -14,15 +14,17 @@ describe("Positive case payment request", () => {
     cy.get("[data-test='txt-amount']").should("be.visible");
     cy.get("[data-test='txt-account_name']").should("be.visible");
     cy.get("[data-test='txt-account_number']").should("be.visible");
+    cy.get("[data-test='txt-customer_phone']").should("be.visible");
     cy.get("[data-test='btn-submit']").should("be.visible");
   });
 
   it("customer fill payment request form", () => {
-    cy.get("[data-test='txt-customer_name']").type("mycustomer3");
+    cy.get("[data-test='txt-customer_name']").type("myuser");
     cy.get("[data-test='select-request']").click().first().click();
     cy.get("[data-test='txt-amount']").type("2000000");
     cy.get("[data-test='txt-account_name']").type("recipient1");
     cy.get("[data-test='txt-account_number']").type("123456789");
+    cy.get("[data-test='txt-customer_phone']").type("1234567890");
     cy.get("[data-test='btn-submit']").click();
     cy.findByText(/payment request berhasil dibuat!/i).should("be.visible");
   });
@@ -47,6 +49,7 @@ describe("Negative case payment request", () => {
     cy.get("[data-test='txt-amount']").type("2000000");
     cy.get("[data-test='txt-account_name']").type("recipient1");
     cy.get("[data-test='txt-account_number']").type("123456789");
+    cy.get("[data-test='txt-customer_phone']").type("1234567890");
     cy.get("[data-test='btn-submit']").click();
     cy.findByText(/input required!/i).should("be.visible");
     cy.get("[data-test='txt-amount']").clear();
@@ -55,9 +58,10 @@ describe("Negative case payment request", () => {
   });
 
   it("customer need to fill payment amount", () => {
-    cy.get("[data-test='txt-customer_name']").type("mycustomer3");
+    cy.get("[data-test='txt-customer_name']").type("myuser");
     cy.get("[data-test='txt-account_name']").type("recipient1");
     cy.get("[data-test='txt-account_number']").type("123456789");
+    cy.get("[data-test='txt-customer_phone']").type("1234567890");
     cy.get("[data-test='btn-submit']").click();
     cy.findByText(/input required!/i).should("be.visible");
     cy.get("[data-test='txt-customer_name']").clear();
@@ -66,9 +70,10 @@ describe("Negative case payment request", () => {
   });
 
   it("customer need to fill recipient name", () => {
-    cy.get("[data-test='txt-customer_name']").type("mycustomer3");
+    cy.get("[data-test='txt-customer_name']").type("myuser");
     cy.get("[data-test='txt-amount']").type("2000000");
     cy.get("[data-test='txt-account_number']").type("123456789");
+    cy.get("[data-test='txt-customer_phone']").type("1234567890");
     cy.get("[data-test='btn-submit']").click();
     cy.findByText(/input required!/i).should("be.visible");
     cy.get("[data-test='txt-customer_name']").clear();
@@ -77,9 +82,22 @@ describe("Negative case payment request", () => {
   });
 
   it("customer need to fill account number", () => {
-    cy.get("[data-test='txt-customer_name']").type("mycustomer3");
+    cy.get("[data-test='txt-customer_name']").type("myuser");
     cy.get("[data-test='txt-amount']").type("2000000");
     cy.get("[data-test='txt-account_name']").type("recipient1");
+    cy.get("[data-test='txt-customer_phone']").type("1234567890");
+    cy.get("[data-test='btn-submit']").click();
+    cy.findByText(/input required!/i).should("be.visible");
+    cy.get("[data-test='txt-customer_name']").clear();
+    cy.get("[data-test='txt-amount']").clear();
+    cy.get("[data-test='txt-account_name']").clear();
+  });
+
+  it("customer need to fill phone number", () => {
+    cy.get("[data-test='txt-customer_name']").type("myuser");
+    cy.get("[data-test='txt-amount']").type("2000000");
+    cy.get("[data-test='txt-account_name']").type("recipient1");
+    cy.get("[data-test='txt-account_number']").type("123456789");
     cy.get("[data-test='btn-submit']").click();
     cy.findByText(/input required!/i).should("be.visible");
     cy.get("[data-test='txt-customer_name']").clear();
