@@ -18,7 +18,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { Link } from "react-router-dom";
 
 import HomeIcon from "@material-ui/icons/Home";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaSuitcase } from "react-icons/fa";
 
 import logo from "../assets/images/logo.svg";
 import ColorsTheme from "../assets/colors";
@@ -40,6 +40,11 @@ const menuItems = {
       icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
       link: "/add-payment-request",
     },
+    {
+      label: "Service Lvl Agreement",
+      icon: <FaSuitcase style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
+      link: "/service-level-agreement-customer",
+    },
   ],
   admin: [
     { label: "Beranda", icon: <HomeIcon />, link: "/admin" },
@@ -50,13 +55,25 @@ const menuItems = {
     },
     {
       label: "Service Lvl Agreement",
-      icon: <FaEdit style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
+      icon: <FaSuitcase style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
       link: "/service-level-agreement",
     },
   ],
-  accounting: [{ label: "Beranda", icon: <HomeIcon />, link: "/accounting" }],
+  accounting: [
+    { label: "Beranda", icon: <HomeIcon />, link: "/accounting" },
+    {
+      label: "Service Lvl Agreement",
+      icon: <FaSuitcase style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
+      link: "/service-level-agreement-accounting",
+    },
+  ],
   generalSupport: [
     { label: "Beranda", icon: <HomeIcon />, link: "/general-support" },
+    {
+      label: "Service Lvl Agreement",
+      icon: <FaSuitcase style={{ fontSize: "1.4em", marginLeft: "0.2em" }} />,
+      link: "/service-level-agreement-gs",
+    },
   ],
 };
 

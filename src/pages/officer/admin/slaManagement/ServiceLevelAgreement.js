@@ -1,39 +1,32 @@
 import React, { useEffect, useState } from "react";
-//Re-using component
-import ContentContainer from "../../../../components/ContentContainer";
-import TablePaginationActions from "../../../../components/table/payment/TablePagination";
-//import from @material-ui/icons
-import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
-import CloseIcon from '@material-ui/icons/Close';
-import AddIcon from '@material-ui/icons/Add';
-
-//import from @material-ui/core
-import Button from "@material-ui/core/Button";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
-import TableFooter from "@material-ui/core/TableFooter";
-import TablePagination from "@material-ui/core/TablePagination";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
+import ContentContainer from "../../../../components/ContentContainer";
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import TableFooter from '@material-ui/core/TableFooter';
 import Grid from "@material-ui/core/Grid";
-
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import Collapse from "@material-ui/core/Collapse";
+import CloseIcon from '@material-ui/icons/Close';
+import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ColorsTheme from "../../../../assets/colors";
+
+import TablePaginationActions from "../../../../components/table/payment/TablePagination";
 import TableSkeleton from "../../../../components/table/payment/TableSkeleton";
 
 //import api service
-import BranchService from "../../../../services/branch.service"
-
+import SlaService from "../../../../services/sla.service";
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -88,11 +81,11 @@ const StylingTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-export default function BranchOfficeList(props) {
+export default function ServiceLevelAgreement(props) {
     const classes = useStyles();
     const [pages, setPages] = useState(0);
     const [flashMessage, setFlashMessage] = useState({ success: false, message: '' });
-    const [branchs, setBranchs] = useState([]);
+    const [sla, setSla] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [errorMsg, setErrorMsg] = useState();
     const rowsPage = 10;
@@ -106,18 +99,28 @@ export default function BranchOfficeList(props) {
     const fetchData = async () => {
 
         setIsLoading(true);
-        const result = await BranchService.getAllBranch()
+        const result = await SlaService.getAllSLA()
 
         setIsLoading(false);
         if (!Boolean(result.error)) {
-            setBranchs(result.data)
+
+            const filterSla = result.data.reduce((acc, current) => {
+                const x = acc.find(item => item.branch_name === current.branch_name);
+                if (!x) {
+                    return acc.concat([current]);
+                } else {
+                    return acc.filter((item) => item.capacity > 0);;
+                }
+            }, []);
+
+            setSla(filterSla)
             if (Boolean(result.data)) {
                 setErrorMsg("");
             } else {
                 setErrorMsg("data not found");
             }
         } else {
-            setBranchs([])
+            setSla([])
             setErrorMsg(result.error.response.data.msg)
         }
     }
@@ -137,7 +140,7 @@ export default function BranchOfficeList(props) {
         fetchData()
     }, [])
 
-    function PaperListBranch(props) {
+    function PaperServiceLevelAgreement(props) {
         return (
             <Paper className={classes.PaperSize} elevation={4}>
 
@@ -147,26 +150,11 @@ export default function BranchOfficeList(props) {
                     justifyContent="space-between"
                     alignItems="center"
                 >
-                    <Link to="/add-branch" className={classes.actionComponent}>
+                    <Link to="/add-service" className={classes.actionComponent}>
                         <Button className={classes.button} variant="contained" color="primary" startIcon={<AddIcon />}>
-                            Add Branch
+                            Add Service
                         </Button>
                     </Link>
-                    <TextField
-                        className={classes.actionComponent}
-                        id="txtSearch"
-                        type="text"
-                        placeholder="Search"
-                        variant="outlined"
-                        size="small"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchOutlinedIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
                 </Grid>
 
                 <div className={classes.messageError}>
@@ -178,19 +166,36 @@ export default function BranchOfficeList(props) {
                             <TableRow>
                                 <StylingTableCell>no</StylingTableCell>
                                 <StylingTableCell>Nama Kantor Cabang</StylingTableCell>
+                                <StylingTableCell>Request Payment Perhari</StylingTableCell>
+                                <StylingTableCell>Jumlah Rekomendasi Request</StylingTableCell>
+                                <StylingTableCell>Status Rekomendasi Request</StylingTableCell>
+                                <StylingTableCell>Action</StylingTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {(rowsPage > 0
-                                ? branchs.slice(
+                                ? sla.slice(
                                     pages * rowsPage,
                                     pages * rowsPage + rowsPage
                                 )
-                                : branchs
+                                : sla
                             ).map((branch, index) => (
                                 <StylingTableRow key={index + 1}>
                                     <StylingTableCell width="10%">{pages * rowsPage + index + 1}</StylingTableCell>
-                                    <StylingTableCell>{branch.id === 1 ? "pusat" : branch.branch_name}</StylingTableCell>
+                                    <StylingTableCell>{branch.branch_name}</StylingTableCell>
+                                    <StylingTableCell>{branch.capacity}</StylingTableCell>
+                                    <StylingTableCell>{branch.recomendation}</StylingTableCell>
+                                    <StylingTableCell>{branch.same_with_recomendation}</StylingTableCell>
+                                    <StylingTableCell>
+                                        <Link to={{ pathname: `/update-service/${branch.branch_id}`, state:{
+                                            capacity: `${branch.capacity}`,
+                                            recomendation: `${branch.recomendation}`,
+                                        } }} className={classes.actionComponent}>
+                                            <Button variant="contained" color="primary" startIcon={<EditIcon />}>
+                                                Update
+                                            </Button>
+                                        </Link>
+                                    </StylingTableCell>
                                 </StylingTableRow>
                             ))}
                         </TableBody>
@@ -199,7 +204,7 @@ export default function BranchOfficeList(props) {
                                 <TablePagination
                                     rowsPerPageOptions={[]}
                                     colSpan={5}
-                                    count={branchs.length}
+                                    count={sla.length}
                                     rowsPerPage={rowsPage}
                                     page={pages}
                                     SelectProps={{
@@ -214,22 +219,20 @@ export default function BranchOfficeList(props) {
                     </Table>
                 </TableContainer>
             </Paper>
-
-        );
+        )
     }
 
     return (
-        <ContentContainer role="admin" selectedMenu="Daftar Kantor Cabang">
+        <ContentContainer role="admin" selectedMenu="Service Lvl Agreement">
             <div
                 style={{
                     display: "flex",
                     justifyContent: "center",
                     width: "100%",
                     paddingBottom: "2em",
-                }}>
-                <Typography variant="h4">
-                    Daftar Kantor Cabang
-                </Typography>
+                }}
+            >
+                <Typography variant="h4">Service Level Agreement</Typography>
             </div>
             <Collapse in={flashMessage.success} >
                 <Alert
@@ -254,7 +257,7 @@ export default function BranchOfficeList(props) {
             {isLoading ? (
                 <TableSkeleton />
             ) : (
-                <PaperListBranch />
+                <PaperServiceLevelAgreement />
             )}
         </ContentContainer>
     );
