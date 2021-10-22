@@ -41,6 +41,60 @@ class UserService {
       return { error };
     }
   }
+
+  async UpdateUser(data) {
+    const { fullname, username, id, role_id, branch_id } = data;
+    // console.log(data);
+    try {
+      const response = await axios.put(
+        apiUrl + "/update",
+        {
+          fullname,
+          username,
+          role_id,
+          id,
+          branch_id,
+        },
+        {
+          headers: authHeader(),
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return { error };
+    }
+  }
+
+  async DeleteUser(id) {
+    // console.log(data);
+    try {
+      const response = await axios.post(
+        apiUrl + "/delete",
+        {
+          id,
+        },
+        {
+          headers: authHeader(),
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return { error };
+    }
+  }
+
+  async getUserDetail(id) {
+    try {
+      const response = await axios.get(apiUrl + `/${id}`, {
+        headers: authHeader(),
+      });
+      if (Boolean(response.data)) {
+        return response.data;
+      }
+    } catch (error) {
+      return { error };
+    }
+  }
 }
 
 export default new UserService();

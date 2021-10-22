@@ -15,6 +15,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableSkeleton from "../../../../components/table/payment/TableSkeleton";
+import DeleteUserDialog from "../../../../components/dialogs/DeleteUserDialog";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -56,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
   actionComponent: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
+  },
+  alert: {
+    margin: "1em 0",
   },
 }));
 
@@ -124,6 +128,22 @@ export default function Home(props) {
     fetchData();
   }, []);
 
+  const handleDelete = async (id) => {
+    setIsLoading(true);
+    const result = await UserService.DeleteUser(id);
+    // console.log({ result });
+    if (!Boolean(result.error)) {
+      setFlashMessage({
+        success: true,
+        message: "User has been deleted",
+      });
+      fetchData();
+    } else {
+      setErrorMsg(result.error.response.data.msg);
+    }
+    setIsLoading(false);
+  };
+
   function PaperListUser(props) {
     return (
       <Paper className={classes.PaperSize} elevation={4}>
@@ -189,6 +209,7 @@ export default function Home(props) {
                 <StylingTableCell>Username</StylingTableCell>
                 <StylingTableCell>Role</StylingTableCell>
                 <StylingTableCell>Kantor Cabang</StylingTableCell>
+                <StylingTableCell style={{ width: "300px" }}></StylingTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -201,6 +222,43 @@ export default function Home(props) {
                   <StylingTableCell>{user.username}</StylingTableCell>
                   <StylingTableCell>{user.role_name}</StylingTableCell>
                   <StylingTableCell>{user.branch_name}</StylingTableCell>
+                  <StylingTableCell style={{ width: "300px" }}>
+                    <Grid
+                      container
+                      justifyContent="center"
+                      spacing={1}
+                      style={{
+                        maxWidth: "300px",
+                      }}
+                    >
+                      <Grid item>
+                        <Link to={`/detail-user/${user.id}`}>
+                          <Button size="small" variant="contained">
+                            Details
+                          </Button>
+                        </Link>
+                      </Grid>
+                      <Grid item>
+                        <Link to={`/update-user/${user.id}`}>
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="primary"
+                          >
+                            Update
+                          </Button>
+                        </Link>
+                      </Grid>
+                      <Grid item>
+                        <DeleteUserDialog
+                          username={user.username}
+                          handleConfirm={() => {
+                            handleDelete(user.id);
+                          }}
+                        />
+                      </Grid>
+                    </Grid>
+                  </StylingTableCell>
                 </StylingTableRow>
               ))}
             </TableBody>

@@ -78,7 +78,7 @@ function CreateUserResultContent({ newUserData, handleResetFormValues }) {
                     label="Role"
                     value={newUserData?.role_name || ""}
                   />
-                  {newUserData.role_id === 4 && (
+                  {newUserData.role_id !== 1 && (
                     <MTableRow
                       label="Cabang"
                       value={newUserData?.branch_name || ""}
