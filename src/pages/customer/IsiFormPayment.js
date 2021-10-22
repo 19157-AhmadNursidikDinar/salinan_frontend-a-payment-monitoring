@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import NumberFormat from "react-number-format";
 //import material-ui components
 import Button from "@material-ui/core/Button";
-//import Collapse from '@material-ui/core/Collapse';
+import Collapse from '@material-ui/core/Collapse';
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -14,29 +14,22 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import { SendRounded } from "@material-ui/icons";
 import Alert from "@material-ui/lab/Alert";
-//import datepicker components
-import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 //import custom components
 import ContentContainer from "../../components/ContentContainer";
 import PaymentResultContent from "../../components/PaymentResultContent";
 import useStyles from "../../styles/customer/IsiFormPayment";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import moment from "moment";
 //import API service
 import PaymentService from "../../services/payment.service";
 import CountedText from "angka-menjadi-terbilang";
 
 const initValue = {
   customer_name: "",
-  payment_date: new Date(),
+  customer_phone: "",
+  request_date: new Date(),
   request: "daily-needs",
-  // detail_request: "",
+  request_other: "",
   amount: "",
   amount_counted: "",
   account_name: "",
@@ -58,25 +51,47 @@ function NumberFormatIDR(props) {
           },
         });
       }}
-      thousandSeparator
+      thousandSeparator="."
+      decimalSeparator=","
       isNumericString
-      prefix="Rp."
+      prefix="Rp "
+      suffix=",00"
+    />
+  );
+}
+
+function NumberFormatPhone(props) {
+  const { inputRef, onChange, ...others } = props;
+  return (
+    <NumberFormat
+      {...others}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      format="+62 ### #### #####"
+      allowEmptyFormatting={true}
     />
   );
 }
 
 const validationSchema = Yup.object().shape({
   customer_name: Yup.string().required("Input required!"),
-  payment_date: Yup.string().required("Input required!"),
+  customer_phone: Yup.string().max(12, "Must be 12 digits or less"),
   request: Yup.string().required("Input required!"),
-  amount: Yup.string().required("Input required!"),
+  amount: Yup.number().required("Input required!"),
   account_name: Yup.string().required("Input required!"),
   account_number: Yup.string().required("Input required!"),
+  request_other: Yup.string().when("request", {
+    is: "others",
+    then: Yup.string().required("Input required!")
+  }),
 });
-
-const DisabledTextFieldComponent = (props) => {
-  return <TextField {...props} inputProps={{ readOnly: true }} />;
-};
 
 export function FormRequest({ formValues, handleSubmit }) {
   const classes = useStyles();
@@ -97,9 +112,10 @@ export function FormRequest({ formValues, handleSubmit }) {
     validateOnChange: false,
     onSubmit: async ({
       customer_name,
-      payment_date,
+      customer_phone,
+      request_date,
       request,
-      // detail_request,
+      request_other,
       amount,
       amount_counted,
       account_name,
@@ -107,38 +123,45 @@ export function FormRequest({ formValues, handleSubmit }) {
     }) => {
       console.log({
         customer_name,
-        payment_date,
+        customer_phone,
+        request_date,
         request,
-        // detail_request,
+        request_other,
         amount,
         amount_counted,
         account_name,
         account_number,
       });
-      // if (request === "others") {
-      //   request = detail_request
-      // }
+      if (request !== "others") {
+        request_other = ""
+      }
       if (amount > 0) {
         amount_counted = amount_counted = CapitalizeWords(
           CountedText(formik.values.amount) + " rupiah"
         );
       }
+      if (customer_phone !== "") {
+        customer_phone = "62" + customer_phone;
+      }
       const result = await PaymentService.insertPayment({
         customer_name,
+        customer_phone,
         request,
+        request_other,
         amount,
         amount_counted,
         account_number,
         account_name,
-        payment_date,
       });
 
       if (!Boolean(result.error)) {
         setErrorMsg("");
         handleSubmit({
           customer_name,
-          payment_date: moment(payment_date).format("YYYY-MM-DD"),
+          customer_phone,
+          request_date,
           request,
+          request_other,
           amount,
           amount_counted,
           account_name,
@@ -152,13 +175,11 @@ export function FormRequest({ formValues, handleSubmit }) {
 
   return (
     <Paper className={classes.PaperSize} elevation={4}>
-      {/* Error Message */}
       {Boolean(errorMsg) && (
         <Alert severity="error" className={classes.ResultAlert}>
           {errorMsg}
         </Alert>
       )}
-      {/* ------------- */}
       <Container>
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={3}>
@@ -166,7 +187,7 @@ export function FormRequest({ formValues, handleSubmit }) {
               <TextField
                 id="customer_name"
                 name="customer_name"
-                label="Nama Customer"
+                label="Nama Customer *"
                 variant="outlined"
                 fullWidth
                 value={formik.values.customer_name}
@@ -181,9 +202,30 @@ export function FormRequest({ formValues, handleSubmit }) {
               />
             </Grid>
             <Grid item xs={12}>
+              <TextField
+                id="customer_phone"
+                name="customer_phone"
+                label="No. Telepon Customer"
+                variant="outlined"
+                fullWidth
+                InputProps={{
+                  inputComponent: NumberFormatPhone,
+                }}
+                value={formik.values.customer_phone}
+                onChange={formik.handleChange}
+                disabled={formik.isSubmitting}
+                error={
+                  Boolean(formik.errors.customer_phone) &&
+                  formik.touched.customer_phone
+                }
+                helperText={formik.errors.customer_phone}
+                data-test="txt-customer_phone"
+              />
+            </Grid>
+            <Grid item xs={12}>
               <FormControl variant="outlined" fullWidth>
                 <InputLabel htmlFor="outlined-age-native-simple">
-                  Keperluan Payment
+                  Keperluan Payment *
                 </InputLabel>
                 <Select
                   native
@@ -193,65 +235,40 @@ export function FormRequest({ formValues, handleSubmit }) {
                   onChange={formik.handleChange}
                   data-test="select-request"
                 >
-                  <option value="daily-needs">daily-needs</option>
-                  <option value="loan-repayment">loan-repayment</option>
-                  <option value="education-fund">education-fund</option>
-                  <option value="travel-fund">travel-fund</option>
-                  <option value="bill-payment">bill-payment</option>
-                  <option value="others">others</option>
+                  <option value="daily-needs">Kebutuhan Sehari-Hari</option>
+                  <option value="loan-repayment">Membayar Cicilan</option>
+                  <option value="education-fund">Keperluan Pendidikan</option>
+                  <option value="travel-fund">Keperluan Wisata</option>
+                  <option value="bill-payment">Pembayaran Tagihan</option>
+                  <option value="others">Keperluan Lainnya</option>
                 </Select>
-                {/* !Field Detail_Request */}
-                {/* <Grid item xs={12}>
+                <Grid item xs={12}>
                   <Collapse in={formik.values.request === "others"}>
                     <TextField
-                      id="detail_request"
+                      id="request_other"
                       className={classes.RequestDetail}
-                      label="Detail Keperluan Payment"
+                      label="Detail Keperluan Payment *"
                       variant="outlined"
                       fullWidth
-                      value={formik.values.detail_request}
+                      value={formik.values.request_other}
                       onChange={formik.handleChange}
                       disabled={formik.isSubmitting}
                       error={
-                        Boolean(formik.errors.request) &&
-                        formik.touched.request
+                        Boolean(formik.errors.request_other) &&
+                        formik.touched.request_other
                       }
-                      helperText={formik.errors.request}
+                      helperText={formik.errors.request_other}
                       data-test="txt-detail-request"
                     />
                   </Collapse>
-                </Grid> */}
+                </Grid>
               </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  id="date-picker-dialog"
-                  label="Tanggal Pembayaran"
-                  inputVariant="outlined"
-                  format="yyyy-MM-dd"
-                  value={formik.values.date}
-                  onChange={(value) => formik.setFieldValue("date", value)}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
-                  fullWidth
-                  disabled={formik.isSubmitting}
-                  error={
-                    Boolean(formik.errors.payment_date) &&
-                    formik.touched.payment_date
-                  }
-                  helperText={formik.errors.payment_date}
-                  TextFieldComponent={DisabledTextFieldComponent}
-                  data-test="txt-payment_date"
-                />
-              </MuiPickersUtilsProvider>
             </Grid>
             <Grid item xs={12}>
               <TextField
                 id="amount"
                 name="amount"
-                label="Angka Nominal"
+                label="Angka Nominal *"
                 variant="outlined"
                 InputProps={{
                   inputComponent: NumberFormatIDR,
@@ -262,6 +279,7 @@ export function FormRequest({ formValues, handleSubmit }) {
                 disabled={formik.isSubmitting}
                 error={Boolean(formik.errors.amount) && formik.touched.amount}
                 helperText={formik.errors.amount}
+                autoComplete="off"
                 data-test="txt-amount"
               />
             </Grid>
@@ -278,8 +296,8 @@ export function FormRequest({ formValues, handleSubmit }) {
                 value={
                   Boolean(formik.values.amount)
                     ? CapitalizeWords(
-                        CountedText(formik.values.amount) + " rupiah"
-                      )
+                      CountedText(formik.values.amount) + " rupiah"
+                    )
                     : ""
                 }
                 onChange={formik.handleChange}
@@ -296,7 +314,7 @@ export function FormRequest({ formValues, handleSubmit }) {
               <TextField
                 id="account_name"
                 name="account_name"
-                label="Nama Penerima"
+                label="Nama Penerima *"
                 variant="outlined"
                 fullWidth
                 value={formik.values.account_name}
@@ -314,7 +332,7 @@ export function FormRequest({ formValues, handleSubmit }) {
               <TextField
                 id="account_number"
                 name="account_number"
-                label="No. Rekening Penerima"
+                label="No. Rekening Penerima *"
                 variant="outlined"
                 fullWidth
                 value={formik.values.account_number}

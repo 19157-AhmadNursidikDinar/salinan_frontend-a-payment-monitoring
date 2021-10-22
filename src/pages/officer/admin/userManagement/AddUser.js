@@ -14,9 +14,9 @@ import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import Skeleton from "@material-ui/lab/Skeleton";
+import { makeStyles } from "@material-ui/core/styles";
 
 //Material-Ui Icons
 import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
@@ -29,6 +29,7 @@ import ContentContainer from "../../../../components/ContentContainer";
 import CreateUserResultContent from "../../../../components/CreateUserResultContent";
 import UserService from "../../../../services/user.service";
 import branchService from "../../../../services/branch.service";
+import { branchAdapter, roleAdapter } from "../../../../utils/user-mgmt";
 
 //PAGE STYLE
 const useMyStyles = makeStyles((theme) => ({
@@ -90,7 +91,7 @@ const validationSchema = Yup.object().shape({
     .required("Input required"),
   role_id: Yup.number().required("Input required"),
   branch_id: Yup.number().when("role_id", {
-    is: 4,
+    is: (role_id) => role_id !== 1,
     then: Yup.number().required("Input required"),
   }),
 });
@@ -123,9 +124,9 @@ function FormAddUser({ dataBranch, formValues, handlePostSubmit }) {
         username,
         password,
         role_id,
-        branch_id: role_id === 4 ? branch_id : 1,
+        branch_id: role_id !== 1 ? branch_id : 1,
       };
-      //   console.log({ dataUser });
+      // console.log({ dataUser });
       const result = await UserService.CreateNewUser(dataUser);
       // console.log({ result });
       if (!Boolean(result.error)) {
@@ -210,7 +211,9 @@ function FormAddUser({ dataBranch, formValues, handlePostSubmit }) {
               item
               xs={12}
               style={{
-                display: formik.values.role_id === 4 ? "block" : "none",
+                display: [2, 3, 4].includes(formik.values.role_id)
+                  ? "block"
+                  : "none",
               }}
             >
               <FormControl
@@ -376,30 +379,6 @@ export default function AddUser() {
     setFormValues(values);
   };
 
-  const roleAdapter = (role_id) => {
-    switch (role_id) {
-      case 1:
-        return "Admin";
-      case 2:
-        return "General Support";
-      case 3:
-        return "Accounting";
-      case 4:
-        return "User";
-      default:
-        return undefined;
-    }
-  };
-
-  const branchAdapter = (branch_id) => {
-    let result = "";
-    const selectedBranch = dataBranch.find((branch) => branch.id === branch_id);
-    if (selectedBranch) {
-      result = selectedBranch.branch_name;
-    }
-    return result;
-  };
-
   async function GetBranchID() {
     setIsLoading(true);
     const result = await branchService.getAllBranch();
@@ -420,7 +399,7 @@ export default function AddUser() {
   const convertUserData = (formValues) => {
     let result = formValues;
     const role_name = roleAdapter(formValues.role_id);
-    const branch_name = branchAdapter(formValues.branch_id);
+    const branch_name = branchAdapter(dataBranch, formValues.branch_id);
     result = { ...result, role_name, branch_name };
     return result;
   };

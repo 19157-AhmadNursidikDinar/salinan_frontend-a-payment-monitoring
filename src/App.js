@@ -12,16 +12,19 @@ import AdminDetailUser from "./pages/officer/admin/userManagement/DetailUser";
 import AdminAddBranch from "./pages/officer/admin/branchManagement/AddBranch";
 import AdminUpdateUser from "./pages/officer/admin/userManagement/UpdateUser";
 import GeneralSupportHome from "./pages/officer/generalSupport/Home";
-import ServiceLevelAgreement from "./pages/officer/admin/ServiceLevelAgreement";
+import ServiceLevelAgreement from "./pages/officer/admin/slaManagement/ServiceLevelAgreement";
+import AddServiceLevelAgreement from "./pages/officer/admin/slaManagement/AddServiceLevelAgreement";
+import UpdateServiceLevelAgreement from "./pages/officer/admin/slaManagement/UpdateServiceLevelAgreement";
 import PaymentRequestDetailGeneralSupport from "./pages/officer/generalSupport/PaymentRequestDetail";
 import PaymentRequestDetailAccounting from "./pages/officer/accounting/PaymentRequestDetail";
 import PaymentRequestDetailCustomer from "./pages/customer/HasilFormPayment";
 import BranchOfficeList from "./pages/officer/admin/branchManagement/BranchOfficeList";
 import PageNotFound from "./pages/errors/PageNotFound";
-import Backdoor from "./pages/backdoor/Backdoor";
 import PreloginRoutes from "./components/protectedRoutes/PreloginRoutes";
 import PostloginRoutes from "./components/protectedRoutes/PostloginRoutes";
-
+import ServiceLevelAgreementCustomer from "./pages/customer/ServiceLevelAgreement";
+import ServiceLevelAgreementAccounting from "./pages/officer/accounting/ServiceLevelAgreement";
+import ServiceLevelAgreementGeneralSupport from "./pages/officer/generalSupport/ServiceLevelAgreement";
 
 function App() {
   return (
@@ -49,7 +52,7 @@ function App() {
         />
         <PostloginRoutes
           exact
-          path="/update-user"
+          path="/update-user/:id"
           component={AdminUpdateUser}
           role="admin"
         />
@@ -67,7 +70,7 @@ function App() {
         />
         <PostloginRoutes
           exact
-          path="/detail-user"
+          path="/detail-user/:id"
           component={AdminDetailUser}
           role="admin"
         />
@@ -103,6 +106,36 @@ function App() {
         />
         <PostloginRoutes
           exact
+          path="/add-service"
+          component={AddServiceLevelAgreement}
+          role="admin"
+        />
+        <PostloginRoutes
+          exact
+          path="/update-service/:id"
+          component={UpdateServiceLevelAgreement}
+          role="admin"
+        />
+        <PostloginRoutes
+          exact
+          path="/service-level-agreement-customer"
+          component={ServiceLevelAgreementCustomer}
+          role="customer"
+        />
+        <PostloginRoutes
+          exact
+          path="/service-level-agreement-gs"
+          component={ServiceLevelAgreementGeneralSupport}
+          role="general-support"
+        />
+        <PostloginRoutes
+          exact
+          path="/service-level-agreement-accounting"
+          component={ServiceLevelAgreementAccounting}
+          role="accounting"
+        />
+        <PostloginRoutes
+          exact
           path="/generalSupport/payment-detail/:id"
           component={PaymentRequestDetailGeneralSupport}
           role="general-support"
@@ -119,7 +152,6 @@ function App() {
           component={PaymentRequestDetailCustomer}
           role="customer"
         />
-        <Route exact path="/backdoor" component={Backdoor} />
 
         {/* Masukan halaman baru diatas line ini */}
         <Route path="*" component={PageNotFound} />

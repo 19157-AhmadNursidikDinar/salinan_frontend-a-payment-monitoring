@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 import { withStyles } from "@material-ui/core/styles";
 import useStyles from "../styles/HasilFormPayement";
-import { dateOnly } from "../utils/date-format";
+import { dateOnly, dateAndTime } from "../utils/date-format";
 import { convertActionToChipColor } from "../utils/chip-utils";
 
 import Chip from "./ActionChip";
@@ -44,12 +44,23 @@ export default function DetailPayment({ paymentDetail, children }) {
         return (
             <NumberFormat
                 value={paymentDetail.amount}
-                prefix="Rp."
-                decimalSeparator="."
+                prefix="Rp "
+                suffix=",00"
+                thousandSeparator="."
+                decimalSeparator=","
                 displayType="text"
-                thousandSeparator={true}
                 allowNegative={true} />
         )
+    }
+
+    const PhoneOptions = () => {
+        return paymentDetail.phone === "" ? "-"
+            : "+" + paymentDetail.phone
+    }
+
+    const PaymentDateStatus = () => {
+        return paymentDetail.payment_date === "" ? "-"
+            : dateOnly(paymentDetail.payment_date)
     }
 
     return (
@@ -57,8 +68,16 @@ export default function DetailPayment({ paymentDetail, children }) {
             <Table className={classes.table} aria-label="simple table" size='small'>
                 <TableBody>
                     <MTableRow
+                        label="Kode Booking"
+                        value={paymentDetail.kode_booking || ""}
+                    />
+                    <MTableRow
                         label="Diminta Oleh"
                         value={paymentDetail.customer_name || ""}
+                    />
+                    <MTableRow
+                        label="No. Telepon"
+                        value={PhoneOptions(paymentDetail.phone)}
                     />
                     <MTableRow
                         label="Keperluan Payment"
@@ -66,7 +85,7 @@ export default function DetailPayment({ paymentDetail, children }) {
                     />
                     <MTableRow
                         label="Tanggal Pembayaran"
-                        value={dateOnly(paymentDetail.payment_date || "")}
+                        value={PaymentDateStatus(paymentDetail.payment_date)}
                     />
                     <MTableRow
                         label="Jumlah Payment"
@@ -85,11 +104,15 @@ export default function DetailPayment({ paymentDetail, children }) {
                         value={paymentDetail.account_number || ""}
                     />
                     <MTableRow
+                        label="Request Terkirim"
+                        value={dateAndTime(paymentDetail.request_date) || ""}
+                    />
+                    <MTableRow
                         label="Status Request"
                         value={
                             <Chip
                                 label={paymentDetail.stage}
-                                color={convertActionToChipColor(paymentDetail.stage||"")}
+                                color={convertActionToChipColor(paymentDetail.stage || "")}
                             />
                         }
                     />

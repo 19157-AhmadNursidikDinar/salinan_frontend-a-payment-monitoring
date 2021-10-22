@@ -17,7 +17,8 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import useStyles from "../styles/customer/HasilFormPayment";
 import Chip from "./ActionChip";
-import moment from "moment";
+import { dateAndTime } from "../utils/date-format";
+import NumberFormat from "react-number-format";
 
 const TableCell = withStyles((theme) => ({
   root: {
@@ -58,11 +59,33 @@ function HasilFormPayment({ formValues, resetFormValues }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
-  let dt = moment(formValues.payment_date);
-  let formattedDate = dt.format('DD MMMM YYYY')
   const handleClickNewPayment = () => {
     resetFormValues();
   };
+  const CurrencyFormat = () => {
+    return (
+      <NumberFormat
+        value={formValues?.amount}
+        prefix="Rp "
+        suffix=",00"
+        thousandSeparator="."
+        decimalSeparator=","
+        displayType="text"
+        allowNegative={true} />
+    )
+  }
+  const RequestOptions = () => {
+    return formValues?.request === "daily-needs" ? "Kebutuhan Sehari-Hari"
+      : formValues?.request === "loan-repayment" ? "Membayar Cicilan"
+        : formValues?.request === "education-fund" ? "Keperluan Pendidikan"
+          : formValues?.request === "travel-fund" ? "Keperluan Wisata"
+            : formValues?.request === "bill-payment" ? "Pembayaran Tagihan"
+              : formValues?.request_other
+  }
+  const PhoneOptions = () => {
+    return formValues?.customer_phone === "" ? "-"
+      : "+" + formValues?.customer_phone
+  }
 
   return (
     <>
@@ -94,16 +117,16 @@ function HasilFormPayment({ formValues, resetFormValues }) {
                     value={formValues?.customer_name || ""}
                   />
                   <MTableRow
-                    label="Keperluan Payment"
-                    value={formValues?.request || ""}
+                    label="No. Telepon"
+                    value={PhoneOptions(formValues?.customer_phone)}
                   />
                   <MTableRow
-                    label="Tanggal Pembayaran"
-                    value={formattedDate || ""}
+                    label="Keperluan Payment"
+                    value={RequestOptions(formValues?.request)}
                   />
                   <MTableRow
                     label="Jumlah Payment"
-                    value={formValues?.amount}
+                    value={CurrencyFormat(formValues?.amount)}
                   />
                   <MTableRow
                     label="Terbilang"
@@ -116,6 +139,10 @@ function HasilFormPayment({ formValues, resetFormValues }) {
                   <MTableRow
                     label="No. Rekening Penerima"
                     value={formValues?.account_number || ""}
+                  />
+                  <MTableRow
+                    label="Request Terkirim"
+                    value={dateAndTime(formValues.request_date) || ""}
                   />
                   <TableRow>
                     <TableCell>Status Request</TableCell>

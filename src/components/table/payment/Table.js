@@ -42,13 +42,19 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-export default function GeneralSupport({ paymentData = [], role }) {
+export default function GeneralSupport({
+  paymentData = [],
+  onChangePage,
+  totalData,
+  role,
+}) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const rowsPerPage = 8;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    onChangePage(newPage);
   };
 
   return (
@@ -70,13 +76,7 @@ export default function GeneralSupport({ paymentData = [], role }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? paymentData.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
-                : paymentData
-              ).map((row, index) => (
+              {paymentData.map((row, index) => (
                 <StyledTableRow key={row.id}>
                   <StyledTableCell>
                     {page * rowsPerPage + index + 1}
@@ -85,7 +85,9 @@ export default function GeneralSupport({ paymentData = [], role }) {
                     {dateAndTime(row.tanggal_request)}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {dateOnly(row.tanggal_pembayaran)}
+                    {Boolean(row.tanggal_pembayaran)
+                      ? dateOnly(row.tanggal_pembayaran)
+                      : dateOnly(row.tanggal_request)}
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <Chip
@@ -114,7 +116,7 @@ export default function GeneralSupport({ paymentData = [], role }) {
                 <TablePagination
                   rowsPerPageOptions={[]}
                   colSpan={5}
-                  count={paymentData.length}
+                  count={totalData}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   SelectProps={{

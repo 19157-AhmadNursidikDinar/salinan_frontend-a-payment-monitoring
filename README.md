@@ -8,6 +8,8 @@ This project currently under development so if u wanna merge branch, please **ME
 
 **Note: You need to create a new branch following your feature before merge, and do not merge before your feature is done.**
 
+[Live Demo](http://frontend-a-payment-monitoring-dot-rakamin-322505.et.r.appspot.com/)
+
 ## Installation
 
 In the project directory, you can run:
@@ -26,12 +28,12 @@ You will also see any lint errors in the console.
 
 ## Available Users Account
 
-| Role            | Username         | Password |
-| --------------- | ---------------- | -------- |
-| Admin           | myadmin          | 123456   |
-| Customer        | mycustomer3      | 123456   |
-| Accounting      | myaccounting     | 123456   |
-| General Support | mygeneralsupport | 123456   |
+| Role            | Username     | Password |
+| --------------- | ------------ | -------- |
+| Admin           | myadmin      | 123456   |
+| Customer        | myuser       | 123456   |
+| Accounting      | myaccounting | 123456   |
+| General Support | mygeneral    | 123456   |
 
 ## Available Scripts
 

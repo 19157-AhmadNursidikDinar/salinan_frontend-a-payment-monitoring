@@ -2,8 +2,10 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
+import Grid from "@material-ui/core/Grid";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
@@ -45,7 +47,14 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-export default function CustomizedDialogs({ children, title }) {
+const DialogActions = withStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(1),
+  },
+}))(MuiDialogActions);
+
+export default function CustomizedDialogs({ handleConfirm, username }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -54,23 +63,52 @@ export default function CustomizedDialogs({ children, title }) {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleSignOut = () => {
+    setOpen(false);
+    handleConfirm();
+  };
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Try it
+      <Button
+        size="small"
+        variant="contained"
+        color="secondary"
+        onClick={handleClickOpen}
+      >
+        Delete
       </Button>
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
-        maxWidth="md"
+        maxWidth="sm"
         fullWidth
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {title}
+          Delete User
         </DialogTitle>
-        <DialogContent dividers>{children}</DialogContent>
+        <DialogContent dividers>
+          <Grid container justifyContent="center">
+            <Typography gutterBottom>
+              Are you sure to remove {username} ?
+            </Typography>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            autoFocus
+            onClick={handleSignOut}
+            color="secondary"
+            variant="contained"
+            data-test="btn-confirm-delete"
+          >
+            Delete
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );
