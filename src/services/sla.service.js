@@ -51,7 +51,24 @@ class SlaService {
         }
     }
 
-    async getRecomendSLA({ branch_id }){
+    async updateSLA({ branch_id , capacity  }){
+        try {
+            const response = await axios.put(
+                apiUrl + "/" + branch_id,
+                {
+                    capacity
+                },
+                {
+                    headers: authHeader(),
+                }
+            );
+            return response.data;
+        } catch (error) {
+            return { error };
+        }
+    }
+
+    async getRecomendSLA({ branch_id }) {
         try {
             const response = await axios.post(
                 apiUrl + "/recomendation",

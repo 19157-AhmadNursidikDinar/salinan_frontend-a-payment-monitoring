@@ -16,6 +16,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
 import CloseIcon from '@material-ui/icons/Close';
+import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom";
@@ -168,6 +169,7 @@ export default function ServiceLevelAgreement(props) {
                                 <StylingTableCell>Request Payment Perhari</StylingTableCell>
                                 <StylingTableCell>Jumlah Rekomendasi Request</StylingTableCell>
                                 <StylingTableCell>Status Rekomendasi Request</StylingTableCell>
+                                <StylingTableCell>Action</StylingTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -184,7 +186,16 @@ export default function ServiceLevelAgreement(props) {
                                     <StylingTableCell>{branch.capacity}</StylingTableCell>
                                     <StylingTableCell>{branch.recomendation}</StylingTableCell>
                                     <StylingTableCell>{branch.same_with_recomendation}</StylingTableCell>
-
+                                    <StylingTableCell>
+                                        <Link to={{ pathname: `/update-service/${branch.branch_id}`, state:{
+                                            capacity: `${branch.capacity}`,
+                                            recomendation: `${branch.recomendation}`,
+                                        } }} className={classes.actionComponent}>
+                                            <Button variant="contained" color="primary" startIcon={<EditIcon />}>
+                                                Update
+                                            </Button>
+                                        </Link>
+                                    </StylingTableCell>
                                 </StylingTableRow>
                             ))}
                         </TableBody>

@@ -14,6 +14,7 @@ import AdminUpdateUser from "./pages/officer/admin/userManagement/UpdateUser";
 import GeneralSupportHome from "./pages/officer/generalSupport/Home";
 import ServiceLevelAgreement from "./pages/officer/admin/slaManagement/ServiceLevelAgreement";
 import AddServiceLevelAgreement from "./pages/officer/admin/slaManagement/AddServiceLevelAgreement";
+import UpdateServiceLevelAgreement from "./pages/officer/admin/slaManagement/UpdateServiceLevelAgreement";
 import PaymentRequestDetailGeneralSupport from "./pages/officer/generalSupport/PaymentRequestDetail";
 import PaymentRequestDetailAccounting from "./pages/officer/accounting/PaymentRequestDetail";
 import PaymentRequestDetailCustomer from "./pages/customer/HasilFormPayment";
@@ -109,6 +110,12 @@ function App() {
           exact
           path="/add-service"
           component={AddServiceLevelAgreement}
+          role="admin"
+        />
+        <PostloginRoutes
+          exact
+          path="/update-service/:id"
+          component={UpdateServiceLevelAgreement}
           role="admin"
         />
         <PostloginRoutes
