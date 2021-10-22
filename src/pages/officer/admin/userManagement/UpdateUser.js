@@ -151,6 +151,22 @@ export default function UpdateUser() {
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <TextField
+                    name="username"
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                    disabled
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                    helperText={formik.errors.username}
+                    error={
+                      Boolean(formik.errors.username) && formik.touched.username
+                    }
+                    data-test="txt-username"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
                     id="AccountName"
                     name="fullname"
                     label="Nama"
@@ -250,22 +266,6 @@ export default function UpdateUser() {
                         </FormHelperText>
                       )}
                   </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    name="username"
-                    label="Username"
-                    variant="outlined"
-                    fullWidth
-                    disabled={formik.isSubmitting}
-                    value={formik.values.username}
-                    onChange={formik.handleChange}
-                    helperText={formik.errors.username}
-                    error={
-                      Boolean(formik.errors.username) && formik.touched.username
-                    }
-                    data-test="txt-username"
-                  />
                 </Grid>
               </Grid>
             )}
