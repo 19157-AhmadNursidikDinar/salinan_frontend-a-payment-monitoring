@@ -7,5 +7,8 @@ export const dateOnly = (date) => {
 };
 
 export const dateAndTime = (date) => {
-  return moment(date).tz("Asia/Jakarta").format("dddd, DD MMMM yyyy (HH:mm)") + " WIB";
+  return (
+    moment(date).tz("Asia/Jakarta").format("dddd, DD MMMM yyyy (HH:mm  ") +
+    "WIB)"
+  );
 };
