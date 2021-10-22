@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Typography from "@material-ui/core/Typography";
-import ContentContainer from "../../../components/ContentContainer";
+import ContentContainer from "../../../../components/ContentContainer";
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -19,13 +19,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom";
-import ColorsTheme from "../../../assets/colors";
+import ColorsTheme from "../../../../assets/colors";
 
-import TablePaginationActions from "../../../components/table/payment/TablePagination";
-import TableSkeleton from "../../../components/table/payment/TableSkeleton";
+import TablePaginationActions from "../../../../components/table/payment/TablePagination";
+import TableSkeleton from "../../../../components/table/payment/TableSkeleton";
 
 //import api service
-import SlaService from "../../../services/sla.service";
+import SlaService from "../../../../services/sla.service";
 
 const useStyles = makeStyles((theme) => ({
     table: {
