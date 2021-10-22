@@ -6,9 +6,13 @@ AuthService.setupInterceptor();
 const apiUrl = process.env.REACT_APP_API_BASEURL + "/api/v1/payment-request";
 
 class PaymentService {
-  async getCustomerPaymentRequestList(page = 1) {
+  async getCustomerPaymentRequestList(page = 1, filter) {
     try {
-      const response = await axios.get(apiUrl + `?page=${page}&size=8`, {
+      let urlParam = `?page=${page}&size=8`;
+      if (Boolean(filter)) {
+        urlParam = `/${filter}` + urlParam;
+      }
+      const response = await axios.get(apiUrl + urlParam, {
         headers: authHeader(),
       });
       if (Boolean(response.data)) {
