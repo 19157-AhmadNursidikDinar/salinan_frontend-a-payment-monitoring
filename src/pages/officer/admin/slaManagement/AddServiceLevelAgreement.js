@@ -84,6 +84,7 @@ export function FormAddService(props) {
 
     const handleBranchId = async (branch_id) =>{
         const result = await SlaService.getRecomendSLA({ branch_id});
+        console.log(branch_id)
         if (!Boolean(result.error)) {
             console.log(result);
             formik.setValues({
