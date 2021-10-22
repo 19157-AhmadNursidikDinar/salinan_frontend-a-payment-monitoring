@@ -11,13 +11,24 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
-import TextField from '@material-ui/core/TextField';
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import Collapse from "@material-ui/core/Collapse";
+import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+import CloseIcon from '@material-ui/icons/Close';
+import AddIcon from '@material-ui/icons/Add';
+import Alert from '@material-ui/lab/Alert';
+import { Link } from "react-router-dom";
 import ColorsTheme from "../../../assets/colors";
 
 import TablePaginationActions from "../../../components/table/payment/TablePagination";
+import TableSkeleton from "../../../components/table/payment/TableSkeleton";
 
 //import api service
-import BranchService from "../../../services/branch.service"
+import SlaService from "../../../services/sla.service";
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -76,7 +87,7 @@ export default function ServiceLevelAgreement(props) {
     const classes = useStyles();
     const [pages, setPages] = useState(0);
     const [flashMessage, setFlashMessage] = useState({ success: false, message: '' });
-    const [branchs, setBranchs] = useState([]);
+    const [sla, setSla] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [errorMsg, setErrorMsg] = useState();
     const rowsPage = 10;
@@ -90,18 +101,18 @@ export default function ServiceLevelAgreement(props) {
     const fetchData = async () => {
 
         setIsLoading(true);
-        const result = await BranchService.getAllBranch()
+        const result = await SlaService.getAllSLA()
 
         setIsLoading(false);
         if (!Boolean(result.error)) {
-            setBranchs(result.data)
+            setSla(result.data)
             if (Boolean(result.data)) {
                 setErrorMsg("");
             } else {
                 setErrorMsg("data not found");
             }
         } else {
-            setBranchs([])
+            setSla([])
             setErrorMsg(result.error.response.data.msg)
         }
     }
@@ -121,20 +132,26 @@ export default function ServiceLevelAgreement(props) {
         fetchData()
     }, [])
 
-    return (
-        <ContentContainer role="admin" selectedMenu="Service Lvl Agreement">
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                    paddingBottom: "2em",
-                }}
-            >
-                <Typography variant="h4">Service Level Agreement</Typography>
-            </div>
+    function PaperServiceLevelAgreement(props){
+        return (
+            <Paper className={classes.PaperSize} elevation={4}>
 
-            <Paper className={classes.root}>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
+                    <Link to="/add-service" className={classes.actionComponent}>
+                        <Button className={classes.button} variant="contained" color="primary" startIcon={<AddIcon />}>
+                            Add Service
+                        </Button>
+                    </Link>
+                </Grid>
+
+                <div className={classes.messageError}>
+                    <h2 style={{ display: errorMsg ? 'block' : 'none' }}>{errorMsg}</h2>
+                </div>
                 <TableContainer component={Paper} style={{ display: errorMsg ? 'none' : 'block' }}>
                     <Table className={classes.table} aria-label="custom table pagination">
                         <TableHead>
@@ -142,27 +159,25 @@ export default function ServiceLevelAgreement(props) {
                                 <StylingTableCell>no</StylingTableCell>
                                 <StylingTableCell>Nama Kantor Cabang</StylingTableCell>
                                 <StylingTableCell>Request Payment Perhari</StylingTableCell>
+                                <StylingTableCell>Jumlah Rekomendasi Request</StylingTableCell>
+                                <StylingTableCell>Status Rekomendasi Request</StylingTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {(rowsPage > 0
-                                ? branchs.slice(
+                                ? sla.slice(
                                     pages * rowsPage,
                                     pages * rowsPage + rowsPage
                                 )
-                                : branchs
+                                : sla
                             ).map((branch, index) => (
                                 <StylingTableRow key={index + 1}>
                                     <StylingTableCell width="10%">{pages * rowsPage + index + 1}</StylingTableCell>
-                                    <StylingTableCell>{branch.id === 1 ? "pusat" : branch.branch_name}</StylingTableCell>
-                                    <StylingTableCell>
-                                        <TextField
-                                            id="outlined-number"
-                                            label="Jumlah Request"
-                                            type="number"
-                                            variant="outlined"
-                                        />
-                                    </StylingTableCell>
+                                    <StylingTableCell>{branch.branch_name}</StylingTableCell>
+                                    <StylingTableCell>{branch.capacity}</StylingTableCell>
+                                    <StylingTableCell>{branch.recomendation}</StylingTableCell>
+                                    <StylingTableCell>{branch.same_with_recomendation}</StylingTableCell>
+
                                 </StylingTableRow>
                             ))}
                         </TableBody>
@@ -171,7 +186,7 @@ export default function ServiceLevelAgreement(props) {
                                 <TablePagination
                                     rowsPerPageOptions={[]}
                                     colSpan={5}
-                                    count={branchs.length}
+                                    count={sla.length}
                                     rowsPerPage={rowsPage}
                                     page={pages}
                                     SelectProps={{
@@ -185,8 +200,47 @@ export default function ServiceLevelAgreement(props) {
                         </TableFooter>
                     </Table>
                 </TableContainer>
-
             </Paper>
+        )
+    }
+
+    return (
+        <ContentContainer role="admin" selectedMenu="Service Lvl Agreement">
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                    paddingBottom: "2em",
+                }}
+            >
+                <Typography variant="h4">Service Level Agreement</Typography>
+            </div>
+            <Collapse in={flashMessage.success} >
+                <Alert
+                    className={classes.alert}
+                    action={
+                        <IconButton
+                            aria-label="close"
+                            color="inherit"
+                            size="small"
+                            onClick={() => {
+                                setFlashMessage({ success: false, message: '' });
+                            }}
+                        >
+                            <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                    }
+                >
+                    {flashMessage.message}
+                </Alert>
+            </Collapse>
+            {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
+            {isLoading ? (
+                <TableSkeleton />
+            ) : (
+                <PaperServiceLevelAgreement />
+            )}
         </ContentContainer>
     );
 }
