@@ -20,12 +20,11 @@ import PaymentRequestDetailAccounting from "./pages/officer/accounting/PaymentRe
 import PaymentRequestDetailCustomer from "./pages/customer/HasilFormPayment";
 import BranchOfficeList from "./pages/officer/admin/branchManagement/BranchOfficeList";
 import PageNotFound from "./pages/errors/PageNotFound";
-import Backdoor from "./pages/backdoor/Backdoor";
 import PreloginRoutes from "./components/protectedRoutes/PreloginRoutes";
 import PostloginRoutes from "./components/protectedRoutes/PostloginRoutes";
-import ServiceLevelAgreementCustomer from './pages/customer/ServiceLevelAgreement';
-import ServiceLevelAgreementAccounting from './pages/officer/accounting/ServiceLevelAgreement';
-import ServiceLevelAgreementGeneralSupport from './pages/officer/generalSupport/ServiceLevelAgreement';
+import ServiceLevelAgreementCustomer from "./pages/customer/ServiceLevelAgreement";
+import ServiceLevelAgreementAccounting from "./pages/officer/accounting/ServiceLevelAgreement";
+import ServiceLevelAgreementGeneralSupport from "./pages/officer/generalSupport/ServiceLevelAgreement";
 
 function App() {
   return (
@@ -153,7 +152,6 @@ function App() {
           component={PaymentRequestDetailCustomer}
           role="customer"
         />
-        <Route exact path="/backdoor" component={Backdoor} />
 
         {/* Masukan halaman baru diatas line ini */}
         <Route path="*" component={PageNotFound} />

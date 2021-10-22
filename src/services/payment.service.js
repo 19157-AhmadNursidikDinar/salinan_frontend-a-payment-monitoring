@@ -5,9 +5,13 @@ AuthService.setupInterceptor();
 const apiUrl = process.env.REACT_APP_API_BASEURL + "/api/v1/payment-request";
 
 class PaymentService {
-  async getCustomerPaymentRequestList() {
+  async getCustomerPaymentRequestList(page = 1, filter) {
     try {
-      const response = await axios.get(apiUrl, {
+      let urlParam = `?page=${page}&size=8`;
+      if (Boolean(filter)) {
+        urlParam = `/${filter}` + urlParam;
+      }
+      const response = await axios.get(apiUrl + urlParam, {
         headers: authHeader(),
       });
       if (Boolean(response.data)) {
@@ -18,11 +22,14 @@ class PaymentService {
     }
   }
 
-  async getOfficerPaymentRequestList() {
+  async getOfficerPaymentRequestList(page = 1) {
     try {
-      const response = await axios.get(apiUrl + "/validation", {
-        headers: authHeader(),
-      });
+      const response = await axios.get(
+        apiUrl + `/validation?page=${page}&size=8`,
+        {
+          headers: authHeader(),
+        }
+      );
       if (Boolean(response.data)) {
         return response.data;
       }
@@ -71,10 +78,9 @@ class PaymentService {
         headers: authHeader(),
       });
       if (Boolean(response.data)) {
-        return response.data
+        return response.data;
       }
-    }
-    catch (error) {
+    } catch (error) {
       return { error };
     }
   }
@@ -82,19 +88,22 @@ class PaymentService {
   async updatePaymentRequestStage(data) {
     const { idPayment, stagePayment, reason } = data;
     try {
-      const response = await axios.put(apiUrl, {
-        id: idPayment,
-        stage: stagePayment,
-        reason
-      }, {
-        headers: authHeader(),
-      });
+      const response = await axios.put(
+        apiUrl,
+        {
+          id: idPayment,
+          stage: stagePayment,
+          reason,
+        },
+        {
+          headers: authHeader(),
+        }
+      );
 
       if (Boolean(response.data)) {
-        return response.data
+        return response.data;
       }
-    }
-    catch (error) {
+    } catch (error) {
       return { error };
     }
   }

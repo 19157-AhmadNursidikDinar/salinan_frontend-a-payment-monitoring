@@ -54,7 +54,12 @@ class AuthService {
         return response;
       },
       function (error) {
-        if (401 === error.response.status) {
+        console.log({ error });
+        if (
+          401 === error.response.status ||
+          (400 === error.response.status &&
+            error.response.data.msg === "Missing or malformed JWT")
+        ) {
           AuthToken.removeToken();
           window.location = "/";
         } else {

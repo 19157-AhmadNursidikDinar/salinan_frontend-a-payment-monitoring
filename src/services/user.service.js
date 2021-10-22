@@ -29,6 +29,19 @@ class UserService {
     }
   }
 
+  async getAllUser(page = 1) {
+    try {
+      const response = await axios.get(apiUrl + `?page=${page}&size=10`, {
+        headers: authHeader(),
+      });
+      if (response.data && response.data.data.length > 0) {
+        return response.data;
+      }
+    } catch (error) {
+      return { error };
+    }
+  }
+
   async UpdateUser(data) {
     const { fullname, username, id, role_id, branch_id } = data;
     // console.log(data);
@@ -65,19 +78,6 @@ class UserService {
         }
       );
       return response.data;
-    } catch (error) {
-      return { error };
-    }
-  }
-
-  async getAllUser() {
-    try {
-      const response = await axios.get(apiUrl, {
-        headers: authHeader(),
-      });
-      if (response.data && response.data.data.length > 0) {
-        return response.data;
-      }
     } catch (error) {
       return { error };
     }

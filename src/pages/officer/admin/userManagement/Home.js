@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
-import TextField from "@material-ui/core/TextField";
+// import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+// import TextField from "@material-ui/core/TextField";
 import AddIcon from "@material-ui/icons/Add";
-import InputAdornment from "@material-ui/core/InputAdornment";
+// import InputAdornment from "@material-ui/core/InputAdornment";
 import ContentContainer from "../../../../components/ContentContainer";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -85,6 +85,7 @@ const StylingTableRow = withStyles((theme) => ({
 export default function Home(props) {
   const classes = useStyles();
   const [paging, setPaging] = useState(0);
+  const [totalData, setTotalData] = useState(0);
   const [flashMessage, setFlashMessage] = useState({
     success: false,
     message: "",
@@ -96,14 +97,16 @@ export default function Home(props) {
 
   const handleChangePage = (event, newPaging) => {
     setPaging(newPaging);
+    fetchData(newPaging + 1);
   };
 
-  const fetchData = async () => {
+  const fetchData = async (page = 1) => {
     setIsLoading(true);
-    const result = await UserService.getAllUser();
+    const result = await UserService.getAllUser(page);
     setIsLoading(false);
     if (!Boolean(result.error)) {
       setUsers(result.data);
+      setTotalData(result.totalData);
       if (Boolean(result.data)) {
         setErrorMsg("");
       } else {
@@ -161,7 +164,7 @@ export default function Home(props) {
               Add Account
             </Button>
           </Link>
-          <TextField
+          {/* <TextField
             className={classes.actionComponent}
             id="txtSearch"
             type="text"
@@ -175,7 +178,7 @@ export default function Home(props) {
                 </InputAdornment>
               ),
             }}
-          />
+          /> */}
         </Grid>
 
         <Collapse in={flashMessage.success}>
@@ -210,13 +213,7 @@ export default function Home(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? users.slice(
-                    paging * rowsPerPage,
-                    paging * rowsPerPage + rowsPerPage
-                  )
-                : users
-              ).map((user, index) => (
+              {users.map((user, index) => (
                 <StylingTableRow key={index + 1}>
                   <StylingTableCell width="10%">
                     {paging * rowsPerPage + index + 1}
@@ -269,8 +266,8 @@ export default function Home(props) {
               <TableRow>
                 <TablePagination
                   rowsPerPageOptions={[]}
-                  colSpan={6}
-                  count={users.length}
+                  colSpan={5}
+                  count={totalData}
                   rowsPerPage={rowsPerPage}
                   page={paging}
                   SelectProps={{
@@ -302,7 +299,12 @@ export default function Home(props) {
       </div>
 
       {Boolean(errorMsg) && <Alert severity="warning">{errorMsg}</Alert>}
-      {isLoading ? <TableSkeleton /> : <PaperListUser />}
+      <div style={{ display: isLoading ? "block" : "none" }}>
+        <TableSkeleton />
+      </div>
+      <div style={{ display: isLoading ? "none" : "block" }}>
+        <PaperListUser />
+      </div>
     </ContentContainer>
   );
 }
