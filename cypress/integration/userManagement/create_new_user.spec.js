@@ -1,4 +1,4 @@
-describe("Optimistic case create new user", () => {
+describe("Positive case create new user", () => {
   const date = new Date();
   const userData = {
     userCode: date.getTime(),
@@ -10,15 +10,7 @@ describe("Optimistic case create new user", () => {
   });
 
   it("admin can login", () => {
-    cy.get("[data-test='txt-username']").type("myadmin");
-    cy.get("[data-test='txt-password']").type("123456");
-    cy.get("[data-test='select-role']")
-      .click()
-      .get("[data-test='opt-role-admin']")
-      .click();
-    cy.get("[data-test='btn-submit']").click();
-    cy.findByRole("heading", { name: /beranda admin/i }).should("be.visible");
-    cy.findByRole("button", { name: /add account/i }).click();
+    cy.loginAsAdmin();
   });
 
   it("admin can see the new user form", () => {
@@ -93,7 +85,7 @@ describe("Optimistic case create new user", () => {
   });
 });
 
-describe("Pesimistic case create new user", () => {
+describe("Negative case create new user", () => {
   const date = new Date();
   const userData = {
     fullname: "Test User " + date.getTime(),
@@ -106,14 +98,7 @@ describe("Pesimistic case create new user", () => {
   });
 
   it("admin can login", () => {
-    cy.get("[data-test='txt-username']").type("myadmin");
-    cy.get("[data-test='txt-password']").type("123456");
-    cy.get("[data-test='select-role']")
-      .click()
-      .get("[data-test='opt-role-admin']")
-      .click();
-    cy.get("[data-test='btn-submit']").click();
-    cy.findByRole("heading", { name: /beranda admin/i }).should("be.visible");
+    cy.loginAsAdmin();
     cy.findByRole("button", { name: /add account/i }).click();
   });
 
